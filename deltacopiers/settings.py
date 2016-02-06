@@ -136,4 +136,4 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
-GRAPPELLI_ADMIN_TITLE = 'Multi Pagos'
+GRAPPELLI_ADMIN_TITLE = 'DeltaCopiers S.A.'

@@ -3,7 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bienvenido a Moneycash</title>
+        <title>Moneycash</title>
+        <!-- Font -->
+        <link href='https://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
         <!-- Bootstrap Core CSS -->
         <link href="/static/home/img/logos/deltacopiers.jpg" rel="shortcut icon" type="image/vnd.microsoft.icon">
         <link href="/static/home/css/bootstrap.min.css" rel="stylesheet">
@@ -20,9 +22,13 @@
                     </div>
                     <div class="col-md-4 col-md-offset-4">
                         <ul id="list-menu-1" class="nav navbar-nav navbar-right">
-                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a></li>
+                            <li>
+                                <a id='access-login' href="#myModal" data-toggle="modal" >
+                                    <span class="glyphicon glyphicon-user" ></span>
+                                </a>
+                            </li>
+                            <li><a href="#"><span class="glyphicon glyphicon-envelope" ></span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-star" ></span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -31,12 +37,13 @@
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                    <button class="navbar-toggle collapsed" type="button"
+                        data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button> <a href="/" class="navbar-brand">MoneyCash</a>
+                    </button> <a href="/moneycash/" class="navbar-brand">MoneyCash</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul id="list-menu-2" class="nav navbar-nav">
@@ -54,14 +61,170 @@
             <div class="row box-container">
                 <div class="col-sm-9 col-md-9">
                     <div class="jumbotron">
-                        <h1>Software a la medida</h1>
-                        <p>Una herramienta que permiten un mejor desempeño de su negocio, maximizando la eficiencia y calidad del servicio.</p>
+                        <h1 class="text-center">Software a la medida</h1>
+                        <p class="text-center">Productividad, simplicidad y mejor desempeño de su negocio.</p>
+                        <p class="text-center">
+                            <a id='access-register' class="btn btn-lg btn-success" href="#"
+                                data-toggle="modal" data-target="#myModal" role="button">Demo free!</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-3">
-                    <img id="dado" src="/static/home/img/dado.png" class="img-responsive" alt="Responsive image">
+                    <img id="img-dado" src="/static/home/img/dado.png" class="img-responsive" alt="Responsive image">
                 </div>
             </div>
+            <div class="row">
+                <h2 class="blog-post-title text-center">MoneyCash</h2>
+                <p class="lead">
+                    <span class="text-primary">MoneyCas</span> es una herramienta que se acopla cualquier entidad de negocio
+                    que desea empreder un mayor creciento de produccion y mas. Ofreciendo soluciones nesesaria para la arias
+                    de facturacion, caja, etc.
+                </p>
+                <p class="lead">
+                    Diseñada con altos estandares de calidad, haciendo uso de tecnologias libre que nos permite un mejor
+                    control y adaptacion a las nesecidades del dia a dia.
+                </p>
+            </div>
         </div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-xs-4">
+                        <p id="copy">&copy; Delta Copiers, 2016</p>
+                    </div>
+                    <div class="col-md-4 col-md-offset-4 col-xs-4">
+                        <p class="text-right">
+                            <span>E: cesarabel&#64;deltacopiers.com</span>
+                            <span>T: &#43;505 8299&#45;6500</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!--modal-->
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div id="box-container-access">
+                                    <div id="box-btns-access">
+                                        <ul class="nav navbar-nav">
+                                            <li id="li-register">Register</li>
+                                            <li id="li-login">Login</li>
+                                        </ul>
+                                    </div>
+                                    <div id="box-register">
+                                        <form id="form-register" method="post">
+                                            <div class="row">
+                                                <div class="col-md-6 col-xs-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-lg"
+                                                                name="firtsname" placeholder="Nombres"
+                                                                autofocus="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-lg"
+                                                            name="lastname" placeholder="Apellidos">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-lg"
+                                                                name="company" placeholder="Empresa">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-lg"
+                                                                name="email" placeholder="Email">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <input type="password" class="form-control input-lg"
+                                                                name="password" placeholder="Contrase&ntilde;a">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button id="btn-register" class="btn btn-lg btn-success">Register</button>
+                                        </form>
+                                    </div>
+                                    <div id="box-login">
+                                        <form id="form-login" method="post">
+                                            <div class="form-group">
+                                                <input id="input-user" type="text" class="form-control input-lg"
+                                                    name="user" autofocus placeholder="Usuario"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="input-password" type="password" class="form-control input-lg"
+                                                    name="password" placeholder="Contrase&ntilde;a"/>
+                                            </div>
+                                            <button id="btn-login" class="btn btn-lg btn-success">Login</button>
+                                            <p class="text-center">
+                                                <a id="recover_password" href="#">Ha olvidado su contrase&ntilde;a&#63;</a>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!--end modal-->
+        <!-- jQuery -->
+        <script src="/static/home/js/jquery.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/static/home/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $('#access-register').on('click', function(e) {
+                    e.preventDefault();
+                    $('#li-register').click();
+                });
+                $('#access-login').on('click', function(e) {
+                    e.preventDefault();
+                    $('#li-login').click();
+                });
+                $('#li-register').on('click', function(e) {
+                    e.preventDefault();
+                    evento_access(false);
+                });
+                $('#li-login').on('click', function(e) {
+                    e.preventDefault();
+                    evento_access(true);
+                });
+                function limpiar() {
+                    $('input[type="text"], input[type="password"]').val('');
+                }
+                function evento_access(ban) {
+                    if(ban) {
+                        //login
+                        $('#box-login').css({display:'block'});
+                        $('#box-register').css({display:'none'});
+                        $('#li-register').css({background:'#3E3919'});
+                        $('#li-login').css({background:'#ACA14F'});
+                    } else {
+                        //register
+                        $('#box-login').css({display:'none'});
+                        $('#box-register').css({display:'block'});
+                        $('#li-register').css({background:'#ACA14F'});
+                        $('#li-login').css({background:'#3E3919'});                       
+                    }
+                    limpiar();
+                }
+            });
+        </script>
     </body>
 </html>

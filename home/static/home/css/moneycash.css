@@ -1,13 +1,29 @@
+h1, h2 {
+    color: #3E3919 !important;
+}
+button.btn, a.btn {
+    border: 0;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
 header {
     background: #00AECD;
     height: 80%;
+}
+input[type="text"],
+    input[type="password"] {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 #logo-dc {
     width: 15%;
 }
 #logo-label {
     font-size: 2.1em;
-    font-family: "Kaushan Script","Helvetica Neue",Helvetica,Arial,cursive;
+    font-family: 'Noto Sans', sans-serif;
+    color: #3E3919;
 }
 #list-menu-1>li>a {
     padding: 18px 25px;
@@ -33,6 +49,68 @@ header {
 .jumbotron {
     background-color: rgba(0,0,0,0);
 }
-#dado {
+#img-dado {
     margin-top: 45px;
+}
+.blog-post-title {
+    margin-bottom: 8px;
+    font-size: 40px;
+}
+#access-register {
+    margin-top: 20px;
+    padding: 25px 31px;
+}
+footer {
+    background: #3E3919;
+    margin-top: 50px;
+    padding: 20px;
+    color: #FFF;
+}
+footer p {
+    line-height: 50%;
+}
+footer p span {
+    display: block;
+    margin-top: 25px;
+}
+#copy {
+    margin-top: 25px;
+}
+.glyphicon {
+    color: #3E3919;
+}
+#btn-register, #btn-login {
+    width: 100%;
+    display: block;
+}
+#recover_password {
+    margin-top: 16px;
+    color: #3E3919;
+    display: block;
+}
+#box-login, #box-register {
+    clear: both;
+    display: none;
+}
+#box-btns-access {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+#box-btns-access>ul {
+    width: 100%;
+    display: block;
+    background: #3E3919;
+}
+#box-btns-access>ul>li {
+    width: 50%;
+    text-align: center;
+    padding: 15px 0;
+    color: #FFF;
+    font-size: 28px;
+    font-weight: bold;
+}
+#box-btns-access>ul>li:hover {
+    background: #ACA14F;
+    cursor: hand;
+    cursor: pointer;
 }

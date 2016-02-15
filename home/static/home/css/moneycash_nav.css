@@ -1,0 +1,24 @@
+body {
+    padding-top: 70px;
+}
+nav.navbar {
+    background: #00AECD;
+}
+a.navbar-brand {
+    font-weight: bold;
+}
+ul.nav-menu-principal>li>a {
+    color: #FFF !important;
+    border-bottom: 2px solid #00AECD;
+}
+ul.nav-menu-principal>li>a:hover {
+    color: #3E3919 !important;
+    background: #FFF !important;
+    border-bottom: 2px solid #fed136;
+}
+#name-user {
+    color: #FFF;
+}
+#name-user:hover {
+    color: #3E3919;
+}

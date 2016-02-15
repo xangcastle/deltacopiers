@@ -60,6 +60,11 @@ input[type="text"],
     margin-top: 20px;
     padding: 25px 31px;
 }
+#box-container-access {
+    width: 80%;
+    margin: 0 auto;
+    padding: 52px 0;
+}
 footer {
     background: #3E3919;
     margin-top: 50px;

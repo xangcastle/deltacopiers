@@ -43,12 +43,12 @@
                             <li class="dropdown">
                                 <a href="#" id="name-user" class="dropdown-toggle"
                                     data-toggle="dropdown" role="button"
-                                    aria-haspopup="true" aria-expanded="false">Hola, Juan Perez <span class="caret"></span></a>
+                                    aria-haspopup="true" aria-expanded="false">Hola, {{ user.username }} <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                 {% block user_tools_items %}
                                     <li><a href="#">Cuenta</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">Cerrar Seccion</a></li>
+                                    <li><a href="/accounts/logout">Cerrar Seccion</a></li>
                                 {% endblock user_tools_items %}
                                 </ul>
                             </li>
@@ -136,8 +136,8 @@
                         <h1 class="text-center">Software a la medida</h1>
                         <p class="text-center">Productividad, simplicidad y mejor desempeño de su negocio.</p>
                         <p class="text-center">
-                            <a id='access-register' class="btn btn-lg btn-success" href="#"
-                                data-toggle="modal" data-target="#myModal" role="button">Demo free!</a>
+                            <a id='access-register' class="btn btn-lg btn-success" href="/accounts/register/">Registrate Gratis</a>
+                            <a id='access-register' class="btn btn-lg btn-success" href="/accounts/login/">Ingresa</a>
                         </p>
                     </div>
                 </div>
@@ -270,10 +270,6 @@
         <script type="text/javascript">
         {% block scripts_extra %}
             $(function() {
-                $('#access-register').on('click', function(e) {
-                    e.preventDefault();
-                    $('#li-register').click();
-                });
                 $('#access-login').on('click', function(e) {
                     e.preventDefault();
                     $('#li-login').click();

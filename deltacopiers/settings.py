@@ -142,5 +142,15 @@ GRAPPELLI_ADMIN_TITLE = 'DeltaCopiers S.A.'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
+REGISTRATION_OPEN = True
+
+REGISTRATION_AUTO_LOGIN = True
+
+LOGIN_REDIRECT_URL = '/moneycash/'
+
+REGISTER_REDIRECT_URL = '/moneycash/'
+
+LOGIN_URL = '/accounts/login/'
+
 
 #AUTH_USER_MODEL = 'myapp.MyUser'

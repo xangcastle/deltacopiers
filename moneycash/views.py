@@ -2,7 +2,5 @@ from django.views.generic.base import TemplateView
 
 
 class HomePage(TemplateView):
-    template_name = "moneycash/index.html"
+    template_name = "moneycash/base.html"
 
-class ModulesPage(TemplateView):
-    template_name = "moneycash/modules.html"

@@ -138,3 +138,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 GRAPPELLI_ADMIN_TITLE = 'DeltaCopiers S.A.'
+
+
+#AUTH_USER_MODEL = 'myapp.MyUser'

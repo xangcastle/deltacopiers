@@ -3,62 +3,133 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Moneycash</title>
-        <!-- Font -->
+        <link rel="author" href="/static/home/humans.txt" />
+        <title>{% block title %}Moneycash{% endblock title %}</title>
         <link href='https://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-        <!-- Bootstrap Core CSS -->
+        {% block style %}
         <link href="/static/home/img/logos/deltacopiers.jpg" rel="shortcut icon" type="image/vnd.microsoft.icon">
         <link href="/static/home/css/bootstrap.min.css" rel="stylesheet">
         <link href="/static/home/css/moneycash.css" rel="stylesheet">
-        <link rel="author" href="/static/home/humans.txt" />
+        <link href="/static/home/css/moneycash_nav.css" rel="stylesheet">
+        {% endblock style %}
     </head>
     <body>
+    {% block navbar %}
         <header>
-            <div class="container">
-                <div class="row page-scroll">
-                    <div class="col-md-4">
-                        <img src="/static/home/img/logos/deltacopiers.png" id="logo-dc" alt="">
-                        <span id="logo-label">Delta Copiers</span>
+            <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                            <span class="sr-only">Menu</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="#" class="navbar-brand">MoneyCash</a>
                     </div>
-                    <div class="col-md-4 col-md-offset-4">
-                        <ul id="list-menu-1" class="nav navbar-nav navbar-right">
-                            <li>
-                                <a id='access-login' href="#myModal" data-toggle="modal" >
-                                    <span class="glyphicon glyphicon-user" ></span>
-                                </a>
-                            </li>
-                            <li><a href="#"><span class="glyphicon glyphicon-envelope" ></span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-star" ></span></a></li>
+                    <div id="navbarCollapse" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav nav-menu-principal">
+                        {% block navbar_items %}
+                        {% if user.is_authenticated %}
+                            <li><a href="#">Facturar</a></li>
+                            <li><a href="#">Arqueo</a></li>
+                            <li><a href="#">Reportes</a></li>
+                        {% endif %}
+                        {% endblock navbar_items %}
                         </ul>
+                        {% if user.is_authenticated %}
+                        {% block user_tools %}
+                        <ul class="nav navbar-nav navbar-right nav-menu-principal">
+                            <li class="dropdown">
+                                <a href="#" id="name-user" class="dropdown-toggle"
+                                    data-toggle="dropdown" role="button"
+                                    aria-haspopup="true" aria-expanded="false">Hola, Juan Perez <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                {% block user_tools_items %}
+                                    <li><a href="#">Cuenta</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Cerrar Seccion</a></li>
+                                {% endblock user_tools_items %}
+                                </ul>
+                            </li>
+                        </ul>
+                        {% endblock user_tools %}
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </header>
+    {% endblock navbar %}
+        <div class="container">
+         {% if user.is_authenticated %}
+         {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3 col-xs-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <label>Caja</label>
+                        </div>
+                        <div class="panel-body text-center">
+                            <a href="#">
+                                <img src="/static/home/img/Cashier.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <label>Cartera</label>
+                        </div>
+                        <div class="panel-body text-center">
+                            <a href="#">
+                                <img src="/static/home/img/Money-Increase.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <label>Compras</label>
+                        </div>
+                        <div class="panel-body text-center">
+                            <a href="#">
+                                <img src="/static/home/img/Shop.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <label>Contabilidad</label>
+                        </div>
+                        <div class="panel-body text-center">
+                            <a href="#">
+                                <img src="/static/home/img/Money-Graph.png">
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </header>
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <button class="navbar-toggle collapsed" type="button"
-                        data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button> <a href="/moneycash/" class="navbar-brand">MoneyCash</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul id="list-menu-2" class="nav navbar-nav">
-                        <li><a href="#">Caja</a></li>
-                        <li><a href="#">Contabilidad</a></li>
-                        <li><a href="#">Inventario</a></li>
-                        <li><a href="#">Facturacion</a></li>
-                        <li><a href="#">Planilla</a></li>
-                        <li><a href="#">Otros</a></li>
-                    </ul>
+            <div class="row">
+                <div class="col-md-3 col-xs-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <label>Produccion</label>
+                        </div>
+                        <div class="panel-body text-center">
+                            <a href="#">
+                                <img src="/static/home/img/Produccion.png">
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-        <div class="container">
-            <div class="row box-container">
+        </div>
+        {% else %}
+         <div class="row box-container">
                 <div class="col-sm-9 col-md-9">
                     <div class="jumbotron">
                         <h1 class="text-center">Software a la medida</h1>
@@ -86,6 +157,8 @@
                 </p>
             </div>
         </div>
+        {% endif %}
+        {% block footer %}
         <footer>
             <div class="container">
                 <div class="row">
@@ -101,6 +174,8 @@
                 </div>
             </div>
         </footer>
+        {% endblock footer %}
+        {% block modal %}
         <!--modal-->
         <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
@@ -182,12 +257,16 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div>
+        {% endblock modal %}
         <!--end modal-->
         <!-- jQuery -->
+        {% block scripts %}
         <script src="/static/home/js/jquery.js"></script>
         <!-- Bootstrap Core JavaScript -->
         <script src="/static/home/js/bootstrap.min.js"></script>
+        {% endblock scripts %}
         <script type="text/javascript">
+        {% block scripts_extra %}
             $(function() {
                 $('#access-register').on('click', function(e) {
                     e.preventDefault();
@@ -225,6 +304,7 @@
                     limpiar();
                 }
             });
+        {% endblock scripts_extra %}
         </script>
     </body>
 </html>

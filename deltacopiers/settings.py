@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'registration',
     'home',
     'moneycash',
 ]
@@ -138,6 +139,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 GRAPPELLI_ADMIN_TITLE = 'DeltaCopiers S.A.'
+
+ACCOUNT_ACTIVATION_DAYS = 7
 
 
 #AUTH_USER_MODEL = 'myapp.MyUser'

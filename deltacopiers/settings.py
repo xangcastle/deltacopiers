@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'registration',
+    #'registration',
     'home',
     'moneycash',
 ]
@@ -144,7 +144,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 REGISTRATION_OPEN = True
 
-REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_AUTO_LOGIN = False
 
 LOGIN_REDIRECT_URL = '/moneycash/'
 
@@ -152,5 +152,10 @@ REGISTER_REDIRECT_URL = '/moneycash/'
 
 LOGIN_URL = '/accounts/login/'
 
+DEFAULT_FROM_EMAIL = "info@deltacopiers.com"
+
+EMAIL_HOST = 'localhost'
+
+EMAIL_PORT = 1025
 
 #AUTH_USER_MODEL = 'myapp.MyUser'

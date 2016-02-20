@@ -1,0 +1,3 @@
+Texto de prueba
+
+Este texto se va a utilizar en el envio de correo de registro...

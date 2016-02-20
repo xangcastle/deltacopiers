@@ -1,0 +1,9 @@
+#box-login {
+    width: 50%;
+    margin: 0 auto;
+}
+#box-login h1 {
+    padding: 15px 0px;
+    background-color: #0A5CBF;
+    color: #FFF !important;
+}

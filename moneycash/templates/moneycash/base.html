@@ -16,7 +16,7 @@
     <body>
     {% block navbar %}
         <header>
-            <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+            <nav id="navbar-principal" role="navigation" class="navbar navbar-default navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
@@ -25,7 +25,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="/moneycash" class="navbar-brand">MoneyCash</a>
+                        <a id="title-product" href="/moneycash" class="navbar-brand">MoneyCash</a>
                     </div>
                     <div id="navbarCollapse" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav nav-menu-principal">
@@ -55,13 +55,20 @@
                         </ul>
                         {% endblock user_tools %}
                         {% endif %}
+                        {% block access_user %}
+                        <ul id="nav-menu-principal-derecha" class="nav nav-pills navbar-right">
+                            <li><a href="#">Planes</a></li>
+                            <li><a href="/accounts/login/">Iniciar sesion</a></li>
+                            <li><a id="ul-btn-register" href="/accounts/register/">Registrate Gratis</a></li>
+                        </ul>
+                        {% endblock access_user %}
                     </div>
                 </div>
             </nav>
         </header>
     {% endblock navbar %}
     {% block content %}
-        <div class="container">
+        <div class="container container-lower">
          {% if user.is_authenticated %}
          {% csrf_token %}
             <div class="row">
@@ -137,7 +144,6 @@
                         <p class="text-center">Productividad, simplicidad y mejor desempeño de su negocio.</p>
                         <p class="text-center">
                             <a id='access-register' class="btn btn-lg btn-success" href="/accounts/register/">Registrate Gratis</a>
-                            <a id='access-register' class="btn btn-lg btn-success" href="/accounts/login/">Ingresa</a>
                         </p>
                     </div>
                 </div>
@@ -147,12 +153,12 @@
             </div>
             <div class="row">
                 <h2 class="blog-post-title text-center">MoneyCash</h2>
-                <p class="lead">
+                <p class="lead text-justify">
                     <span class="text-primary">MoneyCash</span> es una herramienta que se acopla cualquier entidad de negocio
                     que desea empreder un mayor creciento de produccion y mas. Ofreciendo soluciones nesesaria para la arias
                     de facturacion, caja, etc.
                 </p>
-                <p class="lead">
+                <p class="lead text-justify">
                     Diseñada con altos estandares de calidad, haciendo uso de tecnologias libre que nos permite un mejor
                     control y adaptacion a las nesecidades del dia a dia.
                 </p>

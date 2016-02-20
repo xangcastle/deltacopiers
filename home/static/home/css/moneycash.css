@@ -7,12 +7,9 @@ button.btn, a.btn {
     -moz-border-radius: 0px;
     border-radius: 0px;
 }
-header {
-    background: #00AECD;
-    height: 80%;
-}
 input[type="text"],
-    input[type="password"] {
+    input[type="password"],
+    input[type="submit"] {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
@@ -84,6 +81,7 @@ footer p span {
 .glyphicon {
     color: #3E3919;
 }
+/*
 #btn-register, #btn-login {
     width: 100%;
     display: block;
@@ -118,4 +116,10 @@ footer p span {
     background: #ACA14F;
     cursor: hand;
     cursor: pointer;
+}*/
+.text-lower {
+    margin-top: 15px;
+}
+div.container-lower {
+    margin-top: 15px;
 }

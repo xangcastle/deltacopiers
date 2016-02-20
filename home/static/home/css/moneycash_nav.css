@@ -2,23 +2,60 @@ body {
     padding-top: 70px;
 }
 nav.navbar {
-    background: #00AECD;
+    background: #0A93C9;
 }
 a.navbar-brand {
     font-weight: bold;
 }
 ul.nav-menu-principal>li>a {
     color: #FFF !important;
-    border-bottom: 2px solid #00AECD;
+    border-bottom: 2px solid #0A93C9;
 }
 ul.nav-menu-principal>li>a:hover {
     color: #3E3919 !important;
     background: #FFF !important;
     border-bottom: 2px solid #fed136;
 }
+
+#title-product {
+    color: white;
+    font-size: 35px;
+}
 #name-user {
     color: #FFF;
 }
 #name-user:hover {
     color: #3E3919;
+}
+#navbar-principal {
+    padding: 5px 0;
+    border-bottom: 1px solid #5cb85c;
+    opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=0.95);
+    filter: progid:DXImageTransform.Microsoft:Alpha(opacity=0.95);
+    filter:alpha(opacity=0.95);
+}
+#nav-menu-principal-derecha>li>a {
+    font-size: 16px;
+    background: none;
+    color: white;
+    margin-left: 10px;
+    border: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    line-height: 35px;
+}
+#nav-menu-principal-derecha>li>a:hover {
+    color: #F5F5F5;
+}
+#ul-btn-register {
+    border: 3px solid #FFF !important;
+}
+#ul-btn-register:hover {
+    color: #FFF !important;
+    background-color: #5cb85c;
+    border: 3px solid #5cb85c !important;
 }

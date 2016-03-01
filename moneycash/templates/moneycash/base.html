@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="author" href="/static/home/humans.txt" />
-        <title>{% block title %}Moneycash{% endblock title %}</title>
+        <title>{% block title %}{{ user.empresa.razon_social }}{% endblock title %}</title>
         <link href='https://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
         {% block style %}
         <link href="/static/home/img/logos/deltacopiers.jpg" rel="shortcut icon" type="image/vnd.microsoft.icon">
@@ -25,15 +25,16 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a id="title-product" href="/moneycash" class="navbar-brand">MoneyCash</a>
+                        <a id="title-product" href="/moneycash" class="navbar-brand">{% block navbar_title %}{{ user.empresa.razon_social }}{% endblock navbar_title %}</a>
                     </div>
                     <div id="navbarCollapse" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav nav-menu-principal">
                         {% block navbar_items %}
                         {% if user.is_authenticated %}
-                            <li><a href="#">Facturar</a></li>
-                            <li><a href="#">Arqueo</a></li>
-                            <li><a href="#">Reportes</a></li>
+                        {% else %}
+                            <li><a href="#">Planes</a></li>
+                            <li><a href="/accounts/login/">Iniciar sesion</a></li>
+                            <li><a id="ul-btn-register" href="/accounts/register/">Registrate Gratis</a></li>
                         {% endif %}
                         {% endblock navbar_items %}
                         </ul>
@@ -43,12 +44,16 @@
                             <li class="dropdown">
                                 <a href="#" id="name-user" class="dropdown-toggle"
                                     data-toggle="dropdown" role="button"
-                                    aria-haspopup="true" aria-expanded="false">Hola, {{ user.username }} <span class="caret"></span></a>
+                                    aria-haspopup="true" aria-expanded="false">{{ user.get_full_name }} <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                 {% block user_tools_items %}
-                                    <li><a href="#">Cuenta</a></li>
+                                    <li><a href="#">Perfil</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="/accounts/logout">Cerrar Seccion</a></li>
+                                    {% if user.is_administrador %}
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Datos de la Empresa</a></li>
+                                    {% endif %}
                                 {% endblock user_tools_items %}
                                 </ul>
                             </li>
@@ -57,9 +62,7 @@
                         {% endif %}
                         {% block access_user %}
                         <ul id="nav-menu-principal-derecha" class="nav nav-pills navbar-right">
-                            <li><a href="#">Planes</a></li>
-                            <li><a href="/accounts/login/">Iniciar sesion</a></li>
-                            <li><a id="ul-btn-register" href="/accounts/register/">Registrate Gratis</a></li>
+
                         </ul>
                         {% endblock access_user %}
                     </div>
@@ -70,15 +73,16 @@
     {% block content %}
         <div class="container container-lower">
          {% if user.is_authenticated %}
+         {% if user.has_empresa %}
          {% csrf_token %}
             <div class="row">
                 <div class="col-md-3 col-xs-3">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <label>Caja</label>
+                            <label>Facturacion</label>
                         </div>
                         <div class="panel-body text-center">
-                            <a href="#">
+                            <a href="/moneycash/facturacion">
                                 <img src="/static/home/img/Cashier.png">
                             </a>
                         </div>
@@ -121,21 +125,44 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3 col-xs-3">
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <label>Produccion</label>
-                        </div>
-                        <div class="panel-body text-center">
-                            <a href="#">
-                                <img src="/static/home/img/Produccion.png">
-                            </a>
+        </div>
+        {% else %}
+            <div class="container container-lower">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div>
+                            <h1 class="text-center">Por favor completa los Datos Generales de la Empresa</h1>
+                            <form method="post" action="/moneycash/register_empresa/">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg"
+                                        name="razon_social" placeholder="Nombre de la empresa"
+                                        required autofocus >
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg"
+                                        name="numero_ruc" placeholder="Registro Unico del Contribuidor (RUC)"
+                                        required >
+                                </div>
+                                <div class="form-group">
+                                <textarea class="form-control" rows="3"
+                                 placeholder="Direccion de la Empresa" required
+                                 name="direccion"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control input-lg"
+                                        name="email" placeholder="Correo Electronico"
+                                        required >
+                                </div>
+                                <input type="submit" class="btn btn-success btn-lg btn-block"
+                                    value="Continuar" />
+                                <input type="hidden" name="next" value="{{ next }}" />
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
         {% else %}
          <div class="row box-container">
                 <div class="col-sm-9 col-md-9">

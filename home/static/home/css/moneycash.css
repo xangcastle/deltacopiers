@@ -122,4 +122,5 @@ footer p span {
 }
 div.container-lower {
     margin-top: 15px;
+    min-height: 478px;
 }

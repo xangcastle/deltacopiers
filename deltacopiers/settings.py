@@ -158,4 +158,4 @@ EMAIL_HOST = 'localhost'
 
 EMAIL_PORT = 1025
 
-#AUTH_USER_MODEL = 'myapp.MyUser'
+AUTH_USER_MODEL = 'moneycash.MyUser'

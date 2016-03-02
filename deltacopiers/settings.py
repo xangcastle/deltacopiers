@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     #'registration',
     'home',
     'moneycash',
+    'facturacion',
 ]
 
 MIDDLEWARE_CLASSES = [

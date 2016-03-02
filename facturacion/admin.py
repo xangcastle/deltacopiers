@@ -25,7 +25,7 @@ class factura_cabezera(admin.ModelAdmin):
 
                             ('code', 'name', 'identificacion'),
 
-                            ('telefono', 'email', 'barrio'),
+                            ('telefono', 'email'),
 
                             'direccion'
                             )

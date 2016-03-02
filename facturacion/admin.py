@@ -6,7 +6,7 @@ class factura_detalle(admin.TabularInline):
     model = Detalle
     extra = 1
     classes = ('grp-collapse grp-open',)
-    fields = ('code', 'name', 'cantidad', 'precio', 'iva')
+    fields = ('code', 'name', 'cantidad', 'precio', 'descuento', 'iva')
 
 
 class factura_cabezera(admin.ModelAdmin):

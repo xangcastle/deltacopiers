@@ -82,6 +82,7 @@ class Detalle(models.Model):
     name = models.CharField(max_length=255, null=True)
     cantidad = models.FloatField(null=True)
     precio = models.FloatField(null=True)
+    descuento = models.FloatField(null=True)
     iva = models.FloatField(null=True)
 
     def __unicode__(self):

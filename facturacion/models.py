@@ -4,7 +4,26 @@ from django.db import models
 from moneycash.models import MyUser
 
 
-class Factura(models.Model):
+class base_cliente(models.Model):
+
+    #datos del cliente
+    cliente = models.ForeignKey('Cliente', null=True)
+    code = models.CharField(max_length=25, null=True, blank=True)
+    name = models.CharField(max_length=255, null=True)
+    identificacion = models.CharField(max_length=14, null=True, blank=True,
+        help_text="RUC/CEDULA")
+    telefono = models.CharField(max_length=25, null=True, blank=True)
+    email = models.EmailField(max_length=165, null=True, blank=True)
+    direccion = models.TextField(max_length=400, null=True, blank=True)
+
+    def estadisticas(self):
+        return 0.25
+
+    class Meta:
+        abstract = True
+
+
+class Factura(base_cliente):
 
     """
     Modelo factura. Cabezera de Documento
@@ -14,15 +33,6 @@ class Factura(models.Model):
     numero = models.CharField(max_length=25, null=True, blank=True)
     fecha = models.DateTimeField(null=True, blank=True)
     user = models.ForeignKey(MyUser, null=True)
-
-    #datos del cliente
-    cliente = models.ForeignKey('Cliente', null=True)
-    code = models.CharField(max_length=25, null=True, blank=True)
-    name = models.CharField(max_length=255, null=True)
-    identificacion = models.CharField(max_length=14, null=True, blank=True)
-    telefono = models.CharField(max_length=25, null=True, blank=True)
-    email = models.EmailField(max_length=165, null=True, blank=True)
-    direccion = models.TextField(max_length=400, null=True, blank=True)
 
     #totales del documento
     subtotal = models.FloatField(null=True, blank=True)
@@ -49,13 +59,7 @@ class Detalle(models.Model):
         return '%s - %s' % (self.code, self.name)
 
 
-class Cliente(models.Model):
-    code = models.CharField(max_length=25, null=True, blank=True)
-    name = models.CharField(max_length=255, null=True)
-    identificacion = models.CharField(max_length=14, null=True, blank=True)
-    telefono = models.CharField(max_length=25, null=True, blank=True)
-    email = models.EmailField(max_length=165, null=True, blank=True)
-    direccion = models.TextField(max_length=400, null=True, blank=True)
+class Cliente(base_cliente):
 
     def __unicode__(self):
         return '%s - %s' % (self.code, self.name)

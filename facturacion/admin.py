@@ -21,7 +21,7 @@ class factura_cabezera(admin.ModelAdmin):
                 'classes': ('grp-collapse grp-open',),
 
                 'fields': (
-                            ('numero', 'fecha', 'usuario'),
+                            ('numero', 'fecha'),
 
                             ('code', 'name', 'identificacion'),
 

@@ -43,6 +43,10 @@ class Factura(base_cliente):
     al = models.FloatField(null=True, blank=True)
     total = models.FloatField(null=True, blank=True)
 
+    aplica_iva = models.BooleanField(default=True)
+    aplica_ir = models.BooleanField(default=False)
+    aplica_al = models.BooleanField(default=False)
+
     def get_numero(self):
         queryset = type(self).objects.all().exclude(
             numero__in=['', None]).order_by('numero')

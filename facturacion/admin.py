@@ -15,19 +15,20 @@ class factura_cabezera(admin.ModelAdmin):
     list_filter = ('cliente',)
     search_fields = ('name', 'identificacion', 'numero')
     fieldsets = (
-
         ('Datos Generales del Documento', {
-
                 'classes': ('grp-collapse grp-open',),
-
-                'fields': (
-                            ('numero', 'fecha'),
-
+                'fields': (('numero', 'fecha'),
                             ('code', 'name', 'identificacion'),
-
                             ('telefono', 'email'),
-
                             'direccion'
+                            )
+                            }),
+        ("Detalle de Productos", {"classes":
+            ("placeholder detalle_set-group",), "fields": ()}),
+        ('Totales', {
+                'classes': ('grp-collapse grp-open',),
+                'fields': (('subtotal', 'descuento', 'iva'),
+                            ('ir', 'al', 'total'),
                             )
                             }),
                             )

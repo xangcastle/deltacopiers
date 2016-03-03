@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^moneycash/', include('moneycash.urls')),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('registration.auth_urls')),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
+    url(r'^facturacion/', include('facturacion.urls')),
 ]

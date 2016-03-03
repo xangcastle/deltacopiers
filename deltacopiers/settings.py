@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'grappelli_dynamic_navbar',
     'import_export',
     'grappelli',
+    'facturacion',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     #'registration',
     'home',
     'moneycash',
-    'facturacion',
 ]
 
 MIDDLEWARE_CLASSES = [

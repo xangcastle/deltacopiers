@@ -37,3 +37,17 @@ class factura_cabezera(admin.ModelAdmin):
     inlines = [factura_detalle]
 
 admin.site.register(Factura, factura_cabezera)
+
+
+class cliente_admin(admin.ModelAdmin):
+    list_display = ('code', 'name', 'identificacion', 'email', 'telefono')
+    search_fields = ('code', 'name', 'identificacion', 'email')
+
+admin.site.register(Cliente, cliente_admin)
+
+
+class producto_admin(admin.ModelAdmin):
+    list_display = ('code', 'name', 'precio', 'costo')
+    search_fields = ('code', 'name')
+
+admin.site.register(Producto, producto_admin)

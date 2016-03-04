@@ -10,10 +10,10 @@ $(document).ready(function() {
     });
     function complete_usario(self) {
         var url = "/facturacion/autocomplete_cliente";
-        if($(self).prop('id') == 'id_name')
+        if($(self).prop('id') == 'id_identificacion')
+            url +="?opt=identi";
+        else if($(self).prop('id') == 'id_name')
             url +="?opt=name";
-        else
-            url +="?opt=code";
         $(self).autocomplete({
             minLength: 2,
             source: url,

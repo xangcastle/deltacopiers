@@ -13,12 +13,20 @@ def autocomplete_cliente(request):
             Q(name__icontains=request.GET.get('term', ''))
             )
         if qs.count() > 0:
-            for obj in qs:
-                obj_json = {}
-                obj_json['label'] = str(obj)
-                obj_json['value'] = str(obj.name)
-                obj_json['obj'] = model_to_dict(obj)
-                result.append(obj_json)
+            if request.GET.get('opt') == 'name':
+                for obj in qs:
+                    obj_json = {}
+                    obj_json['label'] = str(obj)
+                    obj_json['value'] = str(obj.name)
+                    obj_json['obj'] = model_to_dict(obj)
+                    result.append(obj_json)
+            elif request.GET.get('opt') == 'identi':
+                for obj in qs:
+                    obj_json = {}
+                    obj_json['label'] = str(obj)
+                    obj_json['value'] = str(obj.identificacion)
+                    obj_json['obj'] = model_to_dict(obj)
+                    result.append(obj_json)
 
         data = json.dumps(result)
     else:

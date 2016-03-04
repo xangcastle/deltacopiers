@@ -94,6 +94,14 @@ class Cliente(base_cliente):
     def __unicode__(self):
         return '%s - %s' % (self.code, self.name)
 
+    def __iter__(self):
+        for field_name in self._meta.get_all_field_names():
+            try:
+                value = getattr(self, field_name)
+            except:
+                value = None
+            yield (field_name, value)
+
 
 class Producto(models.Model):
     code = models.CharField(max_length=25, null=True, blank=True)

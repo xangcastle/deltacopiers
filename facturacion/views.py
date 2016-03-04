@@ -4,6 +4,7 @@ from .models import *
 from django.db.models import Q
 from django.forms.models import model_to_dict
 
+
 def autocomplete_cliente(request):
     if request.is_ajax:
         result = []

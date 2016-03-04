@@ -7,6 +7,7 @@ class factura_detalle(admin.TabularInline):
     extra = 1
     classes = ('grp-collapse grp-open',)
     fields = ('code', 'name', 'cantidad', 'precio', 'descuento', 'iva')
+    readonly_fields = ('name', 'precio', 'descuento', 'iva')
 
 
 class factura_cabezera(admin.ModelAdmin):
@@ -18,8 +19,8 @@ class factura_cabezera(admin.ModelAdmin):
         ('Datos Generales del Documento', {
                 'classes': ('grp-collapse grp-open', ),
                 'fields': (
-                            ('numero', 'fecha',),
-                            ('code', 'name', 'identificacion'),
+                            ('numero', 'fecha', 'code'),
+                            ('name', 'identificacion'),
                             ('telefono', 'email'),
                             'direccion',
                         )
@@ -34,6 +35,8 @@ class factura_cabezera(admin.ModelAdmin):
                             )
                             }),
                             )
+    readonly_fields = ('fecha', 'numero', 'total', 'iva', 'descuento', 'al',
+        'ir', 'subtotal', 'code')
 
     inlines = [factura_detalle]
 

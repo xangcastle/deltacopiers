@@ -2,18 +2,17 @@ $(document).ready(function() {
     $('form').on('submit', function(e) {
         return false;
     });
-    $('#id_name').on('keyup', function(e) {
-        complete_usario($(this));
+    /*$('#id_name').on('keyup', function(e) {
+        complete_cliente($(this));
     });
     $('#id_identificacion').on('keyup', function(e) {
-        complete_usario($(this));
+        complete_cliente($(this));
+    });*/
+    $('.buscar_cliente').on('keyup', function(e) {
+        complete_cliente($(this));
     });
-    function complete_usario(self) {
-        var url = "/facturacion/autocomplete_cliente";
-        if($(self).prop('id') == 'id_identificacion')
-            url +="?opt=identi";
-        else if($(self).prop('id') == 'id_name')
-            url +="?opt=name";
+    function complete_cliente(self) {
+        var url = "/facturacion/autocomplete_cliente?opt="+$(self).prop('name');
         $(self).autocomplete({
             minLength: 2,
             source: url,

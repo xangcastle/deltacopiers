@@ -94,6 +94,7 @@ class Cliente(base_cliente):
     def __unicode__(self):
         return '%s - %s' % (self.code, self.name)
 
+<<<<<<< HEAD
     def __iter__(self):
         for field_name in self._meta.get_all_field_names():
             try:
@@ -101,6 +102,13 @@ class Cliente(base_cliente):
             except:
                 value = None
             yield (field_name, value)
+=======
+    def __getitem__(self, fieldname):
+        try:
+            return getattr(self, fieldname)
+        except:
+            return None        
+>>>>>>> cd6b7ddb6296ebd4c530fee50de8e6221f44b064
 
 
 class Producto(models.Model):

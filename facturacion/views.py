@@ -23,3 +23,18 @@ def autocomplete_cliente(request):
     else:
         data = 'fail'
     return HttpResponse(data, content_type='application/json')
+
+def autocomplete_producto(request):
+    if request.is_ajax:
+        result = []
+        obj = Producto.objects.get(code = request.GET.get('term', ''));
+        if obj.count() > 0:
+            obj_json = {}
+            obj_json['label'] = str(obj)
+            obj_json['value'] = str(obj.code)
+            obj_json['obj'] = model_to_dict(obj)
+            result.append(obj_json)
+        data = json.dumps(result)
+    else:
+        data = 'fail'
+    return HttpResponse(data, content_type='application/json')

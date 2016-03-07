@@ -117,3 +117,9 @@ class Producto(models.Model):
 
     def __unicode__(self):
         return '%s - %s' % (self.code, self.name)
+
+    def __getitem__(self, fieldname):
+        try:
+            return getattr(self, fieldname)
+        except:
+            return None

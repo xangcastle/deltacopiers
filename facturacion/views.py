@@ -28,7 +28,7 @@ def autocomplete_cliente(request):
 def autocomplete_producto(request):
     if request.is_ajax:
         result = []
-        qs = Cliente.objects.filter(
+        qs = Producto.objects.filter(
                 Q(code__istartswith=request.GET.get('term', '')) |
                 Q(name__icontains=request.GET.get('term', ''))
             )

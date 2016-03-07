@@ -1,13 +1,15 @@
 from django.contrib import admin
 from .models import *
+from .forms import *
 
 
 class factura_detalle(admin.TabularInline):
+    form = DetalleForm
     model = Detalle
     extra = 1
     classes = ('grp-collapse grp-open',)
-    fields = ('code', 'name', 'cantidad', 'precio', 'descuento', 'iva')
-    readonly_fields = ('name', 'precio', 'descuento', 'iva')
+    fields = ('code', 'name', 'cantidad', 'precio', 'descuento', 'iva',
+            'total')
 
 
 class factura_cabezera(admin.ModelAdmin):
@@ -16,10 +18,15 @@ class factura_cabezera(admin.ModelAdmin):
     list_filter = ('cliente',)
     search_fields = ('name', 'identificacion', 'numero')
     fieldsets = (
-        ('Datos Generales del Documento', {
+        ('', {
                 'classes': ('grp-collapse grp-open', ),
                 'fields': (
                             ('numero', 'fecha', 'code'),
+                        )
+        }),
+        ('Datos del Cliente', {
+                'classes': ('', ),
+                'fields': (
                             ('name', 'identificacion'),
                             ('telefono', 'email'),
                             'direccion',
@@ -28,7 +35,7 @@ class factura_cabezera(admin.ModelAdmin):
         ("Detalle de Productos", {"classes":
             ("placeholder detalle_set-group",), "fields": ()}),
         ('Totales', {
-                'classes': ('grp-collapse grp-open',),
+                'classes': ('',),
                 'fields': (('subtotal', 'descuento', 'iva'),
                             ('aplica_iva', 'aplica_ir', 'aplica_al'),
                             ('ir', 'al', 'total'),

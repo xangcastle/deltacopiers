@@ -7,3 +7,6 @@
     text-align: right;
     margin-top: -17px;
 }
+input[type='text'].datos_cliente {
+    width: 280px !important;
+}

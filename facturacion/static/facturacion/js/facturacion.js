@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    try {
+try {
     $('form').on('submit', function(e) {
         return false;
     });
@@ -9,10 +9,9 @@ $(document).ready(function() {
     $('#factura_form').on('keyup', '.producto_code', function() {
         complete_producto($(this));
     });
-
     function get_total(cantidad, precio) {
         return parseFloat(cantidad) * parseFloat(precio);
-        }
+    }
     function complete_cliente(self) {
         if($.trim($(self).val()) != '') {
             $(self).autocomplete({
@@ -26,6 +25,7 @@ $(document).ready(function() {
                     $('#id_telefono').val(ui.item.obj.telefono);
                     $('#id_email').val(ui.item.obj.email);
                     $('#id_direccion').val(ui.item.obj.direccion);
+                    $('.grp-collapse-handler').empty().append("<span class='borrar'>X</span>");
                 }
             });
         }
@@ -46,9 +46,7 @@ $(document).ready(function() {
             });
         }
     }
-
 } catch (err) {
     console.log(err);
-    }
+}
 });
-

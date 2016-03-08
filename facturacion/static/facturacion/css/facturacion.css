@@ -1,0 +1,9 @@
+.borrar {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+    cursor: pointer;
+    display: block;
+    text-align: right;
+    margin-top: -17px;
+}

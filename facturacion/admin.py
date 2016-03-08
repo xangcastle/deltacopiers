@@ -13,6 +13,7 @@ class factura_detalle(admin.TabularInline):
 
 
 class factura_cabezera(admin.ModelAdmin):
+    form = FacturaForm
     date_hierarchy = 'fecha'
     list_display = ('numero', 'name', 'subtotal', 'descuento', 'iva', 'total')
     list_filter = ('cliente',)
@@ -42,8 +43,6 @@ class factura_cabezera(admin.ModelAdmin):
                             )
                             }),
                             )
-    readonly_fields = ('fecha', 'numero', 'total', 'iva', 'descuento', 'al',
-        'ir', 'subtotal', 'code')
 
     inlines = [factura_detalle]
 

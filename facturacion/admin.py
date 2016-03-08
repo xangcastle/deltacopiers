@@ -26,7 +26,7 @@ class factura_cabezera(admin.ModelAdmin):
                         )
         }),
         ('Datos del Cliente', {
-                'classes': ('', ),
+                'classes': ('box_cliente', ),
                 'fields': (
                             ('name', 'identificacion'),
                             ('telefono', 'email'),

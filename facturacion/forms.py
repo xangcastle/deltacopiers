@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from .models import *
-from datetime import datetime
 
 
 class DetalleForm(forms.ModelForm):
@@ -38,41 +37,40 @@ class DetalleForm(forms.ModelForm):
 
 class FacturaForm(forms.ModelForm):
 
-    numero = forms.CharField(label='numero', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+    numero = forms.CharField(label='numero de factura', max_length=14,
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     fecha = forms.CharField(label='fecha', max_length=50,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
-    code = forms.CharField(label='codigo', max_length=14,
+    code = forms.CharField(label='codigo del cliente', max_length=30,
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
+
+    name = forms.CharField(label='nombre del cliente', max_length=125,
         widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+            'autocomplete': 'off'}))
+
+    identificacion = forms.CharField(label='identificacion del cliente',
+        max_length=14, widget=forms.TextInput(attrs={'class': 'datos_cliente',
+            'autocomplete': 'off'}))
 
     subtotal = forms.CharField(label='subtotal', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     descuento = forms.CharField(label='descuento', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     iva = forms.CharField(label='iva', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     ir = forms.CharField(label='retencion del ir', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     al = forms.CharField(label='retencion de la alcaldia', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     total = forms.CharField(label='total', max_length=14,
-        widget=forms.TextInput(attrs={'class': 'datos_cliente',
-            'readonly': 'true'}))
+        widget=forms.TextInput(attrs={'readonly': 'true'}))
 
     class Meta:
         model = Factura

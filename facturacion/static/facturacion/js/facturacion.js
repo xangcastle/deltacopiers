@@ -25,7 +25,7 @@ try {
                     $('#id_telefono').val(ui.item.obj.telefono);
                     $('#id_email').val(ui.item.obj.email);
                     $('#id_direccion').val(ui.item.obj.direccion);
-                    $('.grp-collapse-handler').empty().append("<span class='borrar'>X</span>");
+                    $('.box_cliente .grp-collapse-handler').empty().append("Datos del Cliente<span class='borrar'>X</span>");
                 }
             });
         }

@@ -25,14 +25,14 @@ class DetalleForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'producto_iva',
             'readonly': 'true'}))
 
-    total = forms.CharField(label='total', max_length=14,
+    producto_total = forms.CharField(label='total', max_length=14,
         widget=forms.TextInput(attrs={'class': 'producto_total',
             'readonly': 'true'}))
 
     class Meta:
         model = Detalle
         fields = ('code', 'name', 'cantidad', 'precio', 'descuento', 'iva',
-            'total')
+            'producto_total')
 
 
 class FacturaForm(forms.ModelForm):

@@ -7,9 +7,9 @@ class factura_detalle(admin.TabularInline):
     form = DetalleForm
     model = Detalle
     extra = 1
-    classes = ('grp-collapse grp-open',)
+    classes = ('grp-collapse grp-open box-detalle',)
     fields = ('code', 'name', 'cantidad', 'precio', 'descuento', 'iva',
-            'total')
+            'producto_total')
 
 
 class factura_cabezera(admin.ModelAdmin):

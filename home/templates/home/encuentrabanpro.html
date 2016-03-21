@@ -34,7 +34,7 @@
 <script>
 
     var map = new google.maps.Map(d3.select("#map").node(), {
-        zoom: 16,
+        zoom: 10,
         center: new google.maps.LatLng(12.130634779728421, -86.2261902890624),
         mapTypeId: google.maps.MapTypeId.TERRAIN
     });
@@ -67,12 +67,6 @@
             .attr("r", 4.5)
             .attr("cx", padding)
             .attr("cy", padding);
-
-            marker.append("text")
-            .attr("x", padding + 7)
-            .attr("y", padding)
-            .attr("dy", ".31em")
-            .text(function(d) { return d.key; });
 
             function transform(d) {
                 d = new google.maps.LatLng(d.value[1], d.value[0]);

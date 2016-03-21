@@ -13,3 +13,7 @@ class Puntos(models.Model):
 
     def __unicode__(self):
         return self.nombre
+
+    class Meta:
+        verbose_name = "agente"
+        verbose_name_plural = "agentes banpro"

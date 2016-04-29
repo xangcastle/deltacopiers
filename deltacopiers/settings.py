@@ -31,10 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ventas',
+    'compras',
     'grappelli_dynamic_navbar',
     'import_export',
     'grappelli',
-    'facturacion',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'banpro',
     'home',
-    'moneycash',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -164,4 +164,4 @@ EMAIL_HOST = 'localhost'
 
 EMAIL_PORT = 1025
 
-AUTH_USER_MODEL = 'moneycash.MyUser'
+#AUTH_USER_MODEL = 'moneycash.MyUser'

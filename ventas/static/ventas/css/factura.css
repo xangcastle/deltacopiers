@@ -1,0 +1,12 @@
+.borrar {
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+    cursor: pointer;
+    display: block;
+    text-align: right;
+    margin-top: -17px;
+}
+input[type='text'].datos_cliente {
+    width: 280px !important;
+}

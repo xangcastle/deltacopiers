@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.db.models import Max
+from django.forms.models import model_to_dict
 
 
 def get_code(entidad, length=4):
@@ -43,6 +44,9 @@ class base(models.Model):
             return getattr(self, fieldname)
         except:
             return None
+
+    def to_json(self):
+        return model_to_dict(self)
 
     class Meta:
         abstract = True

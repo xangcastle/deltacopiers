@@ -1,0 +1,10 @@
+{% extends "moneycash/base.html" %}
+
+{% block reportes %}
+<li><a href="#">Reporte de Caja Chica</a></li>
+{% endblock reportes %}
+
+{% block script_extra %}
+{{ super }}
+<script src="/static/moneycash/js/caja.js"></script>
+{% endblock script_extra %}

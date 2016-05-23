@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'banpro',
     'home',
+    'moneycash',
 ]
 
 MIDDLEWARE_CLASSES = [

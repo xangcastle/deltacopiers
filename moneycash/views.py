@@ -155,7 +155,7 @@ def grud_cliente(request):
             obj_json['message'] = "Cliente actualizado con exito"
         except:
             obj_json['message'] = "Cliente no encontrado"
-    else:
+    elif len(obj_json['name']) > 0:
         c = Cliente()
         c.code = obj_json['code']
         c.name = obj_json['name']
@@ -165,5 +165,7 @@ def grud_cliente(request):
         c.address = obj_json['address']
         c.save()
         obj_json['message'] = "Cliente agregado con exito"
+    else:
+        obj_json['message'] = "No hay datos Validos"
     data = json.dumps(obj_json)
     return HttpResponse(data, content_type='application/json')

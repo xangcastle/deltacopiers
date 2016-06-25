@@ -1,0 +1,218 @@
+{% extends "moneycash/base.html" %}
+
+
+  {% block reportes %}
+  <li><a href="#">Reporte de Ventas por Cliente</a></li>
+  <li><a href="#">Reporte de Ventas por Categoria</a></li>
+  <li role="separator" class="divider"></li>
+  <li class="dropdown-header">Reporte de Ventas Marginal</li>
+  <li><a href="#">Reporte de Consumo por Cliente</a></li>
+  {% endblock reportes %}
+
+
+  {% block botones %}
+  <li><a><button type="button" class="btn btn-success" id="btn_grabar">Grabar</button></a></li>
+  <li><a><button type="button" class="btn btn-danger" id="btn_borrar">Borrar</button></a></li>
+  {% endblock botones %}
+
+
+
+{% block script_extra %}
+{{ super }}
+<link href="/static/moneycash/jquery/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<link href="/static/moneycash/jquery/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
+<link href="/static/moneycash/jquery/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet">
+<script src="/static/moneycash/jquery/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/moneycash/js/factura.js"></script>
+<script type="text/javascript">
+  $('.moneycash_facturacion').addClass('active');
+</script>
+{% endblock script_extra %}
+
+{% block form %}
+<div class="container-fluid well">
+            <div id="mensajes">
+            </div>
+            <form method="POST" action=".">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 datos_cliente">
+                        <div class="form-group">
+                            <label for="code" id="label_cliente">CLIENTE</label>
+                            <input type="hidden" class="form-control" id="cliente" name="cliente_id">
+                            <input type="text" class="form-control" id="code" placeholder="CODIGO" readonly name="code">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" placeholder="NOMBRE" name="cliente_name" autocomplete="off" autofocus="true">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="ident" placeholder="IDENTIFICACION" name="cliente_ident">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" placeholder="EMAIL" name="cliente_email">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="phone" placeholder="TELEFONO" name="cliente_phone">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="address" placeholder="DIRECCION" name="cliente_address"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-4 datos_factura">
+                        <div class="form-group">
+                            <label for="number">Numero</label>
+                            <input type="input" class="form-control" id="number" readonly name="factura_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Fecha</label>
+                            <input type="text" class="form-control" id="date" readonly name="factura_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipopago">Tipo de pago</label>
+                            <select id="tipopago" class="form-control" name="factura_tipopago">
+                                <option value="">---</option>
+                                {% for t in tipo_pagos %}
+                                <option value={{ t.id }}>{{ t.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label for="retenciones">Aplicar Retencion</label>
+                        <div class="form-group" id="retenciones">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="aplica_ir" name="aplica_ir"> IR
+                                </label>
+                                <label>
+                                    <input type="checkbox"  id="aplica_al" name="aplica_al"> Alcaldia
+                                </label>
+                                <label>
+                                    <input type="checkbox"  id="excento_iva" name="excento_iva"> Exento IVA
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="factura_comentarios">Comentarios</label>
+                            <textarea class="form-control" id="factura_comentarios" name="factura_comentarios"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-4 datos_totales">
+                        <div class="form-group">
+                            <label for="factura_subtotal">Subtotal</label>
+                            <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="factura_discount">Descuento</label>
+                            <input type="input" class="form-control" id="factura_discount" readonly name="factura_discount" value="0.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="factura_iva">Iva</label>
+                            <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="factura_retencion">Monto Retenido</label>
+                            <input type="input" class="form-control" id="factura_retencion" readonly name="factura_retencion" value="0.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="factura_total">Total</label>
+                            <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <input type="input" class="form-control" id="buscador_productos" placeholder="BUSCAR PRODUCTO">
+                    </div>
+                </div>
+                <div class="row table-responsive">
+                    <table id="productos" class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>CODIGO</th>
+                                <th>DESCRIPCION</th>
+                                <th>BODEGA</th>
+                                <th>CANTIDAD</th>
+                                <th>PRECIO UNITARIO</th>
+                                <th>DESCUENTO UNITARIO</th>
+                                <th>TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+</form>
+</div>
+{% endblock form %}
+{% block modales %}
+<div class="modal fade" id="detalleModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detalles del Producto</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="code">Codigo</label>
+                      <input type="text" class="form-control" id="code" readonly name="code">
+                  </div>
+                  <div class="form-group">
+                      <label for="name">Descripcion</label>
+                      <input type="text" class="form-control" id="name" readonly name="name">
+                  </div>
+                  <div class="form-group">
+                      <label for="no_part">Numero de Parte</label>
+                      <input type="text" class="form-control" id="no_part" readonly name="no_part">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="price">Precio</label>
+                      <input type="text" class="form-control" id="price" readonly name="price">
+                  </div>
+                  <div class="form-group">
+                      <label for="cost">Costo</label>
+                      <input type="text" class="form-control" id="cost" readonly name="cost">
+                  </div>
+                  <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" autocomplete="off" min="0">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="discount">Descuento</label>
+                        <input type="text" class="form-control" id="discount" name="discount" autocomplete="off">
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+                <table class="table table-bordered table-responsive table-hover" id="existencias">
+                  <thead>
+                    <tr>
+                      <th>Bodega</th>
+                      <th>Existencias</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+              <div class="alert" id="mensaje"></div>
+              <input type="hidden" id="producto" name="producto">
+              <input type="hidden" id="bodega" name="bodega">
+              <button type="button" class="btn btn-success" id="modal_ok">Ok</button>
+              <button type="button" class="btn btn-danger" id="modal_delete">Eliminar</button>
+            </div>
+          </div>
+  </div>
+</div>
+{% endblock modales %}

@@ -130,3 +130,40 @@ def clientes(request):
     else:
         data = None
     return HttpResponse(data, content_type='application/json')
+
+
+@csrf_exempt
+def grud_cliente(request):
+    obj_json = {}
+    obj_json['id'] = request.POST.get('id', None)
+    obj_json['code'] = request.POST.get('code', '')
+    obj_json['name'] = request.POST.get('name', '')
+    obj_json['ident'] = request.POST.get('ident', '')
+    obj_json['phone'] = str(request.POST.get('phone', ''))
+    obj_json['email'] = request.POST.get('email', '')
+    obj_json['address'] = request.POST.get('address', '')
+    if obj_json['id']:
+        try:
+            c = Cliente.objects.get(id=obj_json['id'])
+            c.code = obj_json['code']
+            c.name = obj_json['name']
+            c.ident = obj_json['ident']
+            c.phone = obj_json['phone']
+            c.email = obj_json['email']
+            c.address = obj_json['address']
+            c.save()
+            obj_json['message'] = "Cliente actualizado con exito"
+        except:
+            obj_json['message'] = "Cliente no encontrado"
+    else:
+        c = Cliente()
+        c.code = obj_json['code']
+        c.name = obj_json['name']
+        c.ident = obj_json['ident']
+        c.phone = obj_json['phone']
+        c.email = obj_json['email']
+        c.address = obj_json['address']
+        c.save()
+        obj_json['message'] = "Cliente agregado con exito"
+    data = json.dumps(obj_json)
+    return HttpResponse(data, content_type='application/json')

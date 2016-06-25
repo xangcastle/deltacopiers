@@ -23,4 +23,6 @@ urlpatterns = patterns('moneycash.views',
         name='grabar_factura'),
     url(r'^movil/clientes/$', 'clientes',
         name='movil_clientes'),
+    url(r'^movil/grud_cliente/$', 'grud_cliente',
+        name='grud_cliente'),
 )

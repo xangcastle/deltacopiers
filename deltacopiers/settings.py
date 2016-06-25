@@ -31,8 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'ventas',
-    'compras',
+    'logic',
     'grappelli_dynamic_navbar',
     'import_export',
     'grappelli',
@@ -43,9 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'banpro',
     'home',
-    'moneycash',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -93,7 +90,6 @@ DATABASES = {
 'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'test',
-    'USER': 'postgres',
     'USER': 'postgres',
     'PASSWORD': 'ABC123#$',
     'HOST': 'localhost',

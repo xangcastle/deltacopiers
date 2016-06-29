@@ -34,17 +34,21 @@ class facturas_no_impresas(TemplateView):
 class bodega(TemplateView):
     template_name = "moneycash/bodega.html"
 
-
+@csrf_exempt
 def autocomplete_cliente(request):
     return autocomplete_entidad(Cliente(), request)
 
-
+@csrf_exempt
 def autocomplete_producto(request):
     return autocomplete_entidad(Producto(), request)
 
-
+@csrf_exempt
 def detalle_producto(request):
     return entidad_to_json(Producto(), request)
+
+@csrf_exempt
+def detalle_cliente(request):
+    return entidad_to_json(Cliente(), request)
 
 
 def detalle_factura(request):
@@ -168,4 +172,17 @@ def grud_cliente(request):
     else:
         obj_json['message'] = "No hay datos Validos"
     data = json.dumps(obj_json)
+    return HttpResponse(data, content_type='application/json')
+
+@csrf_exempt
+def movil_login(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = authenticate(username=username, password=password)
+    if user:
+        data = serializers.serialize('json', [user, ])
+        struct = json.loads(data)
+        data = json.dumps(struct[0])
+    else:
+        data = None
     return HttpResponse(data, content_type='application/json')

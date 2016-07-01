@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 from django.db import models
 from base.models import Entidad
 from django.forms.models import model_to_dict
-from django.conf import settings
+#from django.conf import settings
+from django.contrib.auth.models import User
 
-User = settings.AUTH_USER_MODEL
+#User = settings.AUTH_USER_MODEL
 
 
 class TipoPago(Entidad):
@@ -25,6 +26,16 @@ class Cliente(Entidad):
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=125, null=True, blank=True)
     address = models.TextField(max_length=400, null=True, blank=True)
+
+    def facturas(self):
+        return Factura.objects.filter(cliente=self)
+
+    def to_json(self):
+        obj = super(Cliente, self).to_json()
+        obj['facturas'] = []
+        for f in self.facturas():
+            obj['facturas'].append(model_to_dict(f))
+        return obj
 
 
 class Producto(Entidad):

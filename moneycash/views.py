@@ -187,3 +187,16 @@ def movil_login(request):
     else:
         data = None
     return HttpResponse(data, content_type='application/json')
+
+
+@csrf_exempt
+def movil_facturas(request):
+    user = User.objects.get(id=int(request.POST.get('id', '')))
+    queryset = Factura.objects.filter(user=user)
+    if queryset:
+        data = serializers.serialize('json', queryset)
+        struct = json.loads(data)
+        data = json.dumps(struct[0])
+    else:
+        data = None
+    return HttpResponse(data, content_type='application/json')

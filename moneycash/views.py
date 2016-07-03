@@ -77,7 +77,10 @@ def extract_cliente(request):
 
 def grabar_cabecera(request):
     f = Factura()
-    f.user = request.user
+    try:
+        f.user = request.user
+    except:
+        f.user = User.objects.get(id=int(request.POST.get('user_id', None)))
     f.numero = 1
     f.cliente = extract_cliente(request)
     f.aplica_ir = request.POST.get('aplica_ir', '')
@@ -197,7 +200,7 @@ def movil_facturas(request):
     if queryset:
         data = serializers.serialize('json', queryset)
         struct = json.loads(data)
-        data = json.dumps(struct[0])
+        data = json.dumps(struct)
     else:
         data = None
     return HttpResponse(data, content_type='application/json')

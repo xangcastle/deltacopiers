@@ -116,6 +116,7 @@ def grabar_detalle(request, factura):
     return data
 
 
+@csrf_exempt
 def grabar_factura(request):
     data = []
     f = grabar_cabecera(request)
@@ -195,6 +196,19 @@ def movil_facturas(request):
     queryset = Factura.objects.filter(user=user)
     if queryset:
         data = serializers.serialize('json', queryset)
+        struct = json.loads(data)
+        data = json.dumps(struct[0])
+    else:
+        data = None
+    return HttpResponse(data, content_type='application/json')
+
+
+@csrf_exempt
+def tipos_pago(request):
+    tp = TipoPago.objects.all()
+    data = []
+    if tp:
+        data = serializers.serialize('json', tp)
         struct = json.loads(data)
         data = json.dumps(struct[0])
     else:

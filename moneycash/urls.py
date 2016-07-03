@@ -33,4 +33,6 @@ urlpatterns = patterns('moneycash.views',
         name='movil_login'),
     url(r'^movil/facturas/$', 'movil_facturas',
         name='movil_facturas'),
+    url(r'^tipos_pago/$', 'tipos_pago',
+        name='tipos_pago'),
 )

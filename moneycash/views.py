@@ -80,7 +80,7 @@ def grabar_cabecera(request):
     try:
         f.user = request.user
     except:
-        f.user = User.objects.get(id=int(request.POST.get('user_id', None)))
+        f.user = User.objects.get(id=int(request.POST.get('user_id', '')))
     f.numero = 1
     f.cliente = extract_cliente(request)
     f.aplica_ir = request.POST.get('aplica_ir', '')

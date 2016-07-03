@@ -210,7 +210,7 @@ def tipos_pago(request):
     if tp:
         data = serializers.serialize('json', tp)
         struct = json.loads(data)
-        data = json.dumps(struct[0])
+        data = json.dumps(struct)
     else:
         data = None
     return HttpResponse(data, content_type='application/json')

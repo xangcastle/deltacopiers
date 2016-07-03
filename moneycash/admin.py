@@ -25,3 +25,18 @@ class existencia_admin(admin.ModelAdmin):
     list_display = ('bodega', 'producto', 'cantidad')
     search_fields = ('producto__code', 'producto__name', 'bodega__name')
 admin.site.register(Existencia, existencia_admin)
+
+
+class detalle_factura(admin.TabularInline):
+    model = Detalle
+    fields = ('producto', 'bodega', 'cantidad', 'price', 'discount', 'cost')
+    extra = 0
+
+
+class factura_admin(admin.ModelAdmin):
+    inlines = [detalle_factura]
+    list_display = ('numero', 'cliente', 'subtotal', 'descuento', 'iva',
+    'retension', 'total')
+
+
+admin.site.register(Factura, factura_admin)

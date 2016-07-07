@@ -54,6 +54,12 @@ class Producto(Entidad):
             obj['existencias'].append(existencia)
         return obj
 
+    def existencia_total(self):
+        if self.existencias():
+            return self.existencias().aggregate(Sum('cantidad'))['cantidad__sum']
+        else:
+            return 0.0
+
 
 class Existencia(models.Model):
     bodega = models.ForeignKey(Bodega)

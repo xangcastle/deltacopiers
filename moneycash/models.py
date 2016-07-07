@@ -5,6 +5,7 @@ from base.models import Entidad
 from django.forms.models import model_to_dict
 #from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 #User = settings.AUTH_USER_MODEL
 

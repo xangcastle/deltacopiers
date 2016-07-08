@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'grappelli_dynamic_navbar',
     'import_export',
     'grappelli',
+    'adminactions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

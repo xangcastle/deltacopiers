@@ -5,6 +5,9 @@ from django import forms
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
+from django.contrib.admin import site
+import adminactions.actions as actions
+actions.add_to_site(site)
 
 class cliente_admin(entidad_admin):
     list_display = ('code', 'name', 'ident', 'phone', 'email', 'address')

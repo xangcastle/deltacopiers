@@ -32,7 +32,7 @@ class producto_admin(entidad_admin):
             if form.is_valid():
                 factor = float(form.cleaned_data['factor'])
                 for q in queryset:
-                    q.price = q.cost * factor
+                    q.price = round((q.cost * factor), 2)
                     q.save()
                 return HttpResponseRedirect(
                     "/admin/moneycash/producto")

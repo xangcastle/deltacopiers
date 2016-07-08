@@ -41,3 +41,21 @@ class factura_admin(admin.ModelAdmin):
 
 
 admin.site.register(Factura, factura_admin)
+
+
+class salidaDetalle_admin(admin.TabularInline):
+    model = salidaDetalle
+    extra = 0
+    raw_id_fields = ('producto',)
+    autocomplete_lookup_fields = {
+        'fk': ['producto',],
+        }
+
+
+class salida_admin(admin.ModelAdmin):
+    date_hierarchy = 'fecha'
+    list_display = ('numero', 'concepto', 'user_solicita')
+    inlines = [salidaDetalle_admin]
+    fields = ('numero', 'concepto')
+
+admin.site.register(Salida, salida_admin)

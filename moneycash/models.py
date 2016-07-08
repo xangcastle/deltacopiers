@@ -98,3 +98,27 @@ class Detalle(models.Model):
     price = models.FloatField()
     discount = models.FloatField(null=True)
     cost = models.FloatField()
+
+
+class Salida(models.Model):
+    numero = models.PositiveIntegerField(null=True, blank=True)
+    concepto = models.TextField(max_length=300, null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    user_solicita = models.ForeignKey(User, null=True,
+        related_name="user_solicita")
+    user_entrega = models.ForeignKey(User, null=True,
+        related_name="user_entrega")
+    user_autoriza = models.ForeignKey(User, null=True,
+        related_name="user_autoriza")
+
+    def __unicode__(self):
+        return "salida # " + srt(self.numero)
+
+    def detalle(self):
+        return salidaDetalle.objects.filter(salida=self)
+
+class salidaDetalle(models.Model):
+    salida = models.ForeignKey(Salida)
+    producto = models.ForeignKey(Producto)
+    cantidad = models.FloatField()
+    costo = models.FloatField(null=True)

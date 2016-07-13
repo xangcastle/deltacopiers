@@ -54,6 +54,11 @@ class Producto(Entidad):
         else:
             return "#"
 
+    def image_thumb(self):
+        return '<img src="/media/%s" width="100" height="100" />' % (self.photo)
+    image_thumb.allow_tags = True
+    image_thumb.short_description = "Imagen"
+
     def to_json(self):
         obj = {}
         obj['id'] = self.id

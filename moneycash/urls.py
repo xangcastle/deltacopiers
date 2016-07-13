@@ -2,6 +2,8 @@
 
 from django.conf.urls import patterns, url
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = patterns('moneycash.views',
@@ -37,4 +39,4 @@ urlpatterns = patterns('moneycash.views',
         name='tipos_pago'),
     url(r'^movil/catalogo/$', 'catalogo',
         name='catalogo'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

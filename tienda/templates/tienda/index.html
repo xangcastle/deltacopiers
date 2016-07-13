@@ -1171,12 +1171,12 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
                     <ul class="ei-slider-large">
 											{% for p in carrusel %}
                     						<li>
-                                    <div class="image"><a href="index.php?route=product%252Fproduct&amp;product_id=52"><img src="{{p.url_imagen}}" alt="Sample Watch" /></a></div>
+                                    <div class="image"><a href="#"><img src="/static/tienda/image/cache/data/triwa_4-308x308.jpg" alt="{{p.short_name}}" /></a></div>
                                         <div class="ei-title">
-				                                <h2><a href="index.php?route=product%252Fproduct&amp;product_id=52">{{p.short_name}}</a></h2>
-				                                <h3><a href="index.php?route=product%252Fproduct&amp;product_id=52">{{p.name}}</a></h3>
-				                                <h4><a href="index.php?route=product%252Fproduct&amp;product_id=52">${{p.price}}</a><br /><br />
-				                                <a href="index.php?route=product%252Fproduct&amp;product_id=52" class="button" style="font-size:14px;font-weight:bold">Compralo Ya!</a>
+				                                <h2><a href="#">{{p.short_name}}</a></h2>
+				                                <h3><a href="#">{{p.name}}</a></h3>
+				                                <h4><a href="#">${{p.price}}</a><br /><br />
+				                                <a href="#" class="button" style="font-size:14px;font-weight:bold">Compralo Ya!</a>
 				                                </h4>
 				                            </div>
 				                        </li>
@@ -1185,7 +1185,7 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
                     <ul class="ei-slider-thumbs">
 											{% for p in carrusel %}
                         <li class="ei-slider-element">Current</li>
-                    						<li><a href="{{p.link}}">{{p.short_name}}</a></li>
+                    						<li><a href="#">{{p.short_name}}</a></li>
 											{% endfor %}
                     </ul>
                 </div>

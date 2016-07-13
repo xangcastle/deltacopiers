@@ -1169,65 +1169,24 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 <div id="content-home" class="span12"><section id="product-slider">
                 <div id="ei-slider" class="ei-slider">
                     <ul class="ei-slider-large">
+											{% for p in carrusel %}
                     						<li>
-                                                <div class="image"><a href="index.php?route=product%252Fproduct&amp;product_id=52"><img src="/static/tienda/image/cache/data/triwa_4-308x308.jpg" alt="Sample Watch" /></a></div>
-                                                    <div class="ei-title">
-                                <h2><a href="index.php?route=product%252Fproduct&amp;product_id=52">Sample Watch</a></h2>
-                                <h3><a href="index.php?route=product%252Fproduct&amp;product_id=52">
-	Nunc ornare adipiscing orci eu consectetur. Ut justo libero, porttitor ac elementum luctus, bland..</a></h3>
-                                <h4><a href="index.php?route=product%252Fproduct&amp;product_id=52">
-                                                                $299.90                                                                </a><br /><br />
-                                <a href="index.php?route=product%252Fproduct&amp;product_id=52" class="button" style="font-size:14px;font-weight:bold">Shop Now!</a>
-                                </h4>
-                            </div>
-                        </li>
-                    						<li>
-                                                <div class="image"><a href="index.php?route=product%252Fproduct&amp;product_id=54"><img src="/static/tienda/image/cache/data/myia_passiello_stackable_rings_1-308x308.jpg" alt="Sample Jewellery" /></a></div>
-                                                    <div class="ei-title">
-                                <h2><a href="index.php?route=product%252Fproduct&amp;product_id=54">Sample Jewellery</a></h2>
-                                <h3><a href="index.php?route=product%252Fproduct&amp;product_id=54">
-	Phasellus ipsum tortor, venenatis eu ullamcorper et, imperdiet quis nisi. Sed ultrices velit ut l..</a></h3>
-                                <h4><a href="index.php?route=product%252Fproduct&amp;product_id=54">
-                                                                <span class="price-old" style="font-size:16px; text-decoration:line-through">$539.00</span> <span class="price-new">$509.00                                </span>
-                                                                </a><br /><br />
-                                <a href="index.php?route=product%252Fproduct&amp;product_id=54" class="button" style="font-size:14px;font-weight:bold">Shop Now!</a>
-                                </h4>
-                            </div>
-                        </li>
-                    						<li>
-                                                <div class="image"><a href="index.php?route=product%252Fproduct&amp;product_id=51"><img src="/static/tienda/image/cache/data/lamb_baby_hat_2-308x308.jpg" alt="Sample Baby Hat" /></a></div>
-                                                    <div class="ei-title">
-                                <h2><a href="index.php?route=product%252Fproduct&amp;product_id=51">Sample Baby Hat</a></h2>
-                                <h3><a href="index.php?route=product%252Fproduct&amp;product_id=51">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non dui at sapien tempor gr..</a></h3>
-                                <h4><a href="index.php?route=product%252Fproduct&amp;product_id=51">
-                                                                $34.90                                                                </a><br /><br />
-                                <a href="index.php?route=product%252Fproduct&amp;product_id=51" class="button" style="font-size:14px;font-weight:bold">Shop Now!</a>
-                                </h4>
-                            </div>
-                        </li>
-                    						<li>
-                                                <div class="image"><a href="index.php?route=product%252Fproduct&amp;product_id=50"><img src="/static/tienda/image/cache/data/versace_versense_3-308x308.jpg" alt="Sample Perfume" /></a></div>
-                                                    <div class="ei-title">
-                                <h2><a href="index.php?route=product%252Fproduct&amp;product_id=50">Sample Perfume</a></h2>
-                                <h3><a href="index.php?route=product%252Fproduct&amp;product_id=50">
-	Vivamus fringilla iaculis libero at lobortis. Aenean nulla felis, hendrerit accumsan consectetur ..</a></h3>
-                                <h4><a href="index.php?route=product%252Fproduct&amp;product_id=50">
-                                                                <span class="price-old" style="font-size:16px; text-decoration:line-through">$89.00</span> <span class="price-new">$79.00                                </span>
-                                                                </a><br /><br />
-                                <a href="index.php?route=product%252Fproduct&amp;product_id=50" class="button" style="font-size:14px;font-weight:bold">Shop Now!</a>
-                                </h4>
-                            </div>
-                        </li>
-
+                                    <div class="image"><a href="index.php?route=product%252Fproduct&amp;product_id=52"><img src="{{p.url_imagen}}" alt="Sample Watch" /></a></div>
+                                        <div class="ei-title">
+				                                <h2><a href="index.php?route=product%252Fproduct&amp;product_id=52">{{p.short_name}}</a></h2>
+				                                <h3><a href="index.php?route=product%252Fproduct&amp;product_id=52">{{p.name}}</a></h3>
+				                                <h4><a href="index.php?route=product%252Fproduct&amp;product_id=52">${{p.price}}</a><br /><br />
+				                                <a href="index.php?route=product%252Fproduct&amp;product_id=52" class="button" style="font-size:14px;font-weight:bold">Compralo Ya!</a>
+				                                </h4>
+				                            </div>
+				                        </li>
+											{% endfor %}
                     </ul>
                     <ul class="ei-slider-thumbs">
+											{% for p in carrusel %}
                         <li class="ei-slider-element">Current</li>
-                    						<li><a href="index.html#">Sample Watch</a></li>
-                    						<li><a href="index.html#">Sample Jewellery</a></li>
-                    						<li><a href="index.html#">Sample Baby Hat</a></li>
-                    						<li><a href="index.html#">Sample Perfume</a></li>
-
+                    						<li><a href="{{p.link}}">{{p.short_name}}</a></li>
+											{% endfor %}
                     </ul>
                 </div>
 </section>

@@ -40,7 +40,7 @@ class Cliente(Entidad):
 
 
 class Producto(Entidad):
-    shor_name = models.CharField(max_length=25, null=True, blank=True)
+    short_name = models.CharField(max_length=25, null=True, blank=True)
     no_part = models.CharField(max_length=25, null=True)
     price = models.FloatField(null=True, blank=True)
     cost = models.FloatField(null=True, blank=True)

@@ -217,3 +217,16 @@ def tipos_pago(request):
     else:
         data = None
     return HttpResponse(data, content_type='application/json')
+
+
+@csrf_exempt
+def catalogo(request):
+    inventory = Producto.objects.all()
+    data = []
+    if inventory:
+        data = serializers.serialize('json', inventory)
+        struct = json.loads(data)
+        data = json.dumps(struct)
+    else:
+        data = []
+    return HttpResponse(data, content_type='application/json')

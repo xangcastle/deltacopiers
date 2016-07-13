@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'home',
     'moneycash',
+    'tienda',
 ]
 
 MIDDLEWARE_CLASSES = [

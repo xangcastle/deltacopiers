@@ -1,0 +1,7 @@
+.box-category .accordion li.dcjq-parent-li {position: relative;}
+.box-category .accordion li.dcjq-parent-li .dcjq-icon {float: right; width: 8px; position: absolute; top: 8px; right: 8px; background: url(../image/plus_red.png) no-repeat 0 center; cursor:pointer}
+.box-category .accordion li.dcjq-parent-li .dcjq-icon:hover {background: url(../image/plus_red_hover.png) no-repeat 0 center;}
+.box-category .accordion li.dcjq-parent-li > a + .dcjq-icon {display: block; width: 8px; background: url(../image/plus_red.png) no-repeat 0 center;}
+.box-category .accordion li.dcjq-parent-li > a.active + .dcjq-icon {display: block; width: 8px; background: url(../image/minus_red.png) no-repeat 0 center;}
+.box-category .accordion li > a + .dcjq-icon {display: none;}
+.box-category .accordion li > a.active + .dcjq-icon {display: none;}

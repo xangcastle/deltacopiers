@@ -43,6 +43,7 @@ class Producto(Entidad):
     no_part = models.CharField(max_length=14, null=True)
     price = models.FloatField(null=True, blank=True)
     cost = models.FloatField(null=True, blank=True)
+    imagen = models.ImageField(null=True, blank=True)
 
     def existencias(self):
         return Existencia.objects.filter(producto=self)

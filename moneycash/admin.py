@@ -18,7 +18,7 @@ admin.site.register(Cliente, cliente_admin)
 
 class producto_admin(entidad_admin):
     list_display = ('code', 'name', 'no_part', 'price', 'cost',
-    'existencia_total')
+    'existencia_total', 'con_imagen')
     search_fields = ('code', 'name', 'no_part')
 
     class factorForm(forms.Form):

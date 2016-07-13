@@ -62,6 +62,12 @@ class Producto(Entidad):
         else:
             return 0.0
 
+    def con_imagen(self):
+        if self.imagen:
+            return True
+        else:
+            return False
+
 
 class Existencia(models.Model):
     bodega = models.ForeignKey(Bodega)

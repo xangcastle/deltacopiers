@@ -25,7 +25,7 @@ def autocomplete_entidad(instance, request):
                 obj_json = {}
                 obj_json['label'] = obj.name
                 obj_json['value'] = obj.name
-                obj_json['obj'] = model_to_dict(obj)
+                obj_json['obj'] = obj.to_json()
                 result.append(obj_json)
         data = json.dumps(result)
     return HttpResponse(data, content_type='application/json')

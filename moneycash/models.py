@@ -48,8 +48,21 @@ class Producto(Entidad):
     def existencias(self):
         return Existencia.objects.filter(producto=self)
 
+    def url_imagen(self):
+        if self.imagen:
+            return self.imagen.url
+        else:
+            return "#"
+
     def to_json(self):
-        obj = model_to_dict(self)
+        obj = {}
+        obj['id'] = self.id
+        obj['code'] = self.code
+        obj['name'] = self.name
+        obj['no_part'] = self.no_part
+        obj['price'] = self.price
+        obj['cost'] = self.cost
+        obj['imagen'] = self.url_imagen()
         obj['existencias'] = []
         for e in self.existencias():
             existencia = {'bodega': e.bodega.name, 'cantidad': e.cantidad, 'bodega_id': e.bodega.id}

@@ -12,7 +12,7 @@ class TiendaPageView(TemplateView):
             if p.imagen:
                 context['carrusel'].append(p)
         context['featured'] = []
-        for p in ps[5:15]:
-            if p.imagen:
-                context['featured'].append(p)
+        for a in ps[5:15]:
+            if a.imagen:
+                context['featured'].append(a)
         return context

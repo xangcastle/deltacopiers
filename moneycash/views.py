@@ -221,7 +221,10 @@ def tipos_pago(request):
 
 @csrf_exempt
 def catalogo(request):
-    inventory = Producto.objects.all()
+    inventory = []
+    for p in Producto.objects.all():
+        if p.imagen:
+            inventory.append(p)
     data = []
     if inventory:
         data = serializers.serialize('json', inventory)

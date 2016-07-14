@@ -70,6 +70,7 @@ class Producto(Entidad):
         obj['id'] = self.id
         obj['code'] = self.code
         obj['name'] = self.name
+        obj['activo'] = self.activo
         obj['no_part'] = self.no_part
         obj['price'] = self.price
         obj['cost'] = self.cost

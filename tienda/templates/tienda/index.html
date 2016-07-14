@@ -762,9 +762,9 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 <header id="header">
 <div class="container">
 <div id="t-header" class="row">
-    <div id="logo"><a href="index.php?route=common%252Fhome"><img src="/static/tienda/image/data/logo_sellya_gifts_1.png" title="" alt="" /></a></div>
+    <div id="logo"><a href="/tienda/"><img src="/static/tienda/image/data/logo_sellya_gifts_1.png" title="" alt="" /></a></div>
     <div id="lc_dropdown">
-<form action="http://321cart.com/sellyagifts/index.php?route=module/language" method="post" id="language_form">
+<form action="/tienda/" method="post" id="language_form">
   <div id="language" class="dropdown_l">
         <div class="arrow">&nbsp;</div><div class="selected_l"><img src="/static/tienda/image/flags/gb.png" alt="English" />&nbsp;English</div>
         <ul class="options_l">      <li>
@@ -776,10 +776,10 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
       </li>     </ul>
    </div>
    <input class="s_hidden" type="hidden" name="language_code" value="" />
-   <input class="s_hidden" type="hidden" name="redirect" value="http://321cart.com/sellyagifts/index.php?route=common/home" />
+   <input class="s_hidden" type="hidden" name="redirect" value="/tienda/" />
 </form>
 
-<form action="http://321cart.com/sellyagifts/index.php?route=module/currency" method="post" enctype="multipart/form-data">
+<form action="/tienda/" method="post" enctype="multipart/form-data">
   <div id="currency" class="dropdown_l"><div class="arrow">&nbsp;</div><div class="selected_l">Currency: USD</div>
     <ul class="options_l">      <li>
       <a title="Euro" onclick="$('input[name=\'currency_code\']').attr('value', 'EUR').submit(); $(this).parent().parent().parent().parent().submit();">      Euro</a>
@@ -824,16 +824,17 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
             <li class="dropdown">
             <div id="homepage"><a href="index.php?route=common%252Fhome"><img src="/static/tienda/image/homepage.png" title="" alt="" /></a></div>
               <ul class="dropdown-menu">
-                                <li><a href="index.php?route=product%252Fcategory&amp;path=59">Gifts for Her</a>
-                                    <div>
-                                       <ul>
-                                                                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_64">Home Crafts (2)</a></li>
-                                                                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_65">Lifestyle (5)</a></li>
-                                                                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_66">Flowers (1)</a></li>
-                                                                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_67">Chocolates (1)</a></li>
-                                                                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_68">Games &amp; Toys (1)</a></li>
-                                                                </ul>
-                                      </div>
+                                <li>
+																	<a href="index.php?route=product%252Fcategory&amp;path=59">Gifts for Her</a>
+                                  <div>
+                                     <ul>
+                                          <li><a href="index.php?route=product%252Fcategory&amp;path=59_64">Home Crafts (2)</a></li>
+                                          <li><a href="index.php?route=product%252Fcategory&amp;path=59_65">Lifestyle (5)</a></li>
+                                          <li><a href="index.php?route=product%252Fcategory&amp;path=59_66">Flowers (1)</a></li>
+                                          <li><a href="index.php?route=product%252Fcategory&amp;path=59_67">Chocolates (1)</a></li>
+                                          <li><a href="index.php?route=product%252Fcategory&amp;path=59_68">Games &amp; Toys (1)</a></li>
+                                    </ul>
+                                  </div>
                                   </li>
                                 <li><a href="index.php?route=product%252Fcategory&amp;path=60">Gifts for Him</a>
                                   </li>
@@ -853,151 +854,76 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 
 <nav id="menu" class="row hidden-phone">
 
-<div id="homepage"><a href="index.php?route=common%252Fhome"><img src="/static/tienda/image/homepage.png" title="" alt="" /></a></div>
+<div id="homepage">
+	<a href="/tienda/"><img src="/static/tienda/image/homepage.png" title="" alt="" /></a>
+</div>
 
-
-
+{% if categorias %}
   <ul>
-    <li><span>Categories</span>
+    <li><span>Categorias</span>
       <div>
+				<ul>
+					{% for c in categorias %}
+				      <li>
+									<a href="/tienda/?categoria={{c.id}}">{{c.name}}</a>
+									{% if c.subcategorias %}
+				          <div>
+				              <ul>
+												{% for s in c.subcategorias %}
+				                  <li><a href="/tienda/?categoria={{c.id}}&subcategoria={{s.id}}">{{s.name}}</a></li>
+												{% endfor %}
+				              </ul>
+				          </div>
+									{% endif %}
+				      </li>
+					{% endfor %}
+				</ul>
+    </div>
+    </li>
+  </ul>
+{% endif %}
+
+{% if marcas %}
+<div id="menu_brands">
   <ul>
-        <li><a href="index.php?route=product%252Fcategory&amp;path=59">Gifts for Her</a>
-            <div>
-                <ul>
-                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_64">Home Crafts (2)</a></li>
-                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_65">Lifestyle (5)</a></li>
-                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_66">Flowers (1)</a></li>
-                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_67">Chocolates (1)</a></li>
-                                        <li><a href="index.php?route=product%252Fcategory&amp;path=59_68">Games &amp; Toys (1)</a></li>
-                            </ul>
-              </div>
-          </li>
-        <li><a href="index.php?route=product%252Fcategory&amp;path=60">Gifts for Him</a>
-          </li>
-        <li><a href="index.php?route=product%252Fcategory&amp;path=61">Gifts for Kids</a>
-          </li>
-        <li><a href="index.php?route=product%252Fcategory&amp;path=63">Gifts for Babies</a>
-          </li>
-        <li><a href="index.php?route=product%252Fcategory&amp;path=62">Gift Vouchers</a>
-          </li>
-      </ul>
+    <li><a>Marcas</a>
+      <div class="span6">
+				{% for m in marcas %}
+          <div class="span1">
+          	<div class="image"><a href="#"><img src="{{m.logo.url}}" title="{{m.name}}" alt="{{m.name}}" /></a></div>
+          </div>
+				{% endfor %}
       </div>
     </li>
   </ul>
-
-
-
-
-
-<div id="menu_brands">
-  <ul>
-    <li><a>Brands</a>
-
-
-      <div class="span6">
-
-
-
-
-
-          <div class="span1 span-first-child">
-
-
-
-          <div class="image"><a href="index.php?route=product%252Fmanufacturer%252Fproduct&amp;manufacturer_id=16"><img src="/static/tienda/image/cache/data/logo_brand_name-50x50.png" title="Brand Name" alt="Brand Name" /></a></div>
-
-          </div>
-
-
-          <div class="span1 ">
-
-
-
-          <div class="image"><a href="index.php?route=product%252Fmanufacturer%252Fproduct&amp;manufacturer_id=15"><img src="/static/tienda/image/cache/data/logo_brand_name-50x50.png" title="Brand Name" alt="Brand Name" /></a></div>
-
-          </div>
-
-
-          <div class="span1 ">
-
-
-
-          <div class="image"><a href="index.php?route=product%252Fmanufacturer%252Fproduct&amp;manufacturer_id=14"><img src="/static/tienda/image/cache/data/logo_brand_name-50x50.png" title="Brand Name" alt="Brand Name" /></a></div>
-
-          </div>
-
-
-          <div class="span1 ">
-
-
-
-          <div class="image"><a href="index.php?route=product%252Fmanufacturer%252Fproduct&amp;manufacturer_id=13"><img src="/static/tienda/image/cache/data/logo_brand_name-50x50.png" title="Brand Name" alt="Brand Name" /></a></div>
-
-          </div>
-
-
-          <div class="span1 ">
-
-
-
-          <div class="image"><a href="index.php?route=product%252Fmanufacturer%252Fproduct&amp;manufacturer_id=12"><img src="/static/tienda/image/cache/data/logo_brand_name-50x50.png" title="Brand Name" alt="Brand Name" /></a></div>
-
-          </div>
-
-
-          <div class="span1 ">
-
-
-
-          <div class="image"><a href="index.php?route=product%252Fmanufacturer%252Fproduct&amp;manufacturer_id=11"><img src="/static/tienda/image/cache/data/logo_brand_name-50x50.png" title="Brand Name" alt="Brand Name" /></a></div>
-
-          </div>
-                          </div>
-    </li>
-  </ul>
 </div>
-
-
-    <div class="menu_links">
-		<a href="index.html" target="_self">
-		        <span>Custom Link</span>
-		        </a>
-    </div>
-
-
-
-
-
-
-
-
-
+{% endif %}
 
 <div id="menu_informations">
   <ul>
-    <li><a>Information</a>
+    <li><a>Informacion</a>
       <div>
         <ul>
           <li>
             <div class="span3">
 	          <h1>Information</h1>
               <ul>
-                                <li><a href="index.php?route=information%252Finformation&amp;information_id=4">About Us</a></li>
-                                <li><a href="index.php?route=information%252Finformation&amp;information_id=6">Delivery Information</a></li>
-                                <li><a href="index.php?route=information%252Finformation&amp;information_id=3">Privacy Policy</a></li>
-                                <li><a href="index.php?route=information%252Finformation&amp;information_id=5">Terms &amp; Conditions</a></li>
-                              </ul>
+                <li><a href="#">Quienes Somos</a></li>
+                <li><a href="#">Informacion de Entregas a Domicilio</a></li>
+                <li><a href="#">Politicas de Privacidad</a></li>
+                <li><a href="#">Terminos y Condiciones</a></li>
+              </ul>
             </div>
           </li>
         </ul>
         <ul>
           <li>
             <div class="span3">
-              <h1>Customer Service</h1>
+              <h1>Servicio Personalizado</h1>
               <ul>
-                <li><a href="index.php?route=information%252Fcontact">Contact Us</a></li>
-                <li><a href="index.php?route=account%252Freturn%252Finsert">Returns</a></li>
-                <li><a href="index.php?route=information%252Fsitemap">Site Map</a></li>
+                <li><a href="index.php?route=information%252Fcontact">Contactanos</a></li>
+                <li><a href="index.php?route=account%252Freturn%252Finsert">Devoluciones</a></li>
+                <li><a href="index.php?route=information%252Fsitemap">Mapa del Sitio</a></li>
               </ul>
             </div>
           </li>
@@ -1007,9 +933,9 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
             <div class="span3">
               <h1>Extras</h1>
               <ul>
-                <li><a href="index.php?route=account%252Fvoucher">Gift Vouchers</a></li>
-                <li><a href="index.php?route=affiliate%252Faccount">Affiliates</a></li>
-                <li><a href="index.php?route=product%252Fspecial">Specials</a></li>
+                <li><a href="index.php?route=account%252Fvoucher">Servicio Tecnico</a></li>
+                <li><a href="index.php?route=affiliate%252Faccount">Alquiler de Equipos</a></li>
+                <li><a href="index.php?route=product%252Fspecial">Venta de Equipos</a></li>
               </ul>
             </div>
           </li>
@@ -1037,7 +963,7 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 
 <div id="menu_custom_block">
   <ul>
-    <li><a>Custom Block</a>
+    <li><a>Promosiones Especiales</a>
       <div>
         <ul>
           <li>
@@ -1047,38 +973,38 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 		<tr>
 			<td>
 				<h1>
-					Extra Skins for Free!</h1>
+					Renta este equipo Ahora!</h1>
 			</td>
 			<td>
 				<h1>
-					3 Flexible Slideshows!</h1>
+					Increible maquina a precio de liquidacion!</h1>
 			</td>
 			<td>
 				<h1>
-					HTML5 / CSS3 Powered!</h1>
+					El mejor servicio Tecnico!</h1>
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<p>
 					<img alt="" src="/static/tienda/image/data/Banners/lcd_a.jpg" /><br />
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed velit urna, elementum at dignissim varius, euismod a elit. Praesent ornare metus eget metus commodo rhoncus.<br />
+					Renta este equipo ahora. Conviertete en uno de nuestros clientes VIP, y disfruta de la mejor calidad de impresion y un soporte tecnico a la altura de tus espectativas.<br />
 					<br />
-					<a href="../sellya.1">Read more</a></p>
+					<a href="#">Informate mas</a></p>
 			</td>
 			<td>
 				<p>
 					<img alt="" src="/static/tienda/image/data/Banners/lcd_b.jpg" /><br />
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed velit urna, elementum at dignissim varius, euismod a elit. Praesent ornare metus eget metus commodo rhoncus.<br />
+					Adquiere con nosotros ya sea un Equipo Nuevo o Remanufacturado con la mejor garantia y solides de soporte tecnico.<br />
 					<br />
-					<a href="../sellya.1">Read more</a></p>
+					<a href="#">Informate mas</a></p>
 			</td>
 			<td>
 				<p>
 					<img alt="" src="/static/tienda/image/data/Banners/lcd_c.jpg" /><br />
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed velit urna, elementum at dignissim varius, euismod a elit. Praesent ornare metus eget metus commodo rhoncus.<br />
+					Necesitas un tecnico para tus equipos en mal funcionamiento? Llama ahora para recibir un diagnostico gratuito en tu oficina sin complicaciones.<br />
 					<br />
-					<a href="../sellya.1">Read more</a></p>
+					<a href="#">Informate mas</a></p>
 			</td>
 		</tr>
 	</tbody>
@@ -1104,28 +1030,23 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
      <div class="contacts">
 		<h1>Contacts</h1>
 
+        <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_sphone_1.png" alt="Static Phone" title="Static Phone"></span>
+		        <span>LLamanos!</span><br />
+				        <span>+505 2225 1337</span>
+		<br /><br />
 
         <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_mphone_1.png" alt="Mobile Phone" title="Mobile Phone"></span>
-		        <span>Call us FREE!</span><br />
-				        <span>0800 123 4567</span>
+		        <span>+505 8354 5689</span><br />
+				        <span>+505 8966 5644</span>
 		<br /><br />
-
-
-        <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_sphone_1.png" alt="Static Phone" title="Static Phone"></span>
-		        <span>0 123 456 789</span><br />
-				        <span>0 123 456 789</span>
-		<br /><br />
-
-
 
         <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_email_1.png" alt="E-mail" title="E-mail"></span>
-		        <span>info@yourstore.com</span><br />
-				        <span>office@yourstore.com</span>
+		        <span>cesarabel@deltacopiers.com</span><br />
+				        <span>harvyvanegas@deltacopiers.com</span>
 		<br /><br />
 
         <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_skype_1.png" alt="Skype" title="Skype"></span>
-		        <span>your.store</span><br />
-				        <span>your.store</span>
+		        <span>xangcastle</span>
         <br /><br />
 
      </div>
@@ -1137,17 +1058,17 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
         <ul>
           <li>
      <div class="span3">
-                <h1>Address</h1>
+                <h1>Direccion</h1>
         <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_location_1.png" alt="Address" title="Address"></span>
-		        <span>135 South Park Avenue</span><br />
-				        <span>Los Angeles, CA 90024. USA</span>
+		        <span>Km 3 carretera Sur</span><br />
+				        <span>Managua, Nicaragua</span>
         <br /><br /><br />
-                <h1>Office Opening Hours</h1>
+                <h1>Horario de Atencion</h1>
         <span class="mm_icon"><img src="/static/tienda/image/icons_footer/icon_contact_hours_1.png" alt="Business Hours" title="Business Hours"></span>
-        <span><pre>Monday through Friday
-9:00 a.m. to 5:00 p.m.</pre></span><br />
+        <span><pre>Lunes a Viernes
+8:00 a.m. a 6:00 p.m.</pre></span><br />
 		<br />
-        <a href="index.php?route=information%252Fcontact" class="button" style="margin-bottom:20px">Contact Form</a>
+        <a href="#" class="button" style="margin-bottom:20px">Formulario de Contacto</a>
      </div>
           </li>
         </ul>

@@ -61,7 +61,7 @@ class Producto(Entidad):
             return "#"
 
     def image_thumb(self):
-        return '<img src="/media/%s" width="100" height="100" />' % (self.imagen)
+        return '<img src="/media/%s" width="100" height="60" />' % (self.imagen)
     image_thumb.allow_tags = True
     image_thumb.short_description = "Imagen"
 

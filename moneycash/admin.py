@@ -21,7 +21,7 @@ admin.site.register(Categoria)
 
 class producto_admin(entidad_admin):
     list_display = ('code', 'name', 'no_part', 'price', 'cost', 'categoria',
-    'existencia_total', 'image_thumb')
+    'existencia_total', 'details', 'image_thumb')
     search_fields = ('code', 'name', 'no_part')
     list_filter = ('categoria',)
 

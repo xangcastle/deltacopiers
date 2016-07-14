@@ -75,6 +75,7 @@ class Producto(Entidad):
         obj['price'] = self.price
         obj['cost'] = self.cost
         obj['imagen'] = self.url_imagen()
+        obj['details'] = self.details
         obj['existencias'] = []
         for e in self.existencias():
             existencia = {'bodega': e.bodega.name, 'cantidad': e.cantidad, 'bodega_id': e.bodega.id}

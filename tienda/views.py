@@ -15,4 +15,8 @@ class TiendaPageView(TemplateView):
         for a in ps[5:15]:
             if a.imagen:
                 context['featured'].append(a)
+        context['bestseller'] = []
+        for b in ps[15:]:
+            if b.imagen:
+                context['bestseller'].append(b)
         return context

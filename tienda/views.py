@@ -7,6 +7,7 @@ class TiendaPageView(TemplateView):
     def get_context_data(self, **kwargs):
         ps = Producto.objects.all()
         context = super(TiendaPageView, self).get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
         context['carrusel'] = []
         for p in ps[:5]:
             if p.imagen:

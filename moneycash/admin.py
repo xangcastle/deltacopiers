@@ -20,9 +20,10 @@ admin.site.register(Categoria)
 
 
 class producto_admin(entidad_admin):
-    list_display = ('code', 'name', 'no_part', 'price', 'cost',
+    list_display = ('code', 'name', 'no_part', 'price', 'cost', 'categoria',
     'existencia_total', 'image_thumb')
     search_fields = ('code', 'name', 'no_part')
+    list_filter = ('categoria',)
 
     class factorForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)

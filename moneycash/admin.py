@@ -16,6 +16,9 @@ class cliente_admin(entidad_admin):
 admin.site.register(Cliente, cliente_admin)
 
 
+admin.site.register(Categoria)
+
+
 class producto_admin(entidad_admin):
     list_display = ('code', 'name', 'no_part', 'price', 'cost',
     'existencia_total', 'image_thumb')

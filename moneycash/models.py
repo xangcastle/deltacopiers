@@ -39,7 +39,11 @@ class Cliente(Entidad):
         return obj
 
 
+class Categoria(Entidad):
+    parent = models.ForeignKey('self', null=True, blank=True)
+
 class Producto(Entidad):
+    categoria = models.ForeignKey(Categoria, null=True)
     short_name = models.CharField(max_length=25, null=True, blank=True)
     no_part = models.CharField(max_length=25, null=True)
     price = models.FloatField(null=True, blank=True)

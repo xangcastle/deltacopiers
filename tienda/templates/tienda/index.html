@@ -703,7 +703,9 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
     font-weight: bold;
 }
 
-
+.image-modal{
+	height: 600px;
+}
 </style>
 
 
@@ -1506,7 +1508,7 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 		$(".producto").on('click', function(){
 			var modal = $(".modal-content").empty();
 			var img = $(this).find('img');
-			modal.append('<img src="'+img.attr('src')+'" />');
+			modal.append('<img src="'+img.attr('src')+'" class="image-modal"/>');
 		});
 	  $(".producto").animatedModal();
 </script>

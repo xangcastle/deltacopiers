@@ -1503,6 +1503,11 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 		*/
 		$().UItoTop({ easingType: 'easeOutQuart' });
 	});
+		$(".producto").on('click', function(){
+			var modal = $(".modal-content").empty();
+			var img = $(this).find('img');
+			modal.append('<img src="'+img.attr('src')+'" />');
+		});
 	  $(".producto").animatedModal();
 </script>
 </body></html>

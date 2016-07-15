@@ -1117,7 +1117,7 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 						<div class="pbox">
               <div class="image">
 									<span class="sale-icon">Sale</span>
-									<a href="#animatedModal">
+									<a href="#animatedModal" class="producto">
 											<img src="{{p.imagen.url}}" alt="Sample Perfume" />
 									</a>
 							</div>
@@ -1164,7 +1164,11 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 			{% for p in bestseller%}
         		<li>
 							<div class="pbox">
-              <div class="image"><span class="sale-icon">Sale</span><a href="#"><img src="{{p.imagen.url}}" alt="Sample Perfume" /></a></div>
+              <div class="image"><span class="sale-icon">Sale</span>
+								<a href="#animatedModal" class="producto">
+									<img src="{{p.imagen.url}}" alt="{{p.name}}" />
+								</a>
+							</div>
               <div class="description hidden-phone hidden-tablet">{{p.name}}</div>
 			        <div class="rating hidden-phone hidden-tablet">
 			        <img src="/static/tienda/image/stars/stars3-5.png" alt="Based on 2 reviews." />
@@ -1499,6 +1503,6 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 		*/
 		$().UItoTop({ easingType: 'easeOutQuart' });
 	});
-	  $("#demo01").animatedModal();
+	  $(".producto").animatedModal();
 </script>
 </body></html>

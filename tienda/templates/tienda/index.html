@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/stylesheet-mobile.css" />
-
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/ui.totop.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/tipTip.css" />
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/flexslider.css" />
@@ -37,6 +37,7 @@
 <script type="text/javascript" src="/static/tienda/js/jquery.bxSlider.js"></script>
 <script type="text/javascript" src="/static/tienda/js/camera.js"></script>
 <script type="text/javascript" src="/static/tienda/js/custom.js"></script>
+<script type="text/javascript" src="/static/tienda/js/animatedModal.js"></script>
 <script> document.createElement('header'); document.createElement('section'); document.createElement('article'); document.createElement('aside'); document.createElement('nav'); document.createElement('footer'); </script>
 <style type="text/css">
 
@@ -1116,7 +1117,7 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 						<div class="pbox">
               <div class="image">
 									<span class="sale-icon">Sale</span>
-									<a href="#">
+									<a href="#animatedModal">
 											<img src="{{p.imagen.url}}" alt="Sample Perfume" />
 									</a>
 							</div>
@@ -1396,19 +1397,19 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 <div id="payment_logos">
 
 
-                            <img src="/static/tienda/image/payment/payment_image_paypal.png" alt="PayPal" title="PayPal">
+    <img src="/static/tienda/image/payment/payment_image_paypal.png" alt="PayPal" title="PayPal">
 
 
-                            <img src="/static/tienda/image/payment/payment_image_visa.png" alt="Visa" title="Visa">
-
-
-
-
-                            <img src="/static/tienda/image/payment/payment_image_maestro.png" alt="Maestro" title="Maestro">
+    <img src="/static/tienda/image/payment/payment_image_visa.png" alt="Visa" title="Visa">
 
 
 
-                            <img src="/static/tienda/image/payment/payment_image_moneybookers.png" alt="Moneybookers" title="Moneybookers">
+
+    <img src="/static/tienda/image/payment/payment_image_maestro.png" alt="Maestro" title="Maestro">
+
+
+
+    <img src="/static/tienda/image/payment/payment_image_moneybookers.png" alt="Moneybookers" title="Moneybookers">
 
 
 
@@ -1467,10 +1468,17 @@ a.button, input.button, a.button-exclusive, input.button-exclusive {
 
 </footer>
 
-<!--
-OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
-Please donate via PayPal to donate@opencart.com
-//-->
+<div id="animatedModal">
+        <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+        <div class="close-animatedModal">
+            CLOSE MODAL
+        </div>
+
+        <div class="modal-content">
+
+        </div>
+    </div>
+
 
 </div>
 <script type="text/javascript" src="/static/tienda/js/cloud-zoom.js"></script>

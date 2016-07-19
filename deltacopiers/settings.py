@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'geoposition',
     'logic',
     'grappelli_dynamic_navbar',
     'import_export',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'home',
     'moneycash',
     'tienda',
+    'dtracking'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -166,3 +168,4 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
 #AUTH_USER_MODEL = 'moneycash.MyUser'
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY'

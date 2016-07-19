@@ -755,62 +755,57 @@ color: white;
   </script>
 </div>
 </div>
-
-
 <div class="wrapper">
 <header id="header">
 <div class="container">
 <div id="t-header" class="row">
     <div id="logo"><a href="/tienda/"><img src="/static/tienda/image/delta_partes.png" title="" alt="" /></a></div>
     <div id="lc_dropdown">
-<form action="/tienda/" method="post" id="language_form">
-  <div id="language" class="dropdown_l">
-        <div class="arrow">&nbsp;</div><div class="selected_l"><img src="/static/tienda/image/flags/gb.png" alt="English" />&nbsp;English</div>
-        <ul class="options_l">      <li>
-        <a href="javascript:;" onclick="$('input[name=\'language_code\']').attr('value', 'en'); $('#language_form').submit();">
-          <img src="/static/tienda/image/flags/gb.png" alt="English" /> English        </a>
-      </li>      <li>
-        <a href="javascript:;" onclick="$('input[name=\'language_code\']').attr('value', 'es'); $('#language_form').submit();">
-          <img src="/static/tienda/image/flags/es.png" alt="Espanol" /> Espanol        </a>
-      </li>     </ul>
-   </div>
-   <input class="s_hidden" type="hidden" name="language_code" value="" />
-   <input class="s_hidden" type="hidden" name="redirect" value="/tienda/" />
-</form>
-
-<form action="/tienda/" method="post" enctype="multipart/form-data">
-  <div id="currency" class="dropdown_l"><div class="arrow">&nbsp;</div><div class="selected_l">Currency: USD</div>
-    <ul class="options_l">      <li>
-      <a title="Euro" onclick="$('input[name=\'currency_code\']').attr('value', 'EUR').submit(); $(this).parent().parent().parent().parent().submit();">      Euro</a>
-      </li>      <li>
-      <a title="Pound Sterling" onclick="$('input[name=\'currency_code\']').attr('value', 'GBP').submit(); $(this).parent().parent().parent().parent().submit();">      Pound Sterling</a>
-      </li>      <li>
-      <a title="US Dollar" onclick="$('input[name=\'currency_code\']').attr('value', 'USD').submit(); $(this).parent().parent().parent().parent().submit();">      US Dollar</a>
-      </li>    </ul>
-    <input type="hidden" name="currency_code" value="" />
-    <input type="hidden" name="redirect" value="http://321cart.com/sellyagifts/index.php?route=common/home" />
-  </div>
-</form>
-
-</div>
+			<form action="/tienda/" method="post" id="language_form">
+			  <div id="language" class="dropdown_l">
+		        <div class="arrow">&nbsp;</div>
+						<div class="selected_l">
+							<img src="/static/tienda/image/flags/es.png" alt="Espanol" />&nbsp;Espanol
+						</div>
+		        <ul class="options_l">
+							<li>
+				        <a><img src="/static/tienda/image/flags/es.png" alt="Espanol" />Espanol</a>
+				      </li>
+						</ul>
+			  </div>
+			   <input class="s_hidden" type="hidden" name="language_code" value="" />
+			   <input class="s_hidden" type="hidden" name="redirect" value="/tienda/" />
+			</form>
+			<form action="/tienda/" method="post" enctype="multipart/form-data">
+			  <div id="currency" class="dropdown_l"><div class="arrow">&nbsp;</div><div class="selected_l">Currency: USD</div>
+			    <ul class="options_l">
+						<li>
+			      	<a title="US Dollar" >US Dollar</a>
+			      </li>
+					</ul>
+			    <input type="hidden" name="currency_code" value="" />
+			    <input type="hidden" name="redirect" value="/tienda"/>
+			  </div>
+			</form>
+		</div>
     <div class="links">
-        <a href="index.php?route=account%252Faddress" id="login-total">Login</a>  <a href="index.php?route=account%252Fregister" id="register-total">Register</a>
-        <a href="index.php?route=account%252Fwishlist" id="wishlist-total">Wish List (0)</a>  <a href="index.php?route=checkout%252Fcheckout">Checkout</a>
+        <a href="index.php?route=account%252Faddress" id="login-total">Login</a>  <a href="/login" id="register-total">Register</a>
+        <a href="index.php?route=account%252Fwishlist" id="wishlist-total">Wish List (0)</a>  <a href="/wichlist">Checkout</a>
     </div>
     <div id="cart">
   <div class="heading">
     <!--<h5>Shopping Cart</h5>-->
     <a><span id="cart-total">0 item(s) - $0.00</span></a></div>
   <div class="content">
-        <div class="empty">Your shopping cart is empty!</div>
+        <div class="empty">Tu carrito de compras esta Vacio!</div>
       </div>
 </div>
 
     <div id="search" class="span4">
-    <div class="button-search"></div>
-        <input type="text" name="filter_name" value="Search" onClick="this.value = '';" onKeyDown="this.style.color = '#000000';" />
-      </div>
-</div>
+	    <div class="button-search"></div>
+	    <input type="text" name="filter_name" value="Search" onClick="this.value = '';" onKeyDown="this.style.color = '#000000';" />
+	  </div>
+		</div>
 
  <div class="navbar visible-phone">
     <div class="navbar-inner">

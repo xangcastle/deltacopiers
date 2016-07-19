@@ -16,6 +16,11 @@ class tipoGestion_admin(entidad_admin):
 class gestion_admin(admin.ModelAdmin):
     list_display = ('tipo_gestion', 'user', 'realizada', 'fecha')
 
+
+class elemento_admin(admin.ModelAdmin):
+    list_display = ('_id', '_valor', 'combo')
+    list_filter = ('combo',)
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)

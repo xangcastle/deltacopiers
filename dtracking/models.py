@@ -49,6 +49,9 @@ class TipoGestion(Entidad):
             obj['campos'].append(model_to_dict(d))
         return obj
 
+    class Meta:
+        verbose_name_plural = "tipos de gestiones"
+
 
 TIPOS = (
 ('input', 'input'),

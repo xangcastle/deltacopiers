@@ -88,7 +88,7 @@ class DetalleGestion(models.Model):
         if self.elementos():
             o['elementos'] = []
         for e in self.elementos():
-            o['elementos'].append(model_to_dict(e))
+            o['elementos'].append({'id': e.id, 'valor': e.valor})
         return o
 
 

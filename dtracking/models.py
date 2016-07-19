@@ -56,6 +56,10 @@ class DetalleGestion(models.Model):
     nombreVariable = models.CharField(max_length=65)
     habilitado = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = "campo"
+        verbose_name_plural = "campos requeridos por la gestion"
+
 
 class especiales(models.Manager):
     def get_queryset(self):

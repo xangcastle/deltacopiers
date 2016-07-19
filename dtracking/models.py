@@ -92,6 +92,7 @@ class especiales(models.Manager):
 class EspecialField(DetalleGestion):
     objects = models.Manager()
     objects = especiales()
+
     class Meta:
         proxy = True
 
@@ -102,12 +103,34 @@ class Elemento(models.Model):
 
 
 class Gestion(models.Model):
+    destinatario = models.CharField(max_length=125, null=True)
+    direccion = models.TextField(max_length=255, null=True)
+    departamento = models.ForeignKey(Departamento, null=True)
+    municipio = models.ForeignKey(Municipio, null=True)
+    barrio = models.ForeignKey(Barrio, null=True)
+    zona = models.ForeignKey(Zona, null=True)
     tipo_gestion = models.ForeignKey(TipoGestion)
     user = models.ForeignKey(User, null=True, blank=True)
     realizada = models.BooleanField(default=False)
     position = GeopositionField(null=True, blank=True)
     fecha = models.DateTimeField(null=True, blank=True)
+    fecha_asignacion = models.DateField(null=True, blank=True)
     json = JSONField(null=True, blank=True)
+
+    def to_json(self):
+        o = {}
+        o['destinatario'] = self.destinatario
+        o['direccion'] = self.direccion
+        o['departamento'] = self.departamento.name
+        o['municipio'] = self.municipio.name
+        o['barrio'] = self.barrio.name
+        o['zona'] = self.zona.name
+        o['tipo_gestion'] = self.tipo_gestion.name
+        o['tipo_gestion_id'] = self.tipo_gestion.id
+        if self.position:
+            o['latitude'] = self.position.latitude
+            o['longitude'] = self.position.longitude
+        return o
 
     class Meta:
         verbose_name_plural = "gestiones"

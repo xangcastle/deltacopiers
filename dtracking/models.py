@@ -43,7 +43,7 @@ class TipoGestion(Entidad):
         return DetalleGestion.objects.filter(tipo_gestion=self)
 
     def to_json(self):
-        obj = model_to_dict(self)
+        obj = {'id': self.id, 'name': self.name}
         obj['campos'] = []
         for d in self.detalles():
             obj['campos'].append(d.to_json())
@@ -79,7 +79,6 @@ class DetalleGestion(models.Model):
 
     def to_json(self):
         o = {}
-        o['id'] = self.id
         o['tipo'] = self.tipo
         o['requerido'] = self.requerido
         o['titulo'] = self.titulo

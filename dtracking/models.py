@@ -98,7 +98,7 @@ class EspecialField(DetalleGestion):
 
 class Elemento(models.Model):
     combo = models.ForeignKey(EspecialField)
-    _valor = models.CharField(max_length=65)
+    valor = models.CharField(max_length=65)
 
 
 class Gestion(models.Model):

@@ -18,7 +18,7 @@ class gestion_admin(admin.ModelAdmin):
 
 
 class elemento_admin(admin.ModelAdmin):
-    list_display = ('_valor', 'combo')
+    list_display = ('valor', 'combo')
     list_filter = ('combo',)
 
 admin.site.register(Gestion, gestion_admin)

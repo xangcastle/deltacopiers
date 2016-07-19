@@ -46,7 +46,12 @@ class TipoGestion(Entidad):
         obj = model_to_dict(self)
         obj['campos'] = []
         for d in self.detalles():
-            obj['campos'].append(model_to_dict(d))
+            o = model_to_dict(d)
+            if d.elementos():
+                o['elementos'] = []
+                for e in d.elementos():
+                    o['elementos'].append(model_to_dict(e))
+            obj['campos'].append(o)
         return obj
 
     class Meta:
@@ -68,6 +73,9 @@ class DetalleGestion(models.Model):
     titulo = models.CharField(max_length=65, verbose_name="titulo a mostrar")
     nombreVariable = models.CharField(max_length=65, verbose_name="nombre de la variable")
     habilitado = models.BooleanField(default=True)
+
+    def elementos(self):
+        return Elemento.objects.filter(combo=self.id)
 
     def __unicode__(self):
         return "%s - %s" % (self.tipo_gestion.name, self.nombreVariable)

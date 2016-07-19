@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from geoposition.fields import GeopositionField
 from jsonfield import JSONField
+from django.forms.models import model_to_dict
 
 
 class Gestor(models.Model):
@@ -37,7 +38,16 @@ class ZonaBarrio(models.Model):
 
 
 class TipoGestion(Entidad):
-    pass
+
+    def detalles(self):
+        return DetalleGestion.objects.filter(tipo_gestion=self)
+
+    def to_json(self):
+        obj = model_to_dict(self)
+        obj['campos'] = []
+        for d in self.detalles():
+            obj['campos'].append(model_to_dict(d))
+        return obj
 
 
 TIPOS = (
@@ -78,10 +88,13 @@ class Elemento(models.Model):
     _valor = models.CharField(max_length=65)
 
 
-class Gestion(object):
+class Gestion(models.Model):
     tipo_gestion = models.ForeignKey(TipoGestion)
     user = models.ForeignKey(User, null=True, blank=True)
     realizada = models.BooleanField(default=False)
-    position = GeopositionField(null=True)
-    fecha = models.DateTimeField()
-    json = JSONField(null=True)
+    position = GeopositionField(null=True, blank=True)
+    fecha = models.DateTimeField(null=True, blank=True)
+    json = JSONField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "gestiones"

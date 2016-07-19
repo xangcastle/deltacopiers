@@ -12,6 +12,11 @@ class detalle_tabular(admin.TabularInline):
 class tipoGestion_admin(entidad_admin):
     inlines = [detalle_tabular,]
 
+
+class gestion_admin(admin.ModelAdmin):
+    list_display = ('tipo_gestion', 'user', 'realizada', 'fecha')
+
+admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)
 admin.site.register(Municipio, entidad_admin)

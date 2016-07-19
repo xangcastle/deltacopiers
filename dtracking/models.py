@@ -66,6 +66,9 @@ class DetalleGestion(models.Model):
     nombreVariable = models.CharField(max_length=65, verbose_name="nombre de la variable")
     habilitado = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return "%s - %s" % (self.tipo_gestion.name, self.nombreVariable)
+
     class Meta:
         verbose_name = "campo"
         verbose_name_plural = "campos requeridos por la gestion"

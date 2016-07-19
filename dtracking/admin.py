@@ -6,6 +6,7 @@ from .models import *
 class detalle_tabular(admin.TabularInline):
     model = DetalleGestion
     extra = 0
+    fields = ('nombreVariable', 'tipo', 'titulo', 'habilitado', 'requerido')
 
 
 class tipoGestion_admin(entidad_admin):

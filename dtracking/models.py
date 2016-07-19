@@ -50,10 +50,10 @@ TIPOS = (
 
 class DetalleGestion(models.Model):
     tipo_gestion = models.ForeignKey(TipoGestion)
-    tipo = models.CharField(max_length=25, choices=TIPOS)
+    tipo = models.CharField(max_length=25, choices=TIPOS, verbose_name="tipo de campo")
     requerido = models.BooleanField(default=True)
-    titulo = models.CharField(max_length=65)
-    nombreVariable = models.CharField(max_length=65)
+    titulo = models.CharField(max_length=65, verbose_name="titulo a mostrar")
+    nombreVariable = models.CharField(max_length=65, verbose_name="nombre de la variable")
     habilitado = models.BooleanField(default=True)
 
     class Meta:

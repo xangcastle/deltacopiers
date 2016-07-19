@@ -10,21 +10,32 @@ class detalle_tabular(admin.TabularInline):
 
 
 class tipoGestion_admin(entidad_admin):
-    inlines = [detalle_tabular,]
+    inlines = [detalle_tabular, ]
 
 
 class gestion_admin(admin.ModelAdmin):
-    list_display = ('tipo_gestion', 'user', 'realizada', 'fecha')
+    list_display = ('destinatario', 'direccion', 'departamento', 'municipio',
+    'barrio', 'tipo_gestion', 'user', 'realizada', 'fecha')
+    list_filter = ('departamento', 'municipio', 'zona', 'realizada')
+    search_fields = ('destinatario', 'departamento__name',
+    'municipio__name', 'barrio__name', 'zona__name')
 
 
 class elemento_admin(admin.ModelAdmin):
     list_display = ('valor', 'combo')
     list_filter = ('combo',)
 
+
+class barrio_admin(entidad_admin):
+    list_display = ('code', 'name', 'municipio')
+    list_filter = ('municipio',)
+    search_fields = ('code', 'name', 'municipio__name',
+    'municipio__departamento__name')
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)
 admin.site.register(Municipio, entidad_admin)
-admin.site.register(Barrio, entidad_admin)
+admin.site.register(Barrio, barrio_admin)
 admin.site.register(Zona, entidad_admin)
 admin.site.register(Elemento, elemento_admin)

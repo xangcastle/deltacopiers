@@ -117,8 +117,12 @@ class Gestion(models.Model):
     fecha_asignacion = models.DateField(null=True, blank=True)
     json = JSONField(null=True, blank=True)
 
+    def __unicode__(self):
+        return "%s - %s" % (self.tipo_gestion.name, self.destinatario)
+
     def to_json(self):
         o = {}
+        o['id'] = self.id
         o['destinatario'] = self.destinatario
         o['direccion'] = self.direccion
         o['departamento'] = self.departamento.name

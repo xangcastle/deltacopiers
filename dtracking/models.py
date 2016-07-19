@@ -46,12 +46,7 @@ class TipoGestion(Entidad):
         obj = model_to_dict(self)
         obj['campos'] = []
         for d in self.detalles():
-            o = model_to_dict(d)
-            if d.elementos():
-                o['elementos'] = []
-                for e in d.elementos():
-                    o['elementos'].append(model_to_dict(e))
-            obj['campos'].append(o)
+            obj['campos'].append(d.to_json())
         return obj
 
     class Meta:
@@ -79,6 +74,21 @@ class DetalleGestion(models.Model):
 
     def __unicode__(self):
         return "%s - %s" % (self.tipo_gestion.name, self.nombreVariable)
+
+    def to_json(self):
+        o = {}
+        o['id'] = self.id
+        o['tipo'] = self.tipo
+        o['requerido'] = self.requerido
+        o['titulo'] = self.titulo
+        o['nombreVariable'] = self.nombreVariable
+        o['habilitado'] = self.habilitado
+        if self.elementos():
+            o['elementos'] = []
+        for e in self.elementos():
+            o['elementos'].append(model_to_dict(e))
+        return o
+
 
     class Meta:
         verbose_name = "campo"
@@ -129,8 +139,7 @@ class Gestion(models.Model):
         o['municipio'] = self.municipio.name
         o['barrio'] = self.barrio.name
         o['zona'] = self.zona.name
-        o['tipo_gestion'] = self.tipo_gestion.name
-        o['tipo_gestion_id'] = self.tipo_gestion.id
+        o['tipo_gestion'] = self.tipo_gestion.id
         if self.position:
             o['latitude'] = self.position.latitude
             o['longitude'] = self.position.longitude

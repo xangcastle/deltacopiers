@@ -59,6 +59,8 @@ TIPOS = (
 ('textarea', 'textarea'),
 ('combobox', 'combobox'),
 ('checkbox', 'checkbox'),
+('foto', 'foto'),
+('firma', 'firma'),
 )
 
 class DetalleGestion(models.Model):

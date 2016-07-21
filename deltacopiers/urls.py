@@ -21,11 +21,10 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    url(r'^$', HomePageView.as_view(), name='home'),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^moneycash/', include('moneycash.urls')),
     url(r'^dtracking/', include('dtracking.urls')),
-    url(r'^tienda/', include('tienda.urls')),
+    url(r'^$', include('tienda.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

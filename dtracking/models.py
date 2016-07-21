@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from geoposition.fields import GeopositionField
 from jsonfield import JSONField
-from django.forms.models import model_to_dict
 
 
 class Gestor(models.Model):

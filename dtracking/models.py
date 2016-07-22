@@ -13,6 +13,29 @@ class Gestor(models.Model):
     zonas = models.ManyToManyField('Zona', null=True, blank=True)
     tipo_gestion = models.ManyToManyField('TipoGestion', null=True, blank=True)
 
+    def image_thumb(self):
+        return '<img src="/media/%s" width="100" height="60" />' % (self.foto)
+    image_thumb.allow_tags = True
+    image_thumb.short_description = "Imagen"
+
+    def __unicode__(self):
+        return str(self.user)
+
+    def to_json(self):
+        o = {}
+        o['numero'] = self.numero
+        o['foto'] = self.foto.url
+        o['zonas'] = []
+        o['tipos_gestion'] = []
+        for z in self.zonas.all():
+            o['zonas'].append(z.name)
+        for t in self.tipo_gestion.all():
+            o['tipos_gestion'].append(t.name)
+        return o
+
+    class Meta:
+        verbose_name_plural = "gestores"
+
 
 class Departamento(Entidad):
     pass

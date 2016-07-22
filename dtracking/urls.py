@@ -9,4 +9,6 @@ urlpatterns = patterns('dtracking.views',
         name='tipos_gestion'),
     url(r'^movil/gestiones/$', 'gestiones_pendientes',
         name='gestiones_pendientes'),
+    url(r'^movil/login/$', 'movil_login',
+        name='dtracking_login'),
 )

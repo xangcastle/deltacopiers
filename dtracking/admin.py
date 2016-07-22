@@ -32,6 +32,10 @@ class barrio_admin(entidad_admin):
     search_fields = ('code', 'name', 'municipio__name',
     'municipio__departamento__name')
 
+
+class gestor_admin(admin.ModelAdmin):
+    list_display = ('user', 'numero', 'image_thumb')
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)
@@ -39,3 +43,4 @@ admin.site.register(Municipio, entidad_admin)
 admin.site.register(Barrio, barrio_admin)
 admin.site.register(Zona, entidad_admin)
 admin.site.register(Elemento, elemento_admin)
+admin.site.register(Gestor, gestor_admin)

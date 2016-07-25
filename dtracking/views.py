@@ -47,7 +47,7 @@ def gestiones_pendientes(request):
 
 @csrf_exempt
 def cargar_gestion(request):
-    g = Gestion.objects.filter(id=int(request.POST.get('gestion', '')))
+    g = Gestion.objects.get(id=int(request.POST.get('gestion', '')))
     g.fecha = request.POST.get('fecha', '')
     g.position = Geoposition(request.POST.get('latitude', ''),
     request.POST.get('longitude', ''))

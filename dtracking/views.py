@@ -56,3 +56,14 @@ def cargar_gestion(request):
     data = [g.to_json(), ]
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
+
+
+@csrf_exempt
+def cargar_media(request):
+    g = Gestion.objects.get(id=int(request.POST.get('gestion', '')))
+    variable = request.POST.get('variable', '')
+    imagen = request.FILES['imagen']
+    g.save()
+    data = [g.to_json(), ]
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')

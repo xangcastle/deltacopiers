@@ -13,4 +13,6 @@ urlpatterns = patterns('dtracking.views',
         name='dtracking_login'),
     url(r'^movil/cargar_gestion/$', 'cargar_gestion',
         name='cargar_gestion'),
+    url(r'^movil/cargar_media/$', 'cargar_media',
+        name='cargar_media'),
 )

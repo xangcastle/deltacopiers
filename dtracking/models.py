@@ -179,8 +179,8 @@ class Gestion(models.Model):
         o['zona'] = self.zona.name
         o['tipo_gestion'] = self.tipo_gestion.id
         if self.position:
-            o['latitude'] = self.position.latitude
-            o['longitude'] = self.position.longitude
+            o['latitude'] = str(self.position.latitude)
+            o['longitude'] = str(self.position.longitude)
         return o
 
     class Meta:

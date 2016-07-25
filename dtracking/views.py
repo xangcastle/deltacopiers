@@ -53,6 +53,6 @@ def cargar_gestion(request):
     request.POST.get('longitude', ''))
     g.json = request.POST.get('json', '')
     g.save()
-    data = [g, ]
+    data = [g.to_json(), ]
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')

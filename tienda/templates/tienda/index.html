@@ -10,6 +10,7 @@
 <base href="" />
 <meta name="description" content="DeltaCopiers S.A., Partes de copiadoras, canon, imageRunner, repuestos." />
 <meta name="google-site-verification" content="3Mtn6IN7KQeGcxlhx5B-G96sO9cXVZnVMenonHqd9_A" />
+<link rel="alternate" hreflang="es" href="www.deltacopier.com">
 <link href="image/data/cart.png" rel="icon" />
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="/static/tienda/css/stylesheet.css" />
@@ -1522,4 +1523,49 @@ color: white;
 		});
 	  $(".producto").animatedModal();
 </script>
+<script type="application/ld+json">
+{
+  "@context": "http://deltacopiers.com",
+  "@type": "Entidad Comercial",
+  "url": "http://www.deltacopiers.com",
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+505 22251337",
+    "contactType": "servicio al cliente"
+  }]
+}
+</script>
+{% for p in productos %}
+<script type="application/ld+json">
+{
+  "@context": "http://deltacopiers.com/",
+  "@type": "Product",
+  "name": "{{ p.name }}",
+  "image": "{{p.imagen.url}",
+  "description": "{{p.details}}",
+  "mpn": "{{p.no_part}}",
+  "brand": {
+    "@type": "{{p.categoria.name}}",
+    "name": "Canon"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.4",
+    "reviewCount": "89"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "{{p.price}}",
+    "priceValidUntil": "2020-11-05",
+    "itemCondition": "http://schema.org/UsedCondition",
+    "availability": "http://schema.org/InStock",
+    "seller": {
+      "@type": "DeltaCopiers S.A.",
+      "name": "Cesar Abel Ramirez"
+    }
+  }
+}
+</script>
+{% endfor %}
 </body></html>

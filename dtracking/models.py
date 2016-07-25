@@ -6,9 +6,19 @@ from geoposition.fields import GeopositionField
 from jsonfield import JSONField
 
 
+CONECTIONS = (
+('SMS + WIFI', 'SMS + WIFI'),
+('3G + WIFI', '3G + WIFI'),
+('WIFI', 'WIFI'),
+)
+
+
 class Gestor(models.Model):
     user = models.OneToOneField(User)
     numero = models.CharField(max_length=8, help_text="numero de celular")
+    server_conection = models.CharField(max_length=25, choices=CONECTIONS,
+    default='WIFI', null=True, blank=True)
+    sms_gateway = models.CharField(max_length=20, null=True)
     foto = models.ImageField(null=True)
     zonas = models.ManyToManyField('Zona', null=True, blank=True)
     tipo_gestion = models.ManyToManyField('TipoGestion', null=True, blank=True)

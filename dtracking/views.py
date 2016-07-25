@@ -65,4 +65,5 @@ def cargar_media(request):
     imagen = request.FILES['imagen']
     g.cargar_archivo(imagen, variable)
     data = [g.to_json(), ]
+    data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')

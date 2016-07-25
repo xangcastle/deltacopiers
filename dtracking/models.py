@@ -138,6 +138,7 @@ class Elemento(models.Model):
 class Gestion(models.Model):
     destinatario = models.CharField(max_length=125, null=True)
     direccion = models.TextField(max_length=255, null=True)
+    telefono = models.CharField(max_length=65, null=True, blank=True)
     departamento = models.ForeignKey(Departamento, null=True)
     municipio = models.ForeignKey(Municipio, null=True)
     barrio = models.ForeignKey(Barrio, null=True)
@@ -158,6 +159,7 @@ class Gestion(models.Model):
         o['id'] = self.id
         o['destinatario'] = self.destinatario
         o['direccion'] = self.direccion
+        o['telefono'] = self.telefono
         o['departamento'] = self.departamento.name
         o['municipio'] = self.municipio.name
         o['barrio'] = self.barrio.name

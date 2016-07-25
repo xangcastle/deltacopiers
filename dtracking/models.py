@@ -174,6 +174,9 @@ class Gestion(models.Model):
         a.save()
         return a
 
+    def media(self):
+        return Archivo.objects.filter(gestion=self)
+
 
     def to_json(self):
         o = {}
@@ -189,6 +192,10 @@ class Gestion(models.Model):
         if self.position:
             o['latitude'] = str(self.position.latitude)
             o['longitude'] = str(self.position.longitude)
+        if self.media():
+            o['media'] = []
+            for a in self.media():
+                o['media'].append(a)
         return o
 
     class Meta:

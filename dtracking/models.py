@@ -195,7 +195,7 @@ class Gestion(models.Model):
         if self.media():
             o['media'] = []
             for a in self.media():
-                o['media'].append({str(a.variable), str(a.archivo.url)})
+                o['media'].append(str(a.archivo.url))
         return o
 
     class Meta:

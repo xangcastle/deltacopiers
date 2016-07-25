@@ -1538,14 +1538,14 @@ color: white;
 {% for p in productos %}
 <script type="application/ld+json">
 {
-  "@context": "http://deltacopiers.com/",
+  "@context": "http://schema.org/",
   "@type": "Product",
   "name": "{{ p.name }}",
   "image": "http://deltacopiers.com{{p.imagen.url}}",
   "description": "{{p.details}}",
   "mpn": "{{p.no_part}}",
   "brand": {
-    "@type": "{{p.categoria.name}}",
+    "@type": "Thing",
     "name": "Canon"
   },
   "aggregateRating": {

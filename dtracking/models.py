@@ -185,3 +185,15 @@ class Gestion(models.Model):
 
     class Meta:
         verbose_name_plural = "gestiones"
+
+
+class Archivo(models.Model):
+    gestion = models.ForeignKey(Gestion)
+    variable = models.CharField(max_length=80)
+    archivo = models.FileField(null=True)
+
+    def __unicode__(self):
+        return "%s %s" % (self.gestion, self.archivo)
+
+    class Meta:
+        verbose_name_plural = "Archivos Media"

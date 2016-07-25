@@ -167,6 +167,14 @@ class Gestion(models.Model):
     def __unicode__(self):
         return "%s - %s" % (self.tipo_gestion.name, self.destinatario)
 
+    def cargar_archivo(self, archivo, variable):
+        a, created = Archivo.objects.get_or_create(gestion=self,
+        variable=variable)
+        a.archivo = archivo
+        a.save()
+        return a
+
+
     def to_json(self):
         o = {}
         o['id'] = self.id

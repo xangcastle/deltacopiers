@@ -195,7 +195,7 @@ class Gestion(models.Model):
         if self.media():
             o['media'] = []
             for a in self.media():
-                o['media'].append(a)
+                o['media'].append(a.url)
         return o
 
     class Meta:

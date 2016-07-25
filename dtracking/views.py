@@ -47,12 +47,12 @@ def gestiones_pendientes(request):
 
 @csrf_exempt
 def cargar_gestion(request):
-    g = Gestion.objects.filter(user=int(request.POST.get('gestion', '')))
+    g = Gestion.objects.filter(id=int(request.POST.get('gestion', '')))
     g.fecha = request.POST.get('fecha', '')
     g.position = Geoposition(request.POST.get('latitude', ''),
     request.POST.get('longitude', ''))
     g.json = request.POST.get('json', '')
     g.save()
-    data = [g,]
+    data = [g, ]
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')

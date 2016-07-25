@@ -35,6 +35,9 @@ class Gestor(models.Model):
         o = {}
         o['numero'] = self.numero
         o['foto'] = self.foto.url
+        o['server_conection'] = self.server_conection
+        if self.server_conection == 'SMS + WIFI':
+            o['sms_gateway'] = self.sms_gateway
         o['zonas'] = []
         o['tipos_gestion'] = []
         for z in self.zonas.all():

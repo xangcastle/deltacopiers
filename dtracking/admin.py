@@ -1,9 +1,11 @@
 from django.contrib import admin
 from base.admin import entidad_admin
+from grappelli.forms import GrappelliSortableHiddenMixin
 from .models import *
 
 
-class detalle_tabular(admin.TabularInline):
+
+class detalle_tabular(GrappelliSortableHiddenMixin, admin.TabularInline):
     model = DetalleGestion
     extra = 0
     fields = ('nombreVariable', 'tipo', 'titulo', 'habilitado', 'requerido',

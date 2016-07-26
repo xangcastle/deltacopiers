@@ -131,6 +131,7 @@ class DetalleGestion(models.Model):
     class Meta:
         verbose_name = "campo"
         verbose_name_plural = "campos requeridos por la gestion"
+        ordering =['orden', ]
 
 
 class especiales(models.Manager):

@@ -190,7 +190,10 @@ class Gestion(models.Model):
         o['departamento'] = self.departamento.name
         o['municipio'] = self.municipio.name
         o['barrio'] = self.barrio.name
-        o['zona'] = self.zona.name
+        if self.zona:
+            o['zona'] = self.zona.name
+        else:
+            o['zona'] = ""
         o['tipo_gestion'] = self.tipo_gestion.id
         if self.position:
             o['latitude'] = str(self.position.latitude)

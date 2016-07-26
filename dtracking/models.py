@@ -81,7 +81,7 @@ class TipoGestion(Entidad):
     def to_json(self):
         obj = {'id': self.id, 'name': self.name}
         obj['campos'] = []
-        for d in self.detalles():
+        for d in self.detalles().order_by('orden'):
             obj['campos'].append(d.to_json())
         return obj
 
@@ -177,7 +177,7 @@ class Gestion(models.Model):
         return a
 
     def media(self):
-        return Archivo.objects.filter(gestion=self)            
+        return Archivo.objects.filter(gestion=self)
 
     def to_json(self):
         o = {}

@@ -165,6 +165,7 @@ class Gestion(models.Model):
     position = GeopositionField(null=True, blank=True)
     fecha = models.DateTimeField(null=True, blank=True)
     fecha_asignacion = models.DateField(null=True, blank=True)
+    fecha_vence = models.DateField(null=True, blank=True)
     json = JSONField(null=True, blank=True)
 
     def __unicode__(self):
@@ -230,6 +231,9 @@ class Import(models.Model):
     idmunicipio = models.ForeignKey('Municipio', null=True, blank=True,
         db_column='idmunicipio', verbose_name='municipio')
 
+    def __unicode__(self):
+        return "%s - %s" % (self.destinatario, self.direccion)
+
     def get_departamento(self):
         d = None
         if self.departamento:
@@ -256,12 +260,27 @@ class Import(models.Model):
         try:
             if self.barrio and self.idmunicipio and self.iddepartamento:
                 b, created = Barrio.objects.get_or_create(
-                departamento=self.iddepartamento,
                 municipio=self.idmunicipio, name=self.barrio)
         except:
-            b = Barrio.objects.filter(departamento=self.iddepartamento,
-                municipio=self.idmunicipio, name=self.barrio)[0]
+            b = Barrio.objects.filter(municipio=self.idmunicipio,
+            name=self.barrio)[0]
         return b
+
+    def integrar_registro(self, fecha_asignacion, fecha_vence, tipo_gestion, eliminar=False):
+        g = Gestion()
+        g.destinatario = self.destinatario
+        g.direccion = self.direccion
+        g.barrio = self.idbarrio
+        g.municipio = self.idmunicipio
+        g.departamento = self.iddepartamento
+        g.zona = get_zona(self.idbarrio)
+        g.user = get_user(g.zona)
+        g.fecha_asignacion = fecha_asignacion
+        g.fecha_vence = fecha_vence
+        g.tipo_gestion = tipo_gestion
+        g.save()
+        if eliminar:
+            self.delete()
 
 def get_zona(barrio):
     try:

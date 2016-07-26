@@ -6,7 +6,9 @@ from .models import *
 class detalle_tabular(admin.TabularInline):
     model = DetalleGestion
     extra = 0
-    fields = ('nombreVariable', 'tipo', 'titulo', 'habilitado', 'requerido')
+    fields = ('nombreVariable', 'tipo', 'titulo', 'habilitado', 'requerido',
+    'orden')
+    sortable_field_name = 'orden'
 
 
 class tipoGestion_admin(entidad_admin):

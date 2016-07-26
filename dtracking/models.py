@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from geoposition.fields import GeopositionField
 from jsonfield import JSONField
+from datetime import datetime
 
 
 CONECTIONS = (
@@ -105,6 +106,7 @@ class DetalleGestion(models.Model):
     titulo = models.CharField(max_length=65, verbose_name="titulo a mostrar")
     nombreVariable = models.CharField(max_length=65, verbose_name="nombre de la variable")
     habilitado = models.BooleanField(default=True)
+    orden = models.IntegerField(null=True, blank=True)
 
     def elementos(self):
         return Elemento.objects.filter(combo=self.id)
@@ -175,8 +177,7 @@ class Gestion(models.Model):
         return a
 
     def media(self):
-        return Archivo.objects.filter(gestion=self)
-
+        return Archivo.objects.filter(gestion=self)            
 
     def to_json(self):
         o = {}
@@ -212,3 +213,30 @@ class Archivo(models.Model):
 
     class Meta:
         verbose_name_plural = "Archivos Media"
+
+
+def get_zona(barrio):
+    try:
+        return Zona.objects.get(
+            id=zona_barrio.objects.filter(barrio=barrio)[0].zona.id)
+    except:
+        return None
+
+def get_user(zona):
+    try:
+        user = None
+        for g in Gestor.objects.all():
+            if zona in g.zonas.all():
+                user = g.user
+        return user
+    except:
+        return None
+
+
+def autoasignacion(gestiones):
+    for g in gestiones:
+        if not g.zona:
+            g.zona = get_zona(g.barrio)
+        g.user = get_user(g.zona)
+        g.fecha_asignacion = datetime.now()
+        g.save()

@@ -216,6 +216,47 @@ class Archivo(models.Model):
         verbose_name_plural = "Archivos Media"
 
 
+class Import(models.Model):
+    destinatario = models.CharField(max_length=150, null=True, blank=True)
+    direccion = models.TextField(max_length=250, null=True, blank=True)
+    telefono = models.CharField(max_length=65, null=True, blank=True)
+    barrio = models.CharField(max_length=150, null=True, blank=True)
+    municipio = models.CharField(max_length=150, null=True, blank=True)
+    departamento = models.CharField(max_length=150, null=True, blank=True)
+
+    def get_departamento(self):
+        d = None
+        if self.departamento:
+            try:
+                d = Departamento.objects.get(name_alt=self.departamento)
+            except:
+                d, created = Departamento.objects.get_or_create(
+                    name=self.departamento)
+        return d
+
+    def get_municipio(self):
+        m = None
+        try:
+            if self.municipio and self.departamento:
+                m = Municipio.objects.get(departamento=self.get_departamento(),
+                    name_alt=self.municipio)
+        except:
+            m, created = Municipio.objects.get_or_create(
+                departamento=self.get_departamento(), name=self.municipio)
+        return m
+
+    def get_barrio(self):
+        b = None
+        try:
+            if self.barrio and self.municipio and self.departamento:
+                b, created = Barrio.objects.get_or_create(
+                departamento=self.get_departamento(),
+                municipio=self.get_municipio(), name=self.barrio)
+        except:
+            b = Barrio.objects.filter(departamento=self.get_departamento(),
+                municipio=self.get_municipio(), name=self.barrio)[0]
+        return b
+
 def get_zona(barrio):
     try:
         return Zona.objects.get(
@@ -241,3 +282,26 @@ def autoasignacion(gestiones):
         g.user = get_user(g.zona)
         g.fecha_asignacion = datetime.now()
         g.save()
+
+
+def integrar(data):
+    message = ""
+    ds = data.order_by('departamento').distinct('departamento')
+    for d in ds:
+        qs = data.filter(departamento=d.departamento)
+        qs.update(departamento=d.get_departamento().id)
+    ms = data.order_by('departamento', 'municipio').distinct(
+        'departamento', 'municipio')
+    for m in ms:
+        qs = data.filter(departamento=m.departamento,
+            municipio=m.municipio)
+        qs.update(idmunicipio=m.get_municipio().id)
+    bs = data.order_by('departamento', 'municipio', 'barrio').distinct(
+        'departamento', 'municipio', 'barrio')
+    for b in bs:
+        qs = data.filter(departamento=b.departamento,
+            municipio=b.municipio, barrio=b.barrio)
+        qs.update(idbarrio=b.get_barrio().id)
+    message += "integrado, total de gestiones = %s end %s departamentos" \
+    % (str(data.count()), str(ds.count()))
+    return message

@@ -40,6 +40,11 @@ class barrio_admin(entidad_admin):
 class gestor_admin(admin.ModelAdmin):
     list_display = ('user', 'numero', 'image_thumb')
 
+
+class import_admin(entidad_admin):
+    list_display = ('destinatario', 'direccion', 'telefono', 'barrio',
+    'municipio', 'departamento')
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)
@@ -48,3 +53,4 @@ admin.site.register(Barrio, barrio_admin)
 admin.site.register(Zona, entidad_admin)
 admin.site.register(Elemento, elemento_admin)
 admin.site.register(Gestor, gestor_admin)
+admin.site.register(Import, import_admin)

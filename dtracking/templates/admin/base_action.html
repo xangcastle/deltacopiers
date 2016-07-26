@@ -13,8 +13,15 @@
     {{ form.as_p }}
 
     <p>{{ explanation }}</p>
-
-    <ul>{{ queryset|unordered_list }}</ul>
+    <br>
+    <ul>
+    {% for q in queryset %}
+        <li>
+          <input type="hidden" name="primary" value="{{q.id}}">
+          {{q}}
+        </li>
+    {% endfor %}
+    </ul>
     <input type="hidden" name="action" value="{{ action }}" />
     <input type="submit" name="apply" value="Aplicar" />
 </form>

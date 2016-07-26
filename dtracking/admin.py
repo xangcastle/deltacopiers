@@ -66,9 +66,10 @@ class import_admin(entidad_admin):
     def action_integrar(self, request, queryset):
         message = ""
         form = None
-        msj = integrar(queryset)
         if 'apply' in request.POST:
             form = self.integrationForm(request.POST)
+            queryset = Import.objects.filter(id__in=request.POST.getlist('primary', ''))
+            msj = integrar(queryset)
             if form.is_valid():
                 for c in queryset:
                     c.integrar_registro(form.cleaned_data['fecha_asignacion'],

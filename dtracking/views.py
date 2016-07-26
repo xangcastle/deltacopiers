@@ -12,7 +12,8 @@ def movil_login(request):
     password = request.POST.get('password', '')
     user = authenticate(username=username, password=password)
     if user:
-        o = {'username': user.username, 'name': user.get_full_name()}
+        o = {'id': user.id, 'username': user.username,
+        'name': user.get_full_name()}
         try:
             profile = Gestor.objects.get(user=user)
             o['perfil'] = profile.to_json()

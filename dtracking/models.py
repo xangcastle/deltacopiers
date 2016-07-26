@@ -273,6 +273,7 @@ class Import(models.Model):
         g = Gestion()
         g.destinatario = self.destinatario
         g.direccion = self.direccion
+        g.telefono = self.telefono
         g.barrio = self.idbarrio
         g.municipio = self.idmunicipio
         g.departamento = self.iddepartamento

@@ -45,6 +45,11 @@ class import_admin(entidad_admin):
     list_display = ('destinatario', 'direccion', 'telefono', 'barrio',
     'municipio', 'departamento')
 
+    actions = ['action_integrar']
+
+    def action_integrar(self, request, queryset):
+        integrar(queryset)
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)

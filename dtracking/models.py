@@ -308,6 +308,6 @@ def integrar(ps):
         qs = ps.filter(departamento=b.departamento,
             municipio=b.municipio, barrio=b.barrio)
         qs.update(idbarrio=b.get_barrio().id)
-    message += "integrado, total de facturas = %s end %s departamentos" \
+    message += "integrado, total de gestiones = %s end %s departamentos" \
     % (str(ps.count()), str(ds.count()))
     return message

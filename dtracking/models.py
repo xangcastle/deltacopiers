@@ -62,6 +62,9 @@ class Municipio(Entidad):
 class Barrio(Entidad):
     municipio = models.ForeignKey(Municipio)
 
+    def referencias(self):
+        return Gestion.objects.filter(barrio=self).values_list('direccion', flat=True)[:5]
+
 
 class Zona(Entidad):
     departamento = models.ForeignKey(Departamento)
@@ -152,6 +155,7 @@ class Elemento(models.Model):
 
 
 class Gestion(models.Model):
+    barra = models.CharField(max_length=65, null=True)
     destinatario = models.CharField(max_length=125, null=True)
     direccion = models.TextField(max_length=255, null=True)
     telefono = models.CharField(max_length=65, null=True, blank=True)

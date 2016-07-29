@@ -6,6 +6,7 @@ from django import forms
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
+from django.conf.urls import patterns
 from .models import *
 
 
@@ -40,6 +41,24 @@ class barrio_admin(entidad_admin):
     list_filter = ('municipio',)
     search_fields = ('code', 'name', 'municipio__name',
     'municipio__departamento__name')
+
+    bh_template = "/admin/dtracking/barrios_huerfanos.html"
+
+    def get_urls(self):
+        urls = super(barrio_admin, self).get_urls()
+        my_urls = patterns('',
+            (r'\d+/barrios_huerfanos/$', self.admin_site.admin_view(self.barrios_huerfanos)),
+        )
+        return my_urls + urls
+
+    def barrios_huerfanos(self, request):
+        barrios = Barrio.objects.filter(
+        id__in=ZonaBarrio.objects.all().values_list('barrio', flat=True))
+        return render_to_response(self.bh_template, {
+            'barrios': barrios,
+            'opts': self.model._meta,
+            'root_path': self.admin_site.root_path,
+        }, context_instance=RequestContext(request))
 
 
 class gestor_admin(admin.ModelAdmin):

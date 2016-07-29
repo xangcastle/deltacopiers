@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<table>
+  <thead>
+    <tr>
+      <th>codigo</th>
+      <th>barrio</th>
+      <th>referencias</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in barrios %}
+    <tr>
+      <td>{{ b.code }}</td>
+      <td>{{ b.name }}</td>
+      <td>
+        <ul>
+        {% for d in b.referencias %}
+          <li>{{d}}</li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script type="text/javascript">
+
+(function($) {
+    var funka = function() {
+      alert('funka');
+    }
+    $(document).ready(function() {
+        $("tr").on('click', funka);
+    });
+})(grp.jQuery);
+</script>
+{% endblock %}

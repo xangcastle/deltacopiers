@@ -1,9 +1,18 @@
+from django.views.generic.base import TemplateView
 from django.http.response import HttpResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from django.contrib.auth import authenticate
 from geoposition import Geoposition
+
+
+class barrios_huerfanos(TemplateView):
+    template_name = "dtracking/barrios_huerfanos.html"
+    def get_context_data(self, **kwargs):
+        context = super(barrios_huerfanos, self).get_context_data(**kwargs)
+        context['barrios'] = Barrio.objects.all().exclude(id__in=ZonaBarrio.objects.all().values_list('barrio', flat=True))
+        return context
 
 
 @csrf_exempt

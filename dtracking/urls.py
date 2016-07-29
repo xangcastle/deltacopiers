@@ -15,4 +15,6 @@ urlpatterns = patterns('dtracking.views',
         name='cargar_gestion'),
     url(r'^movil/cargar_media/$', 'cargar_media',
         name='cargar_media'),
+    url(r'^barrios_huerfanos/', barrios_huerfanos.as_view(),
+        name='barrios_huerfanos'),
 )

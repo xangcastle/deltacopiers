@@ -23,7 +23,7 @@ class tipoGestion_admin(entidad_admin):
     inlines = [detalle_tabular, ]
 
 
-class gestion_admin(admin.ModelAdmin):
+class gestion_admin(entidad_admin):
     list_display = ('destinatario', 'direccion', 'departamento', 'municipio',
     'barrio', 'tipo_gestion', 'user', 'realizada', 'fecha')
     list_filter = ('departamento', 'municipio', 'zona', 'realizada')

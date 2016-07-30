@@ -62,6 +62,7 @@ def cargar_gestion(request):
     g.position = Geoposition(request.POST.get('latitude', ''),
     request.POST.get('longitude', ''))
     g.json = request.POST.get('json', '')
+    g.realizada = True
     g.save()
     data = [g.to_json(), ]
     data = json.dumps(data)

@@ -26,7 +26,7 @@ class tipoGestion_admin(entidad_admin):
 class gestion_admin(entidad_admin):
     list_display = ('destinatario', 'direccion', 'departamento', 'municipio',
     'barrio', 'tipo_gestion', 'user', 'realizada', 'fecha')
-    list_filter = ('departamento', 'municipio', 'zona', 'realizada')
+    list_filter = ('departamento', 'municipio', 'zona', 'user', 'realizada')
     search_fields = ('destinatario', 'departamento__name',
     'municipio__name', 'barrio__name', 'zona__name')
 

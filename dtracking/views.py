@@ -66,7 +66,9 @@ def cargar_gestion(request):
         g.json = request.POST.get('json', '')
         g.realizada = True
         g.save()
-        data = [g.to_json(), ]
+        obj = g.to_json()
+        obj['mensaje'] = "gestion subida con exito"
+        data = [obj, ]
         data = json.dumps(data)
     except:
         data.append({'error': "esta gestion no existe"})

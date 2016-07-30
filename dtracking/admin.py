@@ -113,6 +113,10 @@ class import_admin(entidad_admin):
         self.message_user(request, message)
         return render_to_response('admin/base_action.html', data)
 
+
+class archivo_admin(admin.ModelAdmin):
+    list_display = ('gestion', 'variable', 'archivo')
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)

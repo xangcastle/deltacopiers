@@ -57,15 +57,19 @@ def gestiones_pendientes(request):
 
 @csrf_exempt
 def cargar_gestion(request):
-    g = Gestion.objects.get(id=int(request.POST.get('gestion', '')))
-    g.fecha = request.POST.get('fecha', '')
-    g.position = Geoposition(request.POST.get('latitude', ''),
-    request.POST.get('longitude', ''))
-    g.json = request.POST.get('json', '')
-    g.realizada = True
-    g.save()
-    data = [g.to_json(), ]
-    data = json.dumps(data)
+    data = []
+    try:
+        g = Gestion.objects.get(id=int(request.POST.get('gestion', '')))
+        g.fecha = request.POST.get('fecha', '')
+        g.position = Geoposition(request.POST.get('latitude', ''),
+        request.POST.get('longitude', ''))
+        g.json = request.POST.get('json', '')
+        g.realizada = True
+        g.save()
+        data = [g.to_json(), ]
+        data = json.dumps(data)
+    except:
+        data.append({'error': "esta gestion no existe"})
     return HttpResponse(data, content_type='application/json')
 
 

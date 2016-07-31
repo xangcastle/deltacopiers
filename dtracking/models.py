@@ -194,6 +194,7 @@ class Gestion(models.Model):
         o['departamento'] = self.departamento.name
         o['municipio'] = self.municipio.name
         o['barrio'] = self.barrio.name
+        o['barra'] = self.barra
         if self.zona:
             o['zona'] = self.zona.name
         else:

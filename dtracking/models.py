@@ -23,6 +23,8 @@ class Gestor(models.Model):
     foto = models.ImageField(null=True)
     zonas = models.ManyToManyField('Zona', null=True, blank=True)
     tipo_gestion = models.ManyToManyField('TipoGestion', null=True, blank=True)
+    intervalo = models.PositiveIntegerField(null=True, verbose_name="intervalo de seguimiento",
+    help_text="esto determina que tan seguido el gestor reportara su posicion gps en segundos")
 
     def image_thumb(self):
         return '<img src="/media/%s" width="100" height="60" />' % (self.foto)
@@ -45,6 +47,7 @@ class Gestor(models.Model):
             o['zonas'].append(z.name)
         for t in self.tipo_gestion.all():
             o['tipos_gestion'].append(t.name)
+        o['intervalo'] = self.intervalo
         return o
 
     class Meta:

@@ -233,3 +233,30 @@ def catalogo(request):
     else:
         data = []
     return HttpResponse(data, content_type='application/json')
+
+
+@csrf_exempt
+def register_sms(request):
+    code = request.POST.get('codigo', None)
+    numero = request.POST.get('numero', None)
+    nombre = request.POST.get('nombre', None)
+    if code and numero and nombre:
+        send_sms("Estimado/a %s, es un placer darte la bienvenida. Tu codigo de registro es %s"
+        % (nombre, code), numero)
+        user, created = Cliente.objects.get_or_create(name=nombre, phone=numero)
+        user.save()
+        data = json.dumps([user.to_json(), ])
+    else:
+        data = json.dumps([{'error': "por favor envia las variables codigo, numero y nombre."}, ])
+    return HttpResponse(data, content_type="application/json")
+
+
+@csrf_exempt
+def mensajes_pendientes(request):
+    mensajes = SMS.objects.filter(enviado=False)
+    data = []
+    for m in mensajes:
+        data.append(m.to_json())
+    data = json.dumps(data)
+    mensajes.update(enviado=True)
+    return HttpResponse(data, content_type="application/json")

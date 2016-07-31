@@ -155,3 +155,21 @@ class salidaDetalle(models.Model):
     producto = models.ForeignKey(Producto)
     cantidad = models.FloatField()
     costo = models.FloatField(null=True)
+
+
+class SMS(models.Model):
+    numero = models.CharField(max_length=14)
+    texto = models.CharField(max_length=240)
+    enviado = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "%s-%s" % (self.numero, self.texto)
+
+    def to_json(self):
+        return {'numero': self.numero, 'texto': self.texto}
+
+
+def send_sms(texto, numero):
+    m = SMS(numero=numero, texto=texto)
+    m.save()
+    return m

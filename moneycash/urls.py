@@ -37,4 +37,8 @@ urlpatterns = patterns('moneycash.views',
         name='tipos_pago'),
     url(r'^movil/catalogo/$', 'catalogo',
         name='catalogo'),
+    url(r'^movil/register_sms/$', 'register_sms',
+        name='register_sms'),
+    url(r'^movil/mensajes_pendientes/$', 'mensajes_pendientes',
+        name='mensajes_pendientes'),
 )

@@ -17,4 +17,6 @@ urlpatterns = patterns('dtracking.views',
         name='cargar_media'),
     url(r'^barrios_huerfanos/', barrios_huerfanos.as_view(),
         name='barrios_huerfanos'),
+    url(r'^movil/seguimiento_gps/', 'seguimiento_gps',
+        name='seguimiento_gps'),
 )

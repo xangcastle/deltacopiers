@@ -228,6 +228,12 @@ class Archivo(models.Model):
         verbose_name_plural = "Archivos Media"
 
 
+class Position(models.Model):
+    user = models.ForeignKey(User)
+    Position = GeopositionField()
+    fecha = models.DateTimeField()
+
+
 class Import(models.Model):
     destinatario = models.CharField(max_length=150, null=True, blank=True)
     direccion = models.TextField(max_length=250, null=True, blank=True)

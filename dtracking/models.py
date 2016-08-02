@@ -230,7 +230,7 @@ class Archivo(models.Model):
 
 class Position(models.Model):
     user = models.ForeignKey(User)
-    Position = GeopositionField()
+    position = GeopositionField()
     fecha = models.DateTimeField()
 
 

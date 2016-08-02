@@ -89,12 +89,13 @@ def cargar_media(request):
 @csrf_exempt
 def seguimiento_gps(request):
     data = []
-    try:
-        p = Position(user=request.POST.get('user', None),
+    p = Position(
+        user=User.objects.get(id=int(request.POST.get('user', ''))),
         position=Geoposition(request.POST.get('latitude', ''),
-        request.POST.get('longitude', '')), fecha=request.POST.get('fecha', None))
-        data.append({'mensaje': "posicion registrada con exito"})
-    except:
-        data.append({'error': "parametros invalidos"})
+            request.POST.get('longitude', '')),
+        fecha=request.POST.get('fecha', None)
+        )
+    p.save()
+    data.append({'mensaje': "posicion registrada con exito"})
     data = json.dumps(data)
     return HttpResponse(data, content_type="application/json")

@@ -268,11 +268,11 @@ def mensajes_pendientes(request):
 def preventa(request):
     o = request.POST.get('preventa', '')
     f = Preventa()
-    f.cliente = Cliente.objects.get(id=o['id_cliente'])
+    f.cliente = Cliente.objects.get(id=int(o['id_cliente']))
     f.save()
     for d in o['productos']:
         d = Orden()
-        d.producto = d['cod_producto']
+        d.producto = Producto.objects.get(id=int(d['cod_producto']))
         d.cantidad = d['cantidad']
         d.preventa = f
         d.save()

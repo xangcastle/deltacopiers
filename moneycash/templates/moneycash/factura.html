@@ -70,7 +70,6 @@
                         <div class="form-group">
                             <label for="tipopago">Tipo de pago</label>
                             <select id="tipopago" class="form-control" name="factura_tipopago">
-                                <option value="">---</option>
                                 {% for t in tipo_pagos %}
                                 <option value={{ t.id }}>{{ t.name }}</option>
                                 {% endfor %}

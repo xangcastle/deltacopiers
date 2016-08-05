@@ -115,6 +115,7 @@ class Factura(models.Model):
     excento_iva = models.NullBooleanField()
     aplica_ir = models.NullBooleanField()
     aplica_al = models.NullBooleanField()
+    tipopago = models.ForeignKey(TipoPago, null=True)
     impresa = models.BooleanField(default=False)
 
     def to_json(self):
@@ -173,3 +174,14 @@ def send_sms(texto, numero):
     m = SMS(numero=numero, texto=texto)
     m.save()
     return m
+
+
+class Preventa(models.Model):
+    cliente = models.ForeignKey(Cliente)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+
+class Orden(models.Model):
+    preventa = models.ForeignKey(Preventa)
+    producto = models.ForeignKey(Producto)
+    cantidad = models.FloatField()

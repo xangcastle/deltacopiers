@@ -17,6 +17,7 @@ var factura = function(){
       form.find('#email').val(data.cliente_data.email);
       form.find('#phone').val(data.cliente_data.phone);
       form.find('#address').val(data.cliente_data.address);
+      form.find('#tipopago').val(data.cliente_data.tipopago);
     }
   })
   $('form').show();

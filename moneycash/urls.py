@@ -41,4 +41,6 @@ urlpatterns = patterns('moneycash.views',
         name='register_sms'),
     url(r'^movil/mensajes_pendientes/$', 'mensajes_pendientes',
         name='mensajes_pendientes'),
+    url(r'^movil/preventa/$', 'preventa',
+        name='preventa'),
 )

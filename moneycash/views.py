@@ -29,6 +29,7 @@ class facturas_no_impresas(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(facturas_no_impresas, self).get_context_data(**kwargs)
         context['facturas'] = Factura.objects.filter(impresa=False)
+        context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
         return context
 
 
@@ -91,6 +92,7 @@ def grabar_cabecera(request):
     f.iva = request.POST.get('factura_iva', '')
     f.retension = request.POST.get('factura_retencion', '')
     f.total = request.POST.get('factura_total', '')
+    f.tipopago = request.POST.get('factura_tipopago', '')
     f.save()
     return f
 
@@ -259,4 +261,20 @@ def mensajes_pendientes(request):
         data.append(m.to_json())
     data = json.dumps(data)
     mensajes.update(enviado=True)
+    return HttpResponse(data, content_type="application/json")
+
+
+@csrf_exempt
+def preventa(request):
+    o = request.POST.get('preventa', '')
+    f = Preventa()
+    f.cliente = Cliente.objects.get(id=o['id_cliente'])
+    f.save()
+    for d in o['productos']:
+        d = Orden()
+        d.producto = d['cod_producto']
+        d.cantidad = d['cantidad']
+        d.preventa = f
+        d.save()
+    data = json.dumps([{'preventa': f.id}, ])
     return HttpResponse(data, content_type="application/json")

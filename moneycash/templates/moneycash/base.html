@@ -89,8 +89,17 @@
       </div>
     </nav>
     {% endblock navbar %}
-    {% block form %}
-    {% endblock form %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title" >{% block titulo %}Titulo de la pagina{% endblock titulo %}</h3>
+      </div>
+      <div class="panel-body">
+      {% block form %}
+      {% endblock form %}
+      </div>
+    </div>
+
+
     {% block modales %}
     {% endblock modales %}
 
@@ -99,7 +108,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/static/moneycash/jquery/jquery-2.2.3.min.js"></script>
     <script>window.jQuery || document.write('<script src="/static/moneycash/jquery/jquery.min.js"><\/script>')</script>
 
     <script src="/static/moneycash/bootstrap/js/bootstrap.min.js"></script>

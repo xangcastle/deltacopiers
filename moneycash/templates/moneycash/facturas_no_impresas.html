@@ -2,8 +2,11 @@
 
 {% block script_extra %}
 {{ super }}
+<script src="/static/moneycash/js/caja.js"></script>
 <script src="/static/moneycash/js/facturas_no_impresas.js"></script>
 {% endblock script_extra %}
+
+{% block titulo %}Facturas no impresas{% endblock titulo%}
 
 {% block form %}
 <div class="container-fluid well">
@@ -32,10 +35,6 @@
     <div class="row">
       <div class="col-md-4">
           <div class="form-group">
-              <label for="factura_numero">Numero</label>
-              <input type="input" class="form-control" id="factura_numero" readonly name="factura_numero" value="0.0">
-          </div>
-          <div class="form-group">
               <label for="factura_subtotal">Subtotal</label>
               <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
           </div>
@@ -46,6 +45,19 @@
           <div class="form-group">
               <label for="factura_iva">Iva</label>
               <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
+          </div>
+          <div class="form-group" id="retenciones">
+              <div class="checkbox">
+                  <label>
+                      <input type="checkbox" id="aplica_ir" name="aplica_ir"> IR
+                  </label>
+                  <label>
+                      <input type="checkbox"  id="aplica_al" name="aplica_al"> Alcaldia
+                  </label>
+                  <label>
+                      <input type="checkbox"  id="excento_iva" name="excento_iva"> Exento IVA
+                  </label>
+              </div>
           </div>
           <div class="form-group">
               <label for="factura_retencion">Monto Retenido</label>
@@ -80,7 +92,6 @@
           <div class="form-group">
               <label for="tipopago">Tipo de pago</label>
               <select id="tipopago" class="form-control" name="factura_tipopago">
-                  <option value="">----------</option>
                   {% for t in tipo_pagos %}
                   <option value={{ t.id }}>{{ t.name }}</option>
                   {% endfor %}
@@ -90,19 +101,19 @@
       <div class="col-md-4">
           <div class="form-group">
               <label for="pago_efectivo">Efectivo</label>
-              <input type="input" class="form-control" id="pago_efectivo" readonly name="pago_efectivo" value="0.0">
+              <input type="input" class="form-control efectivo" id="pago_efectivo" readonly name="pago_efectivo" value="0.0">
           </div>
           <div class="form-group">
-              <label for="pago_cheque">Cheques</label>
+              <label for="pago_cheque cheque">Cheques</label>
               <input type="input" class="form-control" id="pago_cheque" readonly name="pago_cheque" value="0.0">
           </div>
           <div class="form-group">
               <label for="pago_transferencia">Transferencias</label>
-              <input type="input" class="form-control" id="pago_transferencia" readonly name="pago_transferencia" value="0.0">
+              <input type="input" class="form-control transferencia" id="pago_transferencia" readonly name="pago_transferencia" value="0.0">
           </div>
           <div class="form-group">
               <label for="pago_tarjeta">Tarjeta</label>
-              <input type="input" class="form-control" id="pago_tarjeta" readonly name="pago_tarjeta" value="0.0">
+              <input type="input" class="form-control tarjeta" id="pago_tarjeta" readonly name="pago_tarjeta" value="0.0">
           </div>
           <div class="form-group">
               <label for="pago_total">Pago Total</label>

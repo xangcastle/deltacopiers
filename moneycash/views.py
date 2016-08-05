@@ -266,7 +266,7 @@ def mensajes_pendientes(request):
 
 @csrf_exempt
 def preventa(request):
-    o = request.POST.get('preventa', '')
+    o = json.loads(request.POST.get('preventa', ''))
     f = Preventa()
     f.cliente = Cliente.objects.get(id=int(o['id_cliente']))
     f.save()

@@ -270,10 +270,10 @@ def preventa(request):
     f = Preventa()
     f.cliente = Cliente.objects.get(id=int(o['id_cliente']))
     f.save()
-    for d in o['productos']:
+    for i in o['productos']:
         d = Orden()
-        d.producto = Producto.objects.get(id=int(d['cod_producto']))
-        d.cantidad = d['cantidad']
+        d.producto = Producto.objects.get(id=int(i['cod_producto']))
+        d.cantidad = i['cantidad']
         d.preventa = f
         d.save()
     data = json.dumps([{'preventa': f.id}, ])

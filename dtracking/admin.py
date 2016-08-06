@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.conf.urls import patterns
 from .models import *
+from datetime import datetime
 
 
 
@@ -29,6 +30,15 @@ class gestion_admin(entidad_admin):
     list_filter = ('tipo_gestion', 'departamento', 'municipio', 'zona', 'user', 'realizada')
     search_fields = ('destinatario', 'departamento__name',
     'municipio__name', 'barrio__name', 'zona__name')
+
+    actions = ['action_cancelar',]
+
+    def action_cancelar(self, request, queryset):
+        motivo = "Gestiones canceladas por %s el %s" % (
+        request.user.username, str(datetime.now())
+        )
+        cancelar_gestiones(queryset, motivo)
+        self.message_user(request, "Gestiones Canceladas")
 
 
 class elemento_admin(admin.ModelAdmin):

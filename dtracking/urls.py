@@ -19,4 +19,6 @@ urlpatterns = patterns('dtracking.views',
         name='barrios_huerfanos'),
     url(r'^movil/seguimiento_gps/', 'seguimiento_gps',
         name='seguimiento_gps'),
+    url(r'^movil/mensajeria/', 'mensajeria',
+        name='mensajeria_movil'),
 )

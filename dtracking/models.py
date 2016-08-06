@@ -50,6 +50,10 @@ class Gestor(models.Model):
         o['intervalo'] = self.intervalo
         return o
 
+
+    def numero_gestor(self):
+        return Gestor.objects.get(user=self.user).numero
+
     class Meta:
         verbose_name_plural = "gestores"
 
@@ -174,6 +178,7 @@ class Gestion(models.Model):
     fecha_asignacion = models.DateField(null=True, blank=True)
     fecha_vence = models.DateField(null=True, blank=True)
     json = JSONField(null=True, blank=True)
+    observaciones = models.TextField(max_length=255, null=True, blank=True)
 
     def __unicode__(self):
         return "%s - %s" % (self.tipo_gestion.name, self.destinatario)
@@ -348,3 +353,33 @@ def integrar(ps):
     message += "integrado, total de gestiones = %s end %s departamentos" \
     % (str(ps.count()), str(ds.count()))
     return message
+
+
+class SMS(models.Model):
+    user = models.ForeignKey(User, null=True)
+    texto = models.CharField(max_length=240)
+    enviado = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "%s-%s" % (self.numero, self.texto)
+
+    def to_json(self):
+        return {'numero': self.numero, 'texto': self.texto}
+
+
+def send_sms(texto):
+    m = SMS(texto=texto)
+    m.save()
+    return m
+
+
+def cancelar_gestiones(gestiones, motivo=""):
+    gestiones.update(realizada=True, observaciones=motivo)
+    usuarios = gestiones.order_by('user').distinct('user')
+    for u in usuarios:
+        gs = gestiones.filter(user=u.user).values_list('id', flat=True)
+        texto = '{"gestiones_eliminadas":[%s],"mensaje_gps":"%s", \
+        "numero":"%s","codUsuario":"%s"}' % (gs,
+        ("%s gestiones eliminadas" % len(gs)), gs[0].numero_gestor(),
+        u.id)
+        send_sms(texto)

@@ -99,3 +99,14 @@ def seguimiento_gps(request):
     data.append({'mensaje': "posicion registrada con exito"})
     data = json.dumps(data)
     return HttpResponse(data, content_type="application/json")
+
+
+@csrf_exempt
+def mensajeria(request):
+    data = []
+    smss = SMS.objects.filter(enviado=False)
+    for sms in smss:
+        data.append(json.loads(sms.texto))
+    data = json.dumps(data)
+    smss.update(enviado=True)
+    return HttpResponse(data, content_type="application/json")

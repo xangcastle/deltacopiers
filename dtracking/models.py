@@ -356,11 +356,11 @@ def integrar(ps):
 
 class SMS(models.Model):
     user = models.ForeignKey(User, null=True)
-    texto = models.CharField(max_length=240)
+    texto = models.CharField(max_length=540)
     enviado = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s-%s" % (self.numero, self.texto)
+        return "%s" % (self.texto)
 
     def to_json(self):
         return {'numero': self.numero, 'texto': self.texto}
@@ -374,7 +374,7 @@ def send_sms(texto):
 
 def cancelar_gestiones(gestiones, motivo=""):
     gestiones.update(realizada=True, observaciones=motivo)
-    usuarios = gestiones.order_by('user').distinct('user')
+    usuarios = gestiones.filter(user__isnull=False).order_by('user').distinct('user')
     for u in usuarios:
         gs = gestiones.filter(user=u.user)
         ids = gs.values_list('id', flat=True)

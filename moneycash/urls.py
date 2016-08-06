@@ -43,4 +43,6 @@ urlpatterns = patterns('moneycash.views',
         name='mensajes_pendientes'),
     url(r'^movil/preventa/$', 'preventa',
         name='preventa'),
+    url(r'^descarga_app/$', 'descarga_app',
+        name='descarga_app'),
 )

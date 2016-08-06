@@ -6,6 +6,24 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.contrib.auth import authenticate
+from wsgiref.util import FileWrapper
+import os
+
+
+def download_file(path):
+    if not os.path.exists(path):
+        return HttpResponse('Sorry. This file is not available.')
+    else:
+        response = HttpResponse(FileWrapper(file(path)),
+            content_type='application/force-download')
+        response['Content-Disposition'] = 'attachment; filename=%s' % \
+        os.path.basename(path)
+        return response
+
+
+def descarga_app(request):
+    path = "/var/www/deltacopiers/app.apk"
+    return download_file(path)
 
 
 class index(TemplateView):

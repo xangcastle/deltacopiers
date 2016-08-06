@@ -294,5 +294,5 @@ def preventa(request):
         d.cantidad = i['cantidad']
         d.preventa = f
         d.save()
-    data = json.dumps([{'preventa': f.id}, ])
+    data = json.dumps({'preventa': f.id})
     return HttpResponse(data, content_type="application/json")

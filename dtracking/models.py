@@ -50,10 +50,6 @@ class Gestor(models.Model):
         o['intervalo'] = self.intervalo
         return o
 
-
-    def numero_gestor(self):
-        return Gestor.objects.get(user=self.user).numero
-
     class Meta:
         verbose_name_plural = "gestores"
 
@@ -217,6 +213,9 @@ class Gestion(models.Model):
                 o['media'].append(str(a.archivo.url))
         return o
 
+    def numero_gestor(self):
+        return Gestor.objects.get(user=self.user).numero
+
     class Meta:
         verbose_name_plural = "gestiones"
 
@@ -377,9 +376,10 @@ def cancelar_gestiones(gestiones, motivo=""):
     gestiones.update(realizada=True, observaciones=motivo)
     usuarios = gestiones.order_by('user').distinct('user')
     for u in usuarios:
-        gs = gestiones.filter(user=u.user).values_list('id', flat=True)
+        gs = gestiones.filter(user=u.user)
+        ids = gs.values_list('id', flat=True)
         texto = '{"gestiones_eliminadas":[%s],"mensaje_gps":"%s", \
-        "numero":"%s","codUsuario":"%s"}' % (gs,
-        ("%s gestiones eliminadas" % len(gs)), gs[0].numero_gestor(),
+        "numero":"%s","codUsuario":"%s"}' % (ids,
+        ("%s gestiones eliminadas" % len(ids)), gs[0].numero_gestor(),
         u.id)
         send_sms(texto)

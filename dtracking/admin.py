@@ -38,7 +38,8 @@ class gestion_admin(entidad_admin):
         request.user.username, str(datetime.now())
         )
         cancelar_gestiones(queryset, motivo)
-        self.message_user(request, "Gestiones Canceladas")
+        self.message_user(request, motivo)
+    action_cancelar.short_description = "Cancelar la ejecucion de gestiones seleccionadas"
 
 
 class elemento_admin(admin.ModelAdmin):

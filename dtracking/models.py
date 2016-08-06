@@ -374,7 +374,7 @@ def send_sms(texto):
 
 def cancelar_gestiones(gestiones, motivo=""):
     gestiones.update(realizada=True, observaciones=motivo)
-    usuarios = gestiones.filter(user__isnull=False).order_by('user').distinct('user')
+    usuarios = gestiones.order_by('user').distinct('user')
     for u in usuarios:
         gs = gestiones.filter(user=u.user)
         ids = gs.values_list('id', flat=True)

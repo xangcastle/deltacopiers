@@ -102,3 +102,14 @@ class salida_admin(admin.ModelAdmin):
     fields = ('numero', 'concepto')
 
 admin.site.register(Salida, salida_admin)
+
+
+class preventa_detalle(admin.TabularInline):
+    model = Orden
+    extra = 0
+
+class preventa_admin(admin.ModelAdmin):
+    list_display = ('fecha', 'cliente')
+    inlines = [preventa_detalle, ]
+
+admin.site.register(Preventa, preventa_admin)

@@ -363,7 +363,7 @@ class SMS(models.Model):
         return "%s" % (self.texto)
 
     def to_json(self):
-        return {'numero': self.numero, 'texto': self.texto}
+        return {'texto': self.texto}
 
 
 def send_sms(texto):

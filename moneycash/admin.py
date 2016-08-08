@@ -113,3 +113,5 @@ class preventa_admin(admin.ModelAdmin):
     inlines = [preventa_detalle, ]
 
 admin.site.register(Preventa, preventa_admin)
+
+admin.site.register(SMS)

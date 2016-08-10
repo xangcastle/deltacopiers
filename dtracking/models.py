@@ -381,5 +381,5 @@ def cancelar_gestiones(gestiones, motivo=""):
         texto = '{"gestiones_eliminadas":[%s],"mensaje_gps":"%s", \
         "numero":"%s","codUsuario":"%s"}' % (ids,
         ("%s gestiones eliminadas" % len(ids)), gs[0].numero_gestor(),
-        u.id)
+        u.user.id)
         send_sms(texto)

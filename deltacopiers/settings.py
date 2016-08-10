@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'home',
     'moneycash',
     'tienda',
-    'dtracking'
+    'dtracking',
+    'inventario',
 ]
 
 MIDDLEWARE_CLASSES = [

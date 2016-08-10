@@ -133,6 +133,11 @@ class seguimiento_admin(admin.ModelAdmin):
     list_display = ('user', 'fecha')
     list_filter = ('user',)
 
+
+class sms_admin(admin.ModelAdmin):
+    list_display = ('text', 'enviado', 'user')
+    list_filter = ('enviado', 'user')
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)

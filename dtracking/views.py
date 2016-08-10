@@ -108,5 +108,5 @@ def mensajeria(request):
     for sms in smss:
         data.append(json.loads(sms.texto))
     data = json.dumps(data)
-    smss.update(enviado=True)
+    smss.update(enviado=True, fecha_envio=datetime.now())
     return HttpResponse(data, content_type="application/json")

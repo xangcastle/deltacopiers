@@ -358,6 +358,7 @@ class SMS(models.Model):
     user = models.ForeignKey(User, null=True)
     texto = models.CharField(max_length=540)
     enviado = models.BooleanField(default=False)
+    fecha_envio = models.DateTimeField(null=True)
 
     def __unicode__(self):
         return "%s" % (self.texto)

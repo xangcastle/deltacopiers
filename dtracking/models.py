@@ -216,6 +216,15 @@ class Gestion(models.Model):
     def numero_gestor(self):
         return Gestor.objects.get(user=self.user).numero
 
+    def _realizada(self):
+        if self.realizada:
+            return '<a class="detalle" data-id="%s">Ver&nbsp;<img src="/static/admin/img/icon-yes.svg" alt="True"></a>' \
+            % self.id
+        else:
+            return '<img src="/static/admin/img/icon-no.svg" alt="False">'
+    _realizada.allow_tags = True
+    _realizada.short_description = "Realizada"
+
     class Meta:
         verbose_name_plural = "gestiones"
 
@@ -374,7 +383,6 @@ def send_sms(texto):
 
 
 def cancelar_gestiones(gestiones, motivo=""):
-    gestiones.update(realizada=True, observaciones=motivo)
     usuarios = gestiones.filter(user__isnull=False).order_by('user').distinct('user')
     for u in usuarios:
         gs = gestiones.filter(user=u.user)
@@ -384,3 +392,4 @@ def cancelar_gestiones(gestiones, motivo=""):
         ("%s gestiones eliminadas" % len(ids)), gs[0].numero_gestor(),
         u.user.id)
         send_sms(texto)
+    gestiones.update(realizada=True, observaciones=motivo)

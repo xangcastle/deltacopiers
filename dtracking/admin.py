@@ -25,13 +25,17 @@ class tipoGestion_admin(entidad_admin):
 
 
 class gestion_admin(entidad_admin):
+    date_hierarchy = "fecha"
     list_display = ('destinatario', 'direccion', 'departamento', 'municipio',
-    'barrio', 'tipo_gestion', 'user', 'realizada', 'fecha')
+    'barrio', 'tipo_gestion', 'user', '_realizada')
     list_filter = ('tipo_gestion', 'departamento', 'municipio', 'zona', 'user', 'realizada')
     search_fields = ('destinatario', 'departamento__name',
     'municipio__name', 'barrio__name', 'zona__name')
 
     actions = ['action_cancelar',]
+
+    class Media:
+        js = ("dtracking/js/gestion.js",)
 
     def action_cancelar(self, request, queryset):
         motivo = "Gestiones canceladas por %s el %s" % (

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..models import Position
+from ..models import *
 from datetime import datetime
 from django import template
 
@@ -18,7 +18,7 @@ class puntos_Node(template.Node):
             fecha__month=datetime.now().month,
             fecha__year=datetime.now().year)
         usuarios = puntos.order_by('user').distinct('user')
-        for un in usuarios:
+        for p in Position.objects.filter(user=User.objects.get(username="colombia")):
             p = puntos.filter(user=un.user).order_by('-fecha')[0]
             obj = {}
             obj['latitude'] = p.position.latitude

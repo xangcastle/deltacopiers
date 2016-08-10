@@ -24,7 +24,7 @@ var get_content = function(fecha, usuario){
 
 		var locations = [
 		{% for f in facturas %}
-		  ['A', {{ f.latitude }}, {{ f.longitude }}, '{{ f.usuario }}', '{{ f.fecha }}'],
+		  ['{{ f.label }}', {{ f.latitude }}, {{ f.longitude }}, '{{ f.usuario }}', '{{ f.fecha }}'],
 		{% endfor %}
 		];
 

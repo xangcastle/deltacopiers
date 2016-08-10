@@ -25,6 +25,7 @@ class puntos_Node(template.Node):
             obj['longitude'] = p.position.longitude
             obj['usuario'] = p.user.username
             obj['fecha'] = str(p.fecha)
+            obj['label'] = p.user.username[0].upper()
             data.append(obj)
         context[self.varname] = data
         return ''

@@ -14,16 +14,18 @@ class puntos_Node(template.Node):
 
     def render(self, context):
         data = []
-        for p in Position.objects.filter(fecha__day=datetime.now().day,
+        puntos = Position.objects.filter(fecha__day=datetime.now().day,
             fecha__month=datetime.now().month,
-            fecha__year=datetime.now().year):
-            if p.position:
-                obj = {}
-                obj['latitude'] = p.position.latitude
-                obj['longitude'] = p.position.longitude
-                obj['usuario'] = p.user.username
-                obj['fecha'] = str(p.fecha)
-                data.append(obj)
+            fecha__year=datetime.now().year)
+        usuarios = puntos.order_by('user').distinct('user')
+        for un in usuarios:
+            p = puntos.filter(user=un.user).order_by('-fecha')[0]
+            obj = {}
+            obj['latitude'] = p.position.latitude
+            obj['longitude'] = p.position.longitude
+            obj['usuario'] = p.user.username
+            obj['fecha'] = str(p.fecha)
+            data.append(obj)
         context[self.varname] = data
         return ''
 

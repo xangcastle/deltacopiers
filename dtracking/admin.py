@@ -128,6 +128,11 @@ class import_admin(entidad_admin):
 class archivo_admin(admin.ModelAdmin):
     list_display = ('gestion', 'variable', 'archivo')
 
+
+class seguimiento_admin(admin.ModelAdmin):
+    list_display = ('user', 'fecha')
+    list_filter = ('user',)
+
 admin.site.register(Gestion, gestion_admin)
 admin.site.register(TipoGestion, tipoGestion_admin)
 admin.site.register(Departamento, entidad_admin)
@@ -139,3 +144,4 @@ admin.site.register(Gestor, gestor_admin)
 admin.site.register(Import, import_admin)
 admin.site.register(Archivo)
 admin.site.register(SMS)
+admin.site.register(Position, seguimiento_admin)

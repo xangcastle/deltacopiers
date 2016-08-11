@@ -25,7 +25,7 @@ var get_content = function(fecha, usuario){
 			}
 
 		var locations = [
-		{% for a in queryset %}
+		{% for f in queryset %}
 		  ['{{ f.label }}', {{ f.latitude }}, {{ f.longitude }}, '{{ f.usuario }}', '{{ f.fecha }}'],
 		{% endfor %}
 		];

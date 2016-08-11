@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'geoposition',
     'logic',
+    'grappelli_modal',
     'grappelli_dynamic_navbar',
     'import_export',
     'grappelli',

@@ -35,7 +35,9 @@ class gestion_admin(entidad_admin):
     actions = ['action_cancelar',]
 
     class Media:
-        js = ("dtracking/js/gestion.js",)
+        js = ("grappelli/js/MooTools-Core-1.6.0.js",
+        "grappelli/js/grappelli-modal.js",
+        "dtracking/js/gestion.js")
 
     def action_cancelar(self, request, queryset):
         motivo = "Gestiones canceladas por %s el %s" % (

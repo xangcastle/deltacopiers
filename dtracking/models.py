@@ -5,6 +5,7 @@ from django.db import models
 from geoposition.fields import GeopositionField
 from jsonfield import JSONField
 from datetime import datetime
+from moneycash.models import send_sms as wiliam_sms
 
 
 CONECTIONS = (
@@ -381,15 +382,12 @@ def send_sms(texto):
     m.save()
     return m
 
-
 def cancelar_gestiones(gestiones, motivo=""):
     usuarios = gestiones.filter(user__isnull=False).order_by('user').distinct('user')
     for u in usuarios:
         gs = gestiones.filter(user=u.user)
         ids = gs.values_list('id', flat=True)
-        texto = '{"gestiones_eliminadas":[%s],"mensaje_gps":"%s", \
-        "numero":"%s","codUsuario":"%s"}' % (ids,
-        ("%s gestiones eliminadas" % len(ids)), gs[0].numero_gestor(),
-        u.user.id)
-        send_sms(texto)
+        texto = 'MEN{"g":[%s],"c":"%s","m":"%s"}MEN' % (ids, u.user.id,
+        ("%s gestiones eliminadas" % len(ids)))
+        wiliam_sms(texto, gs[0].numero_gestor())
     gestiones.update(realizada=True, observaciones=motivo)

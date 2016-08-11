@@ -138,6 +138,14 @@ class archivo_admin(admin.ModelAdmin):
 class seguimiento_admin(admin.ModelAdmin):
     list_display = ('user', 'fecha')
     list_filter = ('user',)
+    actions = ['action_view_on_map',]
+
+    def action_view_on_map(self, request, queryset):
+        puntos = []
+        for q in queryset:
+            puntos.append(q.to_json())
+        data = {'queryset': puntos}
+        return render_to_response('admin/view_on_map.html', data)
 
 
 class sms_admin(admin.ModelAdmin):

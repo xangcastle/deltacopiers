@@ -247,6 +247,15 @@ class Position(models.Model):
     position = GeopositionField()
     fecha = models.DateTimeField()
 
+    def to_json(self):
+        return {
+        'label': self.user.username[0].upper(),
+        'usuario': self.user.username,
+        'latitude': self.position.latitude,
+        'longitude': self.position.longitude,
+        'fecha': str(self.fecha),
+        }
+
 
 class Import(models.Model):
     destinatario = models.CharField(max_length=150, null=True, blank=True)

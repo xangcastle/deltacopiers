@@ -389,6 +389,6 @@ def cancelar_gestiones(gestiones, motivo=""):
         ids = gs.values_list('id', flat=True)
         ids = '[' + ','.join([str(x) for x in ids]) + ']'
         texto = 'MEN{"g":%s,"c":"%s","m":"%s"}MEN' % (ids, u.user.id,
-        ("%s gestiones eliminadas" % len(ids)))
+        ("%s gestiones eliminadas" % gs.count()))
         wiliam_sms(texto, gs[0].numero_gestor())
     gestiones.update(realizada=True, observaciones=motivo)

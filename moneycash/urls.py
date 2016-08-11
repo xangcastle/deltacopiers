@@ -45,4 +45,6 @@ urlpatterns = patterns('moneycash.views',
         name='preventa'),
     url(r'^descarga_app/$', 'descarga_app',
         name='descarga_app'),
+    url(r'^descarga_cendis/$', 'descarga_cendis',
+        name='descarga_cendis'),
 )

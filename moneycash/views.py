@@ -26,6 +26,11 @@ def descarga_app(request):
     return download_file(path)
 
 
+def descarga_cendis(request):
+    path = "/var/www/deltacopiers/banpro.apk"
+    return download_file(path)
+
+
 class index(TemplateView):
     template_name = "moneycash/base.html"
 

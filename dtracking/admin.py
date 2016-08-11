@@ -144,7 +144,9 @@ class seguimiento_admin(admin.ModelAdmin):
         puntos = []
         for q in queryset:
             puntos.append(q.to_json())
-        data = {'queryset': puntos}
+        last = queryset.order_by('-fecha')[0]
+        data = {'queryset': puntos,
+        'init': {'latitude': last.position.latitude, 'longitude': last.position.longitude}}
         return render_to_response('admin/view_on_map.html', data)
 
 

@@ -33,7 +33,7 @@ var get_content = function(fecha, usuario){
 
 		var map = new google.maps.Map(document.getElementById('map'), {
 		  zoom: 12,
-		  center: new google.maps.LatLng(12.130634779728421, -86.2261902890624),
+		  center: new google.maps.LatLng({{ init.latitude }}, {{ init.longitude }}),
 		  mapTypeId: google.maps.MapTypeId.ROADMAP
 		});
 

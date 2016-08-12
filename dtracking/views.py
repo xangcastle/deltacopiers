@@ -110,3 +110,11 @@ def mensajeria(request):
     data = json.dumps(data)
     smss.update(enviado=True, fecha_envio=datetime.now())
     return HttpResponse(data, content_type="application/json")
+
+
+@csrf_exempt
+def view_details(request):
+    g = Gestion.objects.get(id=int(request.POST.get('id', '')))
+    data = g.to_json()
+    data = json.dumps(data)
+    return HttpResponse(data, content_type="application/json")

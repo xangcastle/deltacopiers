@@ -21,4 +21,6 @@ urlpatterns = patterns('dtracking.views',
         name='seguimiento_gps'),
     url(r'^movil/mensajeria/', 'mensajeria',
         name='mensajeria_movil'),
+    url(r'^view_details/', 'view_details',
+        name='view_details'),
 )

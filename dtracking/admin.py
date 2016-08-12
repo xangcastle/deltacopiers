@@ -28,7 +28,7 @@ class gestion_admin(entidad_admin):
     change_list_template = "dtracking/gestiones.html"
     date_hierarchy = "fecha"
     list_display = ('destinatario', 'direccion', 'departamento', 'municipio',
-    'barrio', 'tipo_gestion', 'user', '_realizada', 'tag_media')
+    'barrio', 'tipo_gestion', 'user', '_realizada')
     list_filter = ('tipo_gestion', 'departamento', 'municipio', 'zona', 'user', 'realizada')
     search_fields = ('destinatario', 'departamento__name',
     'municipio__name', 'barrio__name', 'zona__name')
@@ -36,10 +36,11 @@ class gestion_admin(entidad_admin):
     actions = ['action_cancelar',]
 
     class Media:
-        js = ("dtracking/js/bootstrap.model.js",
+        js = ("/static/moneycash/jquery/jquery-2.2.3.min.js",
+        "/static/moneycash/bootstrap/js/bootstrap.min.js",
         "dtracking/js/gestion.js")
         css = {
-            "all": ("dtracking/css/bootstrap.css",)
+            "all": ("/static/moneycash/bootstrap/css/bootstrap.min.css",)
         }
 
     def action_cancelar(self, request, queryset):

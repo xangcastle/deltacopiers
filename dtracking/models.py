@@ -6,6 +6,7 @@ from geoposition.fields import GeopositionField
 from jsonfield import JSONField
 from datetime import datetime
 from moneycash.models import send_sms as wiliam_sms
+import json
 
 
 CONECTIONS = (
@@ -211,7 +212,9 @@ class Gestion(models.Model):
         if self.media():
             o['media'] = []
             for a in self.media():
-                o['media'].append(str(a.archivo.url))
+                o['media'].append(a.to_json())
+        if self.json:
+            o['data'] = json.loads(self.json)
         return o
 
     def numero_gestor(self):
@@ -219,21 +222,12 @@ class Gestion(models.Model):
 
     def _realizada(self):
         if self.realizada:
-            return '<a data-toggle="modal" href="#grappelli-modal" data-id="%s">Ver&nbsp;<img src="/static/admin/img/icon-yes.svg" alt="True"></a>' \
+            return '<a data-id="%s" class="detalle">Ver&nbsp;<img src="/static/admin/img/icon-yes.svg" alt="True"></a>' \
             % self.id
         else:
             return '<img src="/static/admin/img/icon-no.svg" alt="False">'
     _realizada.allow_tags = True
     _realizada.short_description = "Realizada"
-
-    def tag_media(self):
-        tag = ''
-        if self.media():
-            for archivo in self.media():
-                tag = tag + '<img src="%s">' % archivo.archivo.url
-        return tag
-    tag_media.allow_tags = True
-    tag_media.short_description = "archivos"
 
     class Meta:
         verbose_name_plural = "gestiones"
@@ -246,6 +240,10 @@ class Archivo(models.Model):
 
     def __unicode__(self):
         return "%s %s" % (self.gestion, self.archivo)
+
+    def to_json(self):
+        return {'variable': self.variable,
+        'archivo': self.archivo.url}
 
     class Meta:
         verbose_name_plural = "Archivos Media"

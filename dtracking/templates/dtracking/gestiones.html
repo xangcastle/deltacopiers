@@ -2,17 +2,23 @@
 
 {% block content %}
 {{ block.super }}
-<div id="grappelli-modal" class="modal hide fade in" style="display: none;">
-    <div class="modal-header">
-        <a data-dismiss="modal" class="close">×</a>
-        <h3>Cabecera de la ventana</h3>
-     </div>
-     <div class="modal-body">
-         <h4>Texto de la ventana</h4>
-        <p>Mas texto en la ventana.</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" data-dismiss="modal" class="btn btn-success">Ok</a>
-    </div>
+<div class="modal fade" id="grappelli-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detalles de la Gestion</h4>
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+              <div class="alert" id="mensaje"></div>
+              <button type="button" class="btn btn-success" id="modal_ok">Ok</button>
+            </div>
+          </div>
+  </div>
 </div>
 {% endblock content %}

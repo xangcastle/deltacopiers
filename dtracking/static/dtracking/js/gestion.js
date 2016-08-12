@@ -1,20 +1,20 @@
-(function($) {
+
   var show_details = function(){
-    var SM = new SimpleModal({"width":600});
-      SM.addButton("Action button", "btn primary", function(){
-          this.hide();
-      });
-      SM.addButton("Cancel", "btn");
-      SM.show({
-        "model":"modal-ajax",
-        "title":"Title",
-        "param":{
-          "url":"ajax-content.php",
-          "onRequestComplete": function(){ /* Action on request complete */ }
-        }
-      });
+    var gestion = $(this).data('id');
+    console.log(gestion);
+    $.ajax('/dtracking/view_details/',{
+      type: 'POST',
+      data: {'id': gestion},
+      success: function(data){
+        console.log(data);
+        var modal = $('#grappelli-modal');
+        var body = modal.find(".modal-body")
+        body.empty();
+        body.append(data);
+        modal.modal('show');
+      },
+    })
   }
   $(document).on('ready', function(){
     $('.detalle').on('click', show_details);
   });
-})(grp.jQuery);

@@ -214,7 +214,7 @@ class Gestion(models.Model):
             for a in self.media():
                 o['media'].append(a.to_json())
         if self.json:
-            o['data'] = json.loads(self.json)
+            o['data'] = self.json
         return o
 
     def numero_gestor(self):

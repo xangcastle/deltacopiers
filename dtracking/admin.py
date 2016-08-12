@@ -25,9 +25,10 @@ class tipoGestion_admin(entidad_admin):
 
 
 class gestion_admin(entidad_admin):
+    change_list_template = "dtracking/gestiones.html"
     date_hierarchy = "fecha"
     list_display = ('destinatario', 'direccion', 'departamento', 'municipio',
-    'barrio', 'tipo_gestion', 'user', '_realizada')
+    'barrio', 'tipo_gestion', 'user', '_realizada', 'tag_media')
     list_filter = ('tipo_gestion', 'departamento', 'municipio', 'zona', 'user', 'realizada')
     search_fields = ('destinatario', 'departamento__name',
     'municipio__name', 'barrio__name', 'zona__name')
@@ -35,9 +36,11 @@ class gestion_admin(entidad_admin):
     actions = ['action_cancelar',]
 
     class Media:
-        js = ("grappelli/js/MooTools-Core-1.6.0.js",
-        "grappelli/js/grappelli-modal.js",
+        js = ("dtracking/js/bootstrap.model.js",
         "dtracking/js/gestion.js")
+        css = {
+            "all": ("dtracking/css/bootstrap.css",)
+        }
 
     def action_cancelar(self, request, queryset):
         motivo = "Gestiones canceladas por %s el %s" % (

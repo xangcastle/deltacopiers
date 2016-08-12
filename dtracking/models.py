@@ -219,12 +219,21 @@ class Gestion(models.Model):
 
     def _realizada(self):
         if self.realizada:
-            return '<a class="detalle" data-id="%s">Ver&nbsp;<img src="/static/admin/img/icon-yes.svg" alt="True"></a>' \
+            return '<a data-toggle="modal" href="#grappelli-modal" data-id="%s">Ver&nbsp;<img src="/static/admin/img/icon-yes.svg" alt="True"></a>' \
             % self.id
         else:
             return '<img src="/static/admin/img/icon-no.svg" alt="False">'
     _realizada.allow_tags = True
     _realizada.short_description = "Realizada"
+
+    def tag_media(self):
+        tag = ''
+        if self.media():
+            for archivo in self.media():
+                tag = tag + '<img src="%s">' % archivo.url
+        return tag
+    tag_media.allow_tags = True
+    tag_media.short_description = "archivos"
 
     class Meta:
         verbose_name_plural = "gestiones"
@@ -255,6 +264,10 @@ class Position(models.Model):
         'longitude': self.position.longitude,
         'fecha': str(self.fecha),
         }
+
+    class Meta:
+        verbose_name = 'posicion'
+        verbose_name_plural = "seguimiento gps"
 
 
 class Import(models.Model):

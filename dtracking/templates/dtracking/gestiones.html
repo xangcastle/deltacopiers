@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+{{ block.super }}
+<div id="grappelli-modal" class="modal hide fade in" style="display: none;">
+    <div class="modal-header">
+        <a data-dismiss="modal" class="close">×</a>
+        <h3>Cabecera de la ventana</h3>
+     </div>
+     <div class="modal-body">
+         <h4>Texto de la ventana</h4>
+        <p>Mas texto en la ventana.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" data-dismiss="modal" class="btn btn-success">Ok</a>
+    </div>
+</div>
+{% endblock content %}

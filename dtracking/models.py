@@ -230,7 +230,7 @@ class Gestion(models.Model):
         tag = ''
         if self.media():
             for archivo in self.media():
-                tag = tag + '<img src="%s">' % archivo.url
+                tag = tag + '<img src="%s">' % archivo.archivo.url
         return tag
     tag_media.allow_tags = True
     tag_media.short_description = "archivos"

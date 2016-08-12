@@ -9,9 +9,8 @@
         console.log(data);
         var modal = $('#grappelli-modal');
         var body = modal.find(".modal-body")
-        body.empty();
         $.each(data.media, function(key, value){
-          body.append('<img src="' + value.archivo +'" class="img-responsive"/>');
+          console.log(value);
         });
         modal.modal('show');
       },

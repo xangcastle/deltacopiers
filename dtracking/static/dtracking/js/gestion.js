@@ -10,7 +10,10 @@
         var modal = $('#grappelli-modal');
         var body = modal.find(".modal-body")
         body.empty();
-        body.append(data);
+        $.each(data.media, function(key, value){
+          console.log(key);
+          console.log(value);
+        });
         modal.modal('show');
       },
     })

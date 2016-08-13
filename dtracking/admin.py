@@ -40,7 +40,8 @@ class gestion_admin(entidad_admin):
         "/static/moneycash/bootstrap/js/bootstrap.min.js",
         "dtracking/js/gestion.js")
         css = {
-            "all": ("/static/moneycash/bootstrap/css/bootstrap.min.css",)
+            "all": ("/static/moneycash/bootstrap/css/bootstrap.min.css",
+                    "/static/dtracking/css/carousel.css")
         }
 
     def action_cancelar(self, request, queryset):

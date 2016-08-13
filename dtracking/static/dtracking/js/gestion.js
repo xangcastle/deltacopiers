@@ -19,7 +19,7 @@
           }
           var indicador = '<li data-target="#myCarousel" data-slide-to="'+key+'" class="'+clase+'"></li>'
           var item = '<div class="item"><img class="first-slide" src="'+value.archivo+'" alt="First slide"><div class="container"><div class="carousel-caption"><h1>'+value.variable+'</h1></div></div></div>'
-          indicadores.append(indicadors);
+          indicadores.append(indicador);
           carousel.append(item)
         });
         modal.modal('show');

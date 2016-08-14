@@ -65,8 +65,8 @@ var complete_cliente = function () {
           data: {'id': producto, 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()},
           success: function(data){
               modal.find('#producto').val(data.id);
-              modal.find('#code').val(data.code);
-              modal.find('#name').val(data.name);
+              modal.find('.modal-title').html(data.name);
+              modal.find('img').attr('src', data.imagen)
               modal.find('#no_part').val(data.no_part);
               modal.find('#price').val(data.price);
               modal.find('#cost').val(data.cost);

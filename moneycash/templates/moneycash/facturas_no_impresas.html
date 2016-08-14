@@ -1,15 +1,14 @@
 {% extends "moneycash/caja.html" %}
 
 {% block script_extra %}
-{{ super }}
-<script src="/static/moneycash/js/caja.js"></script>
+{{ block.super }}
 <script src="/static/moneycash/js/facturas_no_impresas.js"></script>
 {% endblock script_extra %}
 
 {% block titulo %}Facturas no impresas{% endblock titulo%}
-
 {% block form %}
-<div class="container-fluid well">
+{{ block.super }}
+<div class="row">
   <table class="table table-bordered table-hover" id="listado">
     <thead>
       <tr>
@@ -30,10 +29,13 @@
       {% endfor %}
     </tbody>
   </table>
-  <form class="" action="" method="post" style="display: none;">
+</div>
+{% endblock %}
+{% block extra-form %}
+  <form class="" action="" method="post" style="display: none;" id="formulario">
     {% csrf_token %}
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-6">
           <div class="form-group">
               <label for="factura_subtotal">Subtotal</label>
               <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
@@ -68,7 +70,7 @@
               <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">
           </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
           <div class="form-group">
               <label for="code" id="label_cliente">CLIENTE</label>
               <input type="hidden" class="form-control" id="cliente" name="cliente_id">
@@ -89,43 +91,8 @@
           <div class="form-group">
               <textarea class="form-control" id="address" placeholder="DIRECCION" name="cliente_address" readonly></textarea>
           </div>
-          <div class="form-group">
-              <label for="tipopago">Tipo de pago</label>
-              <select id="tipopago" class="form-control" name="factura_tipopago">
-                  {% for t in tipo_pagos %}
-                  <option value={{ t.id }}>{{ t.name }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="form-group">
-              <label for="pago_efectivo">Efectivo</label>
-              <input type="input" class="form-control efectivo" id="pago_efectivo" readonly name="pago_efectivo" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="pago_cheque cheque">Cheques</label>
-              <input type="input" class="form-control" id="pago_cheque" readonly name="pago_cheque" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="pago_transferencia">Transferencias</label>
-              <input type="input" class="form-control transferencia" id="pago_transferencia" readonly name="pago_transferencia" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="pago_tarjeta">Tarjeta</label>
-              <input type="input" class="form-control tarjeta" id="pago_tarjeta" readonly name="pago_tarjeta" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="pago_total">Pago Total</label>
-              <input type="input" class="form-control" id="pago_total" readonly name="pago_total" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="pago_cambio">Cambio</label>
-              <input type="input" class="form-control" id="pago_cambio" readonly name="pago_cambio" value="0.0">
-          </div>
       </div>
     </div>
   </form>
-</div>
 
-{% endblock form %}
+{% endblock %}

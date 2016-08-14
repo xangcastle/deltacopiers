@@ -13,7 +13,7 @@ var totalizar_efectivo = function(){
 }
 
 var salvar_efectivo = function () {
-  $('.efectivo').html($('#efectivoTotal').val());
+  $('#pago_efectivo').val($('#efectivoTotal').val());
   $('#efectivoModal').modal('hide');
   totalizar_monto();
 }
@@ -32,7 +32,7 @@ var totalizar_cheque = function(){
 }
 
 var salvar_cheque = function () {
-  $('.cheque').html($('#chequeTotal').val());
+  $('#pago_cheque').val($('#chequeTotal').val());
   $('#chequeModal').modal('hide');
   totalizar_monto();
 }
@@ -51,7 +51,7 @@ var totalizar_transferencia = function(){
 }
 
 var salvar_transferencia = function () {
-  $('.transferencia').html($('#transferenciaTotal').val());
+  $('#pago_transferencia').val($('#transferenciaTotal').val());
   $('#transferenciaModal').modal('hide');
   totalizar_monto();
 }
@@ -70,7 +70,7 @@ var totalizar_tarjeta = function(){
 }
 
 var salvar_tarjeta = function () {
-  $('.tarjeta').html($('#tarjetaTotal').val());
+  $('#pago_tarjeta').val($('#tarjetaTotal').val());
   $('#tarjetaModal').modal('hide');
   totalizar_monto();
 }
@@ -87,16 +87,16 @@ $(document).on('ready', function () {
           locale: 'es-NI'
       });
   });
-  $('.efectivo').on('click', function() {
+  $('#pago_efectivo').on('click', function() {
     $('#efectivoModal').modal('show');
   });
-  $('.cheque').on('click', function() {
+  $('#pago_cheque').on('click', function() {
     $('#chequeModal').modal('show');
   });
-  $('.transferencia').on('click', function() {
+  $('#pago_transferencia').on('click', function() {
     $('#transferenciaModal').modal('show');
   });
-  $('.tarjeta').on('click', function() {
+  $('#pago_tarjeta').on('click', function() {
     $('#tarjetaModal').modal('show');
   });
   $('.efectivoCantidad').on('change', totalizar_efectivo);

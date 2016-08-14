@@ -20,11 +20,13 @@ var factura = function(){
       form.find('#tipopago').val(data.cliente_data.tipopago);
     }
   })
-  $('form').show();
-  $('table').hide();
+  $('#metodos-pago').show();
+  $('#formulario').show();
+  $('#listado').hide();
 }
 
 $(document).on('ready', function(){
-  $('form').hide();
-  $('table tbody').on('dblclick', 'tr', factura);
+  $('#formulario').hide();
+  $('#metodos-pago').hide();
+  $('#listado tbody').on('dblclick', 'tr', factura);
 });

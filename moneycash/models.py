@@ -31,6 +31,9 @@ class Cliente(Entidad):
     def facturas(self):
         return Factura.objects.filter(cliente=self)
 
+    def saldo(self):
+        return self.facturas.filter(saldo__gt=0.009).aggregate(Sum('saldo'))['saldo__sum']
+
     def to_json(self):
         obj = super(Cliente, self).to_json()
         obj['facturas'] = []
@@ -117,6 +120,8 @@ class Factura(models.Model):
     aplica_al = models.NullBooleanField()
     tipopago = models.ForeignKey(TipoPago, null=True)
     impresa = models.BooleanField(default=False)
+    saldo = models.FloatField(null=True)
+    monto = models.FloatField(null=True)
 
     def to_json(self):
         obj = model_to_dict(self)

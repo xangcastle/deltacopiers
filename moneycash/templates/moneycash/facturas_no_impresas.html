@@ -5,6 +5,11 @@
 <script src="/static/moneycash/js/facturas_no_impresas.js"></script>
 {% endblock script_extra %}
 
+{% block botones %}
+<li><a><button type="button" class="btn btn-success" id="btn_imprimir">Implimir</button></a></li>
+<li><a><button type="button" class="btn btn-danger" id="btn_cancel">Cancelar</button></a></li>
+{% endblock botones %}
+
 {% block titulo %}Facturas no impresas{% endblock titulo%}
 {% block form %}
 {{ block.super }}
@@ -48,23 +53,7 @@
               <label for="factura_iva">Iva</label>
               <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
           </div>
-          <div class="form-group" id="retenciones">
-              <div class="checkbox">
-                  <label>
-                      <input type="checkbox" id="aplica_ir" name="aplica_ir"> IR
-                  </label>
-                  <label>
-                      <input type="checkbox"  id="aplica_al" name="aplica_al"> Alcaldia
-                  </label>
-                  <label>
-                      <input type="checkbox"  id="excento_iva" name="excento_iva"> Exento IVA
-                  </label>
-              </div>
-          </div>
-          <div class="form-group">
-              <label for="factura_retencion">Monto Retenido</label>
-              <input type="input" class="form-control" id="factura_retencion" readonly name="factura_retencion" value="0.0">
-          </div>
+          
           <div class="form-group">
               <label for="factura_total">Total</label>
               <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">

@@ -3,6 +3,11 @@
 {% block form %}
 <div class="row">
   <div class="col-md-3" id="metodos-pago">
+    <div class="panel panel-success">
+    <div class="panel-heading">
+      <h3 class="panel-title">Pagos y Retensiones</h3>
+    </div>
+    <div class="panel-body">
     <div class="form-group">
         <label for="tipopago">Tipo de pago</label>
         <select id="tipopago" class="form-control" name="factura_tipopago">
@@ -11,21 +16,50 @@
             {% endfor %}
         </select>
     </div>
-    <div class="form-group">
-        <label for="pago_efectivo">Efectivo</label>
-        <input type="input" class="form-control efectivo" id="pago_efectivo" readonly name="pago_efectivo" value="0.0">
+    <div class="form-group" id="retenciones">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id="aplica_ir" name="aplica_ir"> IR
+            </label>
+            <label>
+                <input type="checkbox"  id="aplica_al" name="aplica_al"> Alcaldia
+            </label>
+            <label>
+                <input type="checkbox"  id="excento_iva" name="excento_iva"> Exento IVA
+            </label>
+        </div>
     </div>
     <div class="form-group">
-        <label for="pago_cheque cheque">Cheques</label>
-        <input type="input" class="form-control" id="pago_cheque" readonly name="pago_cheque" value="0.0">
+        <label for="factura_retencion">Monto Retenido</label>
+        <input type="input" class="form-control" id="factura_retencion" readonly name="factura_retencion" value="0.0">
     </div>
-    <div class="form-group">
-        <label for="pago_transferencia">Transferencias</label>
-        <input type="input" class="form-control transferencia" id="pago_transferencia" readonly name="pago_transferencia" value="0.0">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="pago_efectivo">Efectivo</label>
+            <input type="input" class="form-control efectivo" id="pago_efectivo" readonly name="pago_efectivo" value="0.0">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="pago_cheque cheque">Cheques</label>
+            <input type="input" class="form-control" id="pago_cheque" readonly name="pago_cheque" value="0.0">
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="pago_tarjeta">Tarjeta</label>
-        <input type="input" class="form-control tarjeta" id="pago_tarjeta" readonly name="pago_tarjeta" value="0.0">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="pago_transferencia">Transferencias</label>
+            <input type="input" class="form-control transferencia" id="pago_transferencia" readonly name="pago_transferencia" value="0.0">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="pago_tarjeta">Tarjeta</label>
+            <input type="input" class="form-control tarjeta" id="pago_tarjeta" readonly name="pago_tarjeta" value="0.0">
+        </div>
+      </div>
     </div>
     <div class="form-group">
         <label for="pago_total">Pago Total</label>
@@ -36,6 +70,8 @@
         <input type="input" class="form-control" id="pago_cambio" readonly name="pago_cambio" value="0.0">
     </div>
   </div>
+</div>
+</div>
   <div class="col-md-9">
     {% block extra-form %}
     {% endblock extra-form %}

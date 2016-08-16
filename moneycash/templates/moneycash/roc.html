@@ -1,8 +1,7 @@
 {% extends "moneycash/caja.html" %}
 
-{% block form %}
-<div class="container-fluid well">
-  <h2>Recibo Oficial de Caja</h2>
+{% block titulo %}Recibo Oficial de Caja{%endblock%}
+{% block extra-form %}
   <form class="form" action="." method="post">
     <div class="row">
     <div class="form-group">
@@ -26,24 +25,6 @@
         <input type="text" class="form-control" id="monto" placeholder="monto" readonly name="monto" value="0.0">
       </div>
     </div>
-    <div class="col-md-6">
-      <table class="table table-bordered">
-        <thead>
-          <th>Efectivo</th>
-          <th>Cheque</th>
-          <th>Transferencia</th>
-          <th>Tarjeta</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="efectivo">0.0</td>
-            <td class="cheque">0.0</td>
-            <td class="transferencia">0.0</td>
-            <td class="tarjeta">0.0</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
     </div>
     <div class="row">
       <div class="form-group">
@@ -56,8 +37,7 @@
       </div>
     </div>
   </form>
-</div>
-{% endblock form %}
+{% endblock %}
 
 {% block script_extra %}
 {{ super }}

@@ -115,7 +115,6 @@ def grabar_cabecera(request):
     f.iva = request.POST.get('factura_iva', '')
     f.retension = request.POST.get('factura_retencion', '')
     f.total = request.POST.get('factura_total', '')
-    f.tipopago = request.POST.get('factura_tipopago', '')
     f.save()
     return f
 

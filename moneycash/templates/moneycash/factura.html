@@ -15,7 +15,7 @@
   <li><a><button type="button" class="btn btn-danger" id="btn_borrar">Borrar</button></a></li>
   {% endblock botones %}
 
-
+{% block titulo %}Formulario de Facturacion{% endblock titulo %}
 
 {% block script_extra %}
 {{ super }}
@@ -30,118 +30,112 @@
 {% endblock script_extra %}
 
 {% block form %}
-<div class="container-fluid well">
             <div id="mensajes">
             </div>
             <form method="POST" action=".">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-md-4 datos_cliente">
-                        <div class="form-group">
-                            <label for="code" id="label_cliente">CLIENTE</label>
-                            <input type="hidden" class="form-control" id="cliente" name="cliente_id">
-                            <input type="text" class="form-control" id="code" placeholder="CODIGO" readonly name="code">
+                  <div class="col-md-3">
+                        <div class="panel panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">CLIENTE</h3>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="name" placeholder="NOMBRE" name="cliente_name" autocomplete="off" autofocus="true">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="ident" placeholder="IDENTIFICACION" name="cliente_ident">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="email" placeholder="EMAIL" name="cliente_email">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="phone" placeholder="TELEFONO" name="cliente_phone">
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" id="address" placeholder="DIRECCION" name="cliente_address"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-4 datos_factura">
-                        <div class="form-group">
-                            <label for="number">Numero</label>
-                            <input type="input" class="form-control" id="number" readonly name="factura_number">
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Fecha</label>
-                            <input type="text" class="form-control" id="date" readonly name="factura_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="tipopago">Tipo de pago</label>
-                            <select id="tipopago" class="form-control" name="factura_tipopago">
-                                {% for t in tipo_pagos %}
-                                <option value={{ t.id }}>{{ t.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <label for="retenciones">Aplicar Retencion</label>
-                        <div class="form-group" id="retenciones">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="aplica_ir" name="aplica_ir"> IR
-                                </label>
-                                <label>
-                                    <input type="checkbox"  id="aplica_al" name="aplica_al"> Alcaldia
-                                </label>
-                                <label>
-                                    <input type="checkbox"  id="excento_iva" name="excento_iva"> Exento IVA
-                                </label>
+                        <div class="panel-body">
+                          <div class="datos_cliente">
+                            <div class="form-group">
+                                <label for="code" id="label_cliente"></label>
+                                <input type="hidden" class="form-control" id="cliente" name="cliente_id">
+                                <input type="text" class="form-control" id="code" placeholder="CODIGO" readonly name="code">
                             </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="name" placeholder="NOMBRE" name="cliente_name" autocomplete="off" autofocus="true">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ident" placeholder="IDENTIFICACION" name="cliente_ident">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="email" placeholder="EMAIL" name="cliente_email">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="phone" placeholder="TELEFONO" name="cliente_phone">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" id="address" placeholder="DIRECCION" name="cliente_address"></textarea>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="factura_comentarios">Observaciones y Comentarios</label>
+                          <textarea name="factura_comentarios" rows="3" cols="40" class="form-control"></textarea>
+                          </div>
+                          </div>
+                      </div>
+                      </div>
+                    <div class="col-md-7">
+
+                          <div class="panel panel-success">
+                            <div class="panel-heading">
+                              <h3 class="panel-title">Detalle de Productos</h3>
+                            </div>
+                            <div class="panel-body">
+                            <div class="row">
+                                <div class=" container-fluid">
+                                  <div class="form-group">
+                                      <input type="input" class="form-control" id="buscador_productos" placeholder="BUSCAR PRODUCTO">
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="container-fluid">
+                                  <table id="productos" class="table table-bordered table-striped table-hover">
+                                      <thead>
+                                          <tr>
+                                              <th>Codigo</th>
+                                              <th>Descripcion</th>
+                                              <th>Bodega</th>
+                                              <th>Cantidad</th>
+                                              <th>Precio</th>
+                                              <th>Descuento</th>
+                                              <th>Total</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                      </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <label for="factura_comentarios">Comentarios</label>
-                            <textarea class="form-control" id="factura_comentarios" name="factura_comentarios"></textarea>
+
+                      </div>
+
+                      <div class="col-md-2">
+                        <div class="panel panel-success">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Totales</h3>
+                          </div>
+                          <div class="panel-body">
+                                <div class="form-group">
+                                  <label for="factura_subtotal">Subtotal</label>
+                                  <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
+                                </div>
+                                <div class="form-group">
+                                  <label for="factura_discount">Descuento</label>
+                                  <input type="input" class="form-control" id="factura_discount" readonly name="factura_discount" value="0.0">
+                                </div>
+                                <div class="form-group">
+                                  <label for="factura_iva">Iva</label>
+                                  <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
+                                </div>
+                                <div class="form-group">
+                                  <label for="factura_total">Total</label>
+                                  <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">
+                                </div>
+                          </div>
                         </div>
+                      </div>
+
                     </div>
-                    <div class="col-md-4 datos_totales">
-                        <div class="form-group">
-                            <label for="factura_subtotal">Subtotal</label>
-                            <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
-                        </div>
-                        <div class="form-group">
-                            <label for="factura_discount">Descuento</label>
-                            <input type="input" class="form-control" id="factura_discount" readonly name="factura_discount" value="0.0">
-                        </div>
-                        <div class="form-group">
-                            <label for="factura_iva">Iva</label>
-                            <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
-                        </div>
-                        <div class="form-group">
-                            <label for="factura_retencion">Monto Retenido</label>
-                            <input type="input" class="form-control" id="factura_retencion" readonly name="factura_retencion" value="0.0">
-                        </div>
-                        <div class="form-group">
-                            <label for="factura_total">Total</label>
-                            <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <input type="input" class="form-control" id="buscador_productos" placeholder="BUSCAR PRODUCTO">
-                    </div>
-                </div>
-                <div class="row table-responsive">
-                    <table id="productos" class="table table-bordered table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>CODIGO</th>
-                                <th>DESCRIPCION</th>
-                                <th>BODEGA</th>
-                                <th>CANTIDAD</th>
-                                <th>PRECIO UNITARIO</th>
-                                <th>DESCUENTO UNITARIO</th>
-                                <th>TOTAL</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-        </div>
 </form>
-</div>
 {% endblock form %}
 {% block modales %}
 <div class="modal fade" id="detalleModal" role="dialog">
@@ -204,6 +198,8 @@
               <div class="alert" id="mensaje"></div>
               <input type="hidden" id="producto" name="producto">
               <input type="hidden" id="bodega" name="bodega">
+              <input type="hidden" id="code" name="code">
+              <input type="hidden" id="name" name="name">
               <button type="button" class="btn btn-success" id="modal_ok">Ok</button>
               <button type="button" class="btn btn-danger" id="modal_delete">Eliminar</button>
             </div>

@@ -66,6 +66,8 @@ var complete_cliente = function () {
           success: function(data){
               modal.find('#producto').val(data.id);
               modal.find('.modal-title').html(data.name);
+              modal.find('#name').val(data.name);
+              modal.find('#code').val(data.code);
               modal.find('img').attr('src', data.imagen)
               modal.find('#no_part').val(data.no_part);
               modal.find('#price').val(data.price);

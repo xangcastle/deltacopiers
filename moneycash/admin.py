@@ -115,3 +115,16 @@ class preventa_admin(admin.ModelAdmin):
 admin.site.register(Preventa, preventa_admin)
 
 admin.site.register(SMS)
+
+class codigos_error(admin.TabularInline):
+    model = Codigo
+    extra = 0
+    fields = ('tipo', 'codigo', 'short_description', 'details')
+
+class modelo_admin(admin.ModelAdmin):
+    list_display = ('serie', 'modelo')
+    list_filter = ('serie',)
+    inlines = [codigos_error,]
+
+
+admin.site.register(Modelo, modelo_admin)

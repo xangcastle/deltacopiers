@@ -300,3 +300,13 @@ def preventa(request):
         d.save()
     data = json.dumps({'preventa': f.id})
     return HttpResponse(data, content_type="application/json")
+
+
+@csrf_exempt
+def modelos_soportados(request):
+    modelos = Modelo.objects.all()
+    data = []
+    for m in modelos:
+        data.append(m.to_json())
+    data = json.dumps(data)
+    return HttpResponse(data, content_type="application/json")

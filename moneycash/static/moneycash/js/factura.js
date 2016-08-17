@@ -20,84 +20,63 @@ var readonly = function (clase, option) {
     $(clase).prop('readonly', option);
 }
 
-var complete_cliente = function () {
+var complete_producto = function () {
   var _self = $(this);
       if($.trim($(_self).val()) != '') {
           $(_self).autocomplete({
               minLength: 2,
-              source: "/moneycash/autocomplete_cliente",
+              source: "/moneycash/autocomplete_producto",
               select: function(event, ui) {
-                  $('#cliente').val(ui.item.obj.id);
-                  $('#code').val(ui.item.obj.code);
-                  $('#name').val(ui.item.obj.name);
-                  $('#ident').val(ui.item.obj.ident);
-                  $('#phone').val(ui.item.obj.phone);
-                  $('#email').val(ui.item.obj.email);
-                  $('#address').val(ui.item.obj.address);
-                  readonly('.datos_cliente input, .datos_cliente textarea', true);
-                  $('#label_cliente').html('<a id="editar_cliente">Editar </a><a id="borrar_cliente">Borrar </a>');
+                var modal = $('#detalleModal')
+                  load_modal(ui.item.obj.id);
               }
           });
       }
-  }
+}
 
-  var complete_producto = function () {
-    var _self = $(this);
-        if($.trim($(_self).val()) != '') {
-            $(_self).autocomplete({
-                minLength: 2,
-                source: "/moneycash/autocomplete_producto",
-                select: function(event, ui) {
-                  var modal = $('#detalleModal')
-                    load_modal(ui.item.obj.id);
-                }
+var load_modal = function (producto, bodega, cantidad, discount){
+    bodega || ( bodega = undefined );
+    cantidad || ( cantidad = undefined );
+    discount || ( discount = undefined );
+    var modal = $('#detalleModal');
+    $.ajax("/moneycash/detalle_producto/", {
+        type: 'POST',
+        data: {'id': producto, 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()},
+        success: function(data){
+            modal.find('#producto').val(data.id);
+            modal.find('.modal-title').html(data.name);
+            modal.find('#name').val(data.name);
+            modal.find('#code').val(data.code);
+            modal.find('img').attr('src', data.imagen)
+            modal.find('#no_part').val(data.no_part);
+            modal.find('#price').val(data.price);
+            modal.find('#cost').val(data.cost);
+            if(cantidad){
+              modal.find('#cantidad').val(cantidad);
+            }else{
+              modal.find('#cantidad').val(1);
+            }
+            if(discount){
+              modal.find('#discount').val(discount);
+            }else{
+              modal.find('#discount').val(0.0);
+            }
+            var existencias = modal.find('#existencias tbody');
+            existencias.empty();
+            $.each(data.existencias, function(key, value){
+              var row = $('<tr></tr>').attr('id', value.bodega_id);
+              row.append($('<td class="bodega"></td>').html(value.bodega));
+              row.append($('<td class="cantidad"></td>').html(value.cantidad));
+              if(bodega==value.bodega_id){
+                row.addClass('active');
+                modal.find('#bodega').val(bodega);
+              }
+              existencias.append(row);
             });
+            modal.modal('show');
         }
-  }
-
-  var load_modal = function (producto, bodega, cantidad, discount){
-      bodega || ( bodega = undefined );
-      cantidad || ( cantidad = undefined );
-      discount || ( discount = undefined );
-      var modal = $('#detalleModal');
-      $.ajax("/moneycash/detalle_producto/", {
-          type: 'POST',
-          data: {'id': producto, 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()},
-          success: function(data){
-              modal.find('#producto').val(data.id);
-              modal.find('.modal-title').html(data.name);
-              modal.find('#name').val(data.name);
-              modal.find('#code').val(data.code);
-              modal.find('img').attr('src', data.imagen)
-              modal.find('#no_part').val(data.no_part);
-              modal.find('#price').val(data.price);
-              modal.find('#cost').val(data.cost);
-              if(cantidad){
-                modal.find('#cantidad').val(cantidad);
-              }else{
-                modal.find('#cantidad').val(1);
-              }
-              if(discount){
-                modal.find('#discount').val(discount);
-              }else{
-                modal.find('#discount').val(0.0);
-              }
-              var existencias = modal.find('#existencias tbody');
-              existencias.empty();
-              $.each(data.existencias, function(key, value){
-                var row = $('<tr></tr>').attr('id', value.bodega_id);
-                row.append($('<td class="bodega"></td>').html(value.bodega));
-                row.append($('<td class="cantidad"></td>').html(value.cantidad));
-                if(bodega==value.bodega_id){
-                  row.addClass('active');
-                  modal.find('#bodega').val(bodega);
-                }
-                existencias.append(row);
-              });
-              modal.modal('show');
-          }
-      });
-  }
+    });
+}
 
 
 var select_bodega = function(){
@@ -115,8 +94,8 @@ var insertar_detalle = function(code, name, cantidad, price, discount, total, pr
   }
   var row = $('<tr id="'+producto+'"></tr>')
     .append($('<td><input type="text" id="code" class="form-control" value="'+code+'" readonly><input type="hidden" id="producto" name="producto_id" value="'+producto+'" readonly></td>'))
-    .append($('<td><input type="text" id="name" class="form-control" value="'+name+'" readonly></td>'))
-    .append($('<td><input type="text" id="bodega_name" class="form-control" value="'+bodega_name+'" readonly><input type="hidden" id="bodega" name="bodega_id" value="'+bodega+'" readonly></td>'))
+    .append($('<td colspan="3"><input type="text" id="name" class="form-control" value="'+name+'" readonly></td>'))
+    .append($('<td colspan="2"><input type="text" id="bodega_name" class="form-control" value="'+bodega_name+'" readonly><input type="hidden" id="bodega" name="bodega_id" value="'+bodega+'" readonly></td>'))
     .append($('<td><input type="text" id="cantidad" name="producto_cantidad" class="form-control" value="'+cantidad+'" readonly></td>'))
     .append($('<td><input type="text" id="price" name="producto_price" class="form-control" value="'+price+'" readonly></td>'))
     .append($('<td><input type="text" id="discount" name="producto_discount" class="form-control" value="'+discount+'" readonly></td>'))
@@ -264,21 +243,6 @@ var grabar_factura = function(){
 
 }
 
-var limpiar_cliente = function(){
-  $('.datos_cliente input, .datos_cliente textarea')
-    .val("")
-    .attr('readonly', false);
-  $('.datos_cliente #code').attr('readonly', true);
-}
-
-var editar_cliente = function(){
-  $('.datos_cliente input, .datos_cliente textarea')
-    .attr('readonly', false);
-  $('.datos_cliente #code').attr('readonly', true);
-  $('.datos_cliente #name').attr('readonly', true);
-  $('.datos_cliente #ident').attr('readonly', true);
-}
-
 var limpiar_factura = function(){
   limpiar_cliente();
   limpiar_modal();
@@ -288,13 +252,8 @@ var limpiar_factura = function(){
   $('#mensajes').empty();
 }
 
-var funka = function(){
-  console.log('funka!');
-}
-
 $(document).on('ready', function(){
     $("input").on("focus", function(){$(this).select();});
-    $('.datos_cliente #name').on('keyup', complete_cliente);
     $('#buscador_productos').on('keyup', complete_producto);
     $('#existencias tbody').on('click', 'tr', select_bodega);
     $('#modal_ok').on('click', validar_modal);
@@ -304,6 +263,4 @@ $(document).on('ready', function(){
     $('input[type="checkbox"]').on('change', calcular_factura);
     $('#btn_grabar').on('click', grabar_factura);
     $('#btn_borrar').on('click', limpiar_factura);
-    $('.datos_cliente').on('click', '#borrar_cliente', limpiar_cliente);
-    $('.datos_cliente').on('click', '#editar_cliente', editar_cliente);
 });

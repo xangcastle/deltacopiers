@@ -1,4 +1,4 @@
-{% extends "moneycash/caja.html" %}
+{% extends "moneycash/base.html" %}
 
 {% block script_extra %}
 {{ block.super }}
@@ -35,53 +35,53 @@
     </tbody>
   </table>
 </div>
-{% endblock %}
-{% block extra-form %}
-  <form class="" action="" method="post" style="display: none;" id="formulario">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col-md-6">
-          <div class="form-group">
-              <label for="factura_subtotal">Subtotal</label>
-              <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="factura_discount">Descuento</label>
-              <input type="input" class="form-control" id="factura_discount" readonly name="factura_discount" value="0.0">
-          </div>
-          <div class="form-group">
-              <label for="factura_iva">Iva</label>
-              <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
-          </div>
-          
-          <div class="form-group">
-              <label for="factura_total">Total</label>
-              <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">
-          </div>
-      </div>
-      <div class="col-md-6">
-          <div class="form-group">
-              <label for="code" id="label_cliente">CLIENTE</label>
-              <input type="hidden" class="form-control" id="cliente" name="cliente_id">
-              <input type="text" class="form-control" id="code" placeholder="CODIGO" readonly name="code">
-          </div>
-          <div class="form-group">
-              <input type="text" class="form-control" id="name" placeholder="NOMBRE" readonly>
-          </div>
-          <div class="form-group">
-              <input type="text" class="form-control" id="ident" placeholder="IDENTIFICACION" name="cliente_ident" readonly>
-          </div>
-          <div class="form-group">
-              <input type="email" class="form-control" id="email" placeholder="EMAIL" name="cliente_email" readonly>
-          </div>
-          <div class="form-group">
-              <input type="text" class="form-control" id="phone" placeholder="TELEFONO" name="cliente_phone" readonly>
-          </div>
-          <div class="form-group">
-              <textarea class="form-control" id="address" placeholder="DIRECCION" name="cliente_address" readonly></textarea>
-          </div>
-      </div>
+<form class="" action="" method="post" style="display: none;" id="formulario">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-3">
+      {% include "moneycash/metodos-pago.html" %}
     </div>
-  </form>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="factura_subtotal">Subtotal</label>
+            <input type="input" class="form-control" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
+        </div>
+        <div class="form-group">
+            <label for="factura_discount">Descuento</label>
+            <input type="input" class="form-control" id="factura_discount" readonly name="factura_discount" value="0.0">
+        </div>
+        <div class="form-group">
+            <label for="factura_iva">Iva</label>
+            <input type="input" class="form-control" id="factura_iva" readonly name="factura_iva" value="0.0">
+        </div>
 
+        <div class="form-group">
+            <label for="factura_total">Total</label>
+            <input type="input" class="form-control" id="factura_total" readonly name="factura_total" value="0.0">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="code" id="label_cliente">CLIENTE</label>
+            <input type="hidden" class="form-control" id="cliente" name="cliente_id">
+            <input type="text" class="form-control" id="code" placeholder="CODIGO" readonly name="code">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="name" placeholder="NOMBRE" readonly>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="ident" placeholder="IDENTIFICACION" name="cliente_ident" readonly>
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" placeholder="EMAIL" name="cliente_email" readonly>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="phone" placeholder="TELEFONO" name="cliente_phone" readonly>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" id="address" placeholder="DIRECCION" name="cliente_address" readonly></textarea>
+        </div>
+    </div>
+  </div>
+</form>
 {% endblock %}

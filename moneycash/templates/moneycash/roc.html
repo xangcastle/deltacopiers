@@ -1,46 +1,68 @@
-{% extends "moneycash/caja.html" %}
+{% extends "moneycash/base.html" %}
 
 {% block titulo %}Recibo Oficial de Caja{%endblock%}
-{% block extra-form %}
+{% block form %}
   <form class="form" action="." method="post">
-    <div class="row">
-    <div class="form-group">
-      <label for="nombre">Nombre</label>
-      <input type="text" class="form-control" id="nombre" placeholder="nombre" name="nombre">
-    </div>
-    </div>
-    <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="fecha">Fecha</label>
-        <div class='input-group date' id='fecha'>
-            <input type='text' class="form-control" />
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar"></span>
-            </span>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+              {% include "moneycash/metodos-pago.html" %}
         </div>
-      </div>
-      <div class="form-group">
-        <label for="fecha">Monto</label>
-        <input type="text" class="form-control" id="monto" placeholder="monto" readonly name="monto" value="0.0">
-      </div>
-    </div>
-    </div>
-    <div class="row">
-      <div class="form-group">
-          <label for="montoLetras">Monto en Letras</label>
-          <textarea class="form-control" id="montoLetras" readonly name="montoLetras"></textarea>
-      </div>
-      <div class="form-group">
-          <label for="concepto">concepto</label>
-          <textarea class="form-control" id="concepto" placeholder="concepto" name="concepto"></textarea>
+        <div class="col-md-3">
+              {% include "moneycash/cliente.html" %}
+        </div>
+        <div class="col-md-6">
+
+          <div class="panel panel-success">
+          <div class="panel-heading">
+            <h4 class="panel-title"> Datos del Recibo
+              <div class="pull-right">
+                <a href="#" class="btn btn-success btn-xs pull-right" id="borrar_cliente">
+                  <i class="fa fa-times"></i>
+                </a>
+                <a href="#" class="btn btn-success btn-xs pull-right" id="editar_cliente">
+                  <i class="fa fa-edit"></i>
+                </a>
+              </div>
+            </h4>
+          </div>
+          <div class="panel-body">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="nombre" name="nombre">
+          </div>
+          <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <div class='input-group date' id='fecha'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fecha">Monto</label>
+            <input type="text" class="form-control" id="monto" placeholder="monto" readonly name="monto" value="0.0">
+          </div>
+          <div class="form-group">
+              <label for="montoLetras">Monto en Letras</label>
+              <textarea class="form-control" id="montoLetras" readonly name="montoLetras"></textarea>
+          </div>
+          <div class="form-group">
+              <label for="concepto">concepto</label>
+              <textarea class="form-control" id="concepto" placeholder="concepto" name="concepto"></textarea>
+          </div>
+          </div>
+          </div>
+        </div>
       </div>
     </div>
   </form>
 {% endblock %}
 
 {% block script_extra %}
-{{ super }}
+{{ block.super }}
+<script src="/static/moneycash/js/cliente.js"></script>
 <script src="/static/moneycash/js/caja.js"></script>
 <script src="/static/moneycash/js/NumeroALetras.js"></script>
 {% endblock script_extra %}

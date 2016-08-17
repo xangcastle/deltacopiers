@@ -32,13 +32,14 @@ class Cliente(Entidad):
         return Factura.objects.filter(cliente=self)
 
     def saldo(self):
-        return self.facturas.filter(saldo__gt=0.009).aggregate(Sum('saldo'))['saldo__sum']
+        return self.facturas().filter(saldo__gt=0.009).aggregate(Sum('saldo'))['saldo__sum']
 
     def to_json(self):
         obj = super(Cliente, self).to_json()
         obj['facturas'] = []
         for f in self.facturas():
             obj['facturas'].append(model_to_dict(f))
+        obj['saldo'] = self.saldo()
         return obj
 
 
@@ -190,3 +191,32 @@ class Orden(models.Model):
     preventa = models.ForeignKey(Preventa)
     producto = models.ForeignKey(Producto)
     cantidad = models.FloatField()
+
+
+class Modelo(models.Model):
+    serie = models.CharField(max_length=5, null=True, blank=True)
+    modelo = models.CharField(max_length=65)
+    manual = models.FileField(upload_to="media",null=True, blank=True)
+
+    def to_json(self):
+        return {'serie': self.serie,
+        'modelo': self.modelo,
+        'errores': [x.to_json() for x in Codigo.objects.filter(tipo="er", modelo=self)],
+        'trabas': [x.to_json() for x in Codigo.objects.filter(tipo="jm", modelo=self)],
+        }
+
+class Codigo(models.Model):
+    modelo = models.ForeignKey(Modelo)
+    TIPOS = (
+    ("er", "Codigo de Error"),
+    ("jm", 'Codigo de Traba'),
+    )
+    tipo = models.CharField(max_length=2, choices=TIPOS, default="er")
+    codigo = models.CharField(max_length=6)
+    short_description = models.CharField(max_length=125)
+    details = models.TextField(max_length=400, null=True, blank=True)
+
+    def to_json(self):
+        return {'codigo': self.codigo,
+        'short_description': self.short_description,
+        'details': self.details}

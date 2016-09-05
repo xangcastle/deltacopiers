@@ -114,7 +114,12 @@ class preventa_admin(admin.ModelAdmin):
 
 admin.site.register(Preventa, preventa_admin)
 
-admin.site.register(SMS)
+class sms_admin(entidad_admin):
+    list_display = ('numero', 'texto', 'enviado')
+    search_fields = ('numero', 'texto')
+    list_filter = ('enviado', 'numero')
+
+admin.site.register(SMS, sms_admin)
 
 class codigos_error(admin.TabularInline):
     model = Codigo

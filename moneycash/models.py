@@ -212,7 +212,7 @@ class Codigo(models.Model):
     ("jm", 'Codigo de Traba'),
     )
     tipo = models.CharField(max_length=2, choices=TIPOS, default="er")
-    codigo = models.CharField(max_length=6)
+    codigo = models.CharField(max_length=9)
     short_description = models.CharField(max_length=125)
     details = models.TextField(max_length=400, null=True, blank=True)
 

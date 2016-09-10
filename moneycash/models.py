@@ -214,7 +214,7 @@ class Codigo(models.Model):
     tipo = models.CharField(max_length=2, choices=TIPOS, default="er")
     codigo = models.CharField(max_length=9)
     short_description = models.CharField(max_length=125)
-    details = models.TextField(max_length=400, null=True, blank=True)
+    details = models.TextField(max_length=1500, null=True, blank=True)
 
     def to_json(self):
         return {'codigo': self.codigo,

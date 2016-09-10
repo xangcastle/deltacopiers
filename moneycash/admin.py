@@ -127,6 +127,7 @@ class codigos_error(admin.TabularInline):
     fields = ('tipo', 'codigo', 'short_description', 'details')
 
 class modelo_admin(admin.ModelAdmin):
+    change_form_template = "admin/moneycash/modelo.html"
     list_display = ('serie', 'modelo')
     list_filter = ('serie',)
     inlines = [codigos_error,]

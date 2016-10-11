@@ -2,7 +2,7 @@
 
 {% block object-tools-items %}
 {{block.super}}
-<li><a href="#" id="btn-calcular">Calcular</a></li>
+<li><a href="#" id="btn-proforma">Generar Proforma</a></li>
 {% endblock %}
 
 {% block extrahead %}
@@ -44,7 +44,6 @@
     $('input[name="aduanas"]').change(calcular);
     $('input[name="banco"]').change(calcular);
     $('input[name="divisa"]').change(calcular);
-    $('#btn-calcular').on('click', calcular);
   });
 })(grp.jQuery)
 </script>

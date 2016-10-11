@@ -20,6 +20,15 @@ class Importacion(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    def items(self):
+        return Item.objects.filter(orden=self)
+
+    def total_fob(self):
+        t = 0.0
+        for i in self.items():
+            t += (i.cantidad * i.fob)
+        return t
+
 
 class Item(models.Model):
     orden = models.ForeignKey(Importacion)

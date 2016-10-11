@@ -1,15 +1,53 @@
 {% extends "admin/change_form.html"%}
 
+{% block object-tools-items %}
+{{block.super}}
+<li><a href="#" id="btn-calcular">Calcular</a></li>
+{% endblock %}
+
 {% block extrahead %}
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea', height : 800 });</script>
+<script>tinymce.init({ selector:'textarea', height : 400 });</script>
+<script type="text/javascript">
+(function($) {
+  $(document).ready(function(){
+    var cantidad = $('.cantidad>input');
+    var fob = $('.fob>input');
+
+    var totalizar = function(campo){
+      var valor = $('.'+campo+'>input');
+      var total = 0.0;
+      for (var i = 0; i < valor.length-1; i++) {
+        total += (parseFloat($(cantidad[i]).val()) * parseFloat($(valor[i]).val()))
+      }
+      return total
+    }
+
+    var calcular = function(){
+      var cip = $('.cip>input');
+      var cif = $('.cif>');
+      var precio = $('.precio>input');
+      var flete = parseFloat($('input[name=flete]').val());
+      var aduana = parseFloat($('input[name=aduanas]').val());
+      var total_fob = totalizar('fob');
+      for (var i = 0; i < cip.length-1; i++) {
+        $(cip[i]).val( ( (total_fob + flete) / total_fob ) * parseFloat($(fob[i]).val()) );
+        $(cif[i]).val( ( (total_fob + flete + aduana) / total_fob ) * parseFloat($(fob[i]).val()) );
+        $(precio[i]).val( ( (total_fob + flete + aduana) / total_fob ) * parseFloat($(fob[i]).val()) * 1.8);
+      }
+    }
+
+    $('input[name="flete"]').on('change', calcular);
+    $('#btn-calcular').on('click', calcular);
+  });
+})(grp.jQuery)
+</script>
 {% endblock %}
 
 {% block extrastyle %}
 <style media="screen">
 .blog {
     min-width: 800px;
-    min-height: 800px;
   }
 </style>
 {% endblock %}

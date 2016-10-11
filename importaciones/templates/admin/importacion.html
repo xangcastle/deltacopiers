@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html"%}
+
+{% block extrahead %}
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea', height : 800 });</script>
+{% endblock %}
+
+{% block extrastyle %}
+<style media="screen">
+.blog {
+    min-width: 800px;
+    min-height: 800px;
+  }
+</style>
+{% endblock %}

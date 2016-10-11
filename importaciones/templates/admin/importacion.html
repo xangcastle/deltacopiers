@@ -35,7 +35,7 @@
       for (var i = 0; i < cip.length-1; i++) {
         $(cip[i]).val( ( (total_fob + flete) / total_fob ) * parseFloat($(fob[i]).val()) );
         $(cif[i]).val( ( (total_fob + flete + aduana) / total_fob ) * parseFloat($(fob[i]).val()) );
-        $(precio[i]).val( ( (total_fob + flete + aduana) / total_fob ) * parseFloat($(fob[i]).val()) * 1.8);
+        $(precio[i]).val( ( (total_fob + flete + aduana + precio) / total_fob ) * parseFloat($(fob[i]).val()) * 1.8);
       }
     }
     $('#item_set-group').on('change', '.cantidad>input', calcular);

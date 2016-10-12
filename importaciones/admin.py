@@ -12,7 +12,7 @@ class importacion_admin(admin.ModelAdmin):
     change_form_template = "admin/importacion.html"
     list_filter = ('estado', )
     inlines = [item_admin,]
-    fields = (('nombre', 'fecha'), 'blog', ('proforma_proveedor', 'proforma'),
-        ('flete', 'aduanas'), ('divisa', 'banco'))
+    fields = (('nombre', 'fecha', 'estado'), 'blog', ('proforma_proveedor',
+        'proforma'), ('flete', 'aduanas'), ('divisa', 'banco'))
 
 admin.site.register(Importacion, importacion_admin)

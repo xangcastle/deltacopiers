@@ -20,10 +20,18 @@ admin.site.register(Categoria)
 
 
 class producto_admin(entidad_admin):
+    change_form_template = "admin/moneycash/producto.html"
     list_display = ('code', 'name', 'no_part', 'price', 'cost', 'categoria',
     'existencia_total', 'details', 'image_thumb')
     search_fields = ('code', 'name', 'no_part')
     list_filter = ('categoria',)
+    fieldsets = (
+        ('Datos Generales', {
+            'fields': ('name', ('code', 'short_name'),
+                      ('categoria', 'price', 'cost'), ('imagen', 'no_part'),
+                      'details')
+        }),
+    )
 
     class factorForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)

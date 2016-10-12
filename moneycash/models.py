@@ -64,6 +64,9 @@ class Producto(Entidad):
         else:
             return "#"
 
+    def salidas(self):
+        return salidaDetalle.objects.filter(producto=self)
+
     def image_thumb(self):
         return '<img src="/media/%s" width="100" height="60" />' % (self.imagen)
     image_thumb.allow_tags = True

@@ -13,6 +13,11 @@ class ImportacionForm(forms.ModelForm):
         'value': '0.0',
         'readonly': 'true',
         }))
+    flete = forms.FloatField(widget=forms.NumberInput(
+    attrs={
+        'value': '0.0',
+        'readonly': 'true',
+        }))
     model = Importacion
 
 

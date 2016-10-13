@@ -3,6 +3,31 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+class Pais(models.Model):
+    nombre = models.CharField(max_length=65)
+    zona = models.ForeignKey('Zona')
+
+    def __unicode__(self):
+        return self.nombre
+
+
+class Zona(models.Model):
+    nombre = models.CharField(max_length=65)
+
+    def __unicode__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ['nombre']
+
+class Tarifa(models.Model):
+    zona = models.ForeignKey(Zona)
+    peso = models.FloatField(default=0.5, verbose_name="peso en kilogramos")
+    precio = models.FloatField(default=0.0)
+
+    class Meta:
+        ordering = ['zona', 'precio']
+
 class Importacion(models.Model):
     change_form_template = "/admin/importacion.html"
     fecha = models.DateField(null=True)
@@ -11,6 +36,8 @@ class Importacion(models.Model):
     proforma = models.FileField(null=True, blank=True)
     proforma_proveedor = models.FileField(null=True, blank=True)
     estado = models.CharField(max_length=100, null=True, blank=True)
+    peso = models.FloatField(null=True)
+    pais = models.ForeignKey(Pais, verbose_name="pais de origen", null=True)
     flete = models.FloatField(null=True, default=0.0,
         verbose_name="air cargo/flete")
     aduanas = models.FloatField(null=True, default=0.0)

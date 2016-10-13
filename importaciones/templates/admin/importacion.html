@@ -41,7 +41,7 @@
       }
       var total_cif = totalizar('cif');
       var total = totalizar('precio');
-      utilidad.val();
+      utilidad.val((total - total_cif).toFixed(2));
     }
     $('#item_set-group').on('change', '.cantidad>input', calcular);
     $('#item_set-group').on('change', '.fob>input', calcular);

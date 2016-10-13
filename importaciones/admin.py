@@ -24,10 +24,10 @@ class importacion_admin(admin.ModelAdmin):
         }),
         ('Documentacion y Costos', {
             'classes': ('grp-collapse grp-open',),
-            'fields': (('proforma_proveedor', 'guia', 'banco'),
-                        ('proforma', 'pais', 'divisa'),
-                        ('orden', 'peso', 'aduanas'),
-                        ('plist', 'flete', 'otros')),
+            'fields': (('guia', 'banco', 'proforma_proveedor'),
+                        ('pais', 'divisa', 'proforma'),
+                        ('peso', 'aduanas', 'orden'),
+                        ('flete', 'otros', 'plist')),
         }),
         ('Totales Agrabados', {
             'classes': ('grp-collapse grp-open',),

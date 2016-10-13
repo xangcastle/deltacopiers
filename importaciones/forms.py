@@ -3,11 +3,6 @@ from .models import Importacion, Item
 
 
 class ImportacionForm(forms.ModelForm):
-    total_fob = forms.FloatField(widget=forms.NumberInput(
-    attrs={
-        'value': '0.0',
-        'readonly': 'true',
-        }))
     utilidad = forms.FloatField(widget=forms.NumberInput(
     attrs={
         'value': '0.0',

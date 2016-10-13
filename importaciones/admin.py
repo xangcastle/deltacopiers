@@ -41,6 +41,7 @@ admin.site.register(Importacion, importacion_admin)
 class tarifa_zona(admin.TabularInline):
     model = Tarifa
     extra = 0
+    ordering = ('zona', 'precio')
 
 class zona_admin(admin.ModelAdmin):
     inlines = [tarifa_zona,]

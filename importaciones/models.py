@@ -16,6 +16,7 @@ class Importacion(models.Model):
     aduanas = models.FloatField(null=True, default=0.0)
     divisa = models.FloatField(null=True, default=0.0)
     banco = models.FloatField(null=True, default=0.0)
+    otros = models.FloatField(null=True, default=0.0)
     factor = models.FloatField(null=True, default=2.0)
     utilidad = models.FloatField(null=True, default=0.0)
 

@@ -31,6 +31,7 @@
         data: {'pais': $('select[name=pais]').val(), 'peso': $('input[name=peso]').val()},
         success: function(data){
           $('input[name=flete]').val(data.total);
+          calcular();
         }
       })
     }
@@ -40,7 +41,6 @@
       var cip = $('.cip>input');
       var cif = $('.cif>input');
       var precio = $('.precio>input');
-      calcular_flete();
       var flete = parseFloat($('input[name=flete]').val());
       var aduana = parseFloat($('input[name=aduanas]').val());
       var divisa = parseFloat($('input[name=divisa]').val());
@@ -66,8 +66,8 @@
     }
     $('#item_set-group').on('change', '.cantidad>input', calcular);
     $('#item_set-group').on('change', '.fob', calcular);
-    $('input[select="pais"]').change(calcular);
-    $('input[name="peso"]').change(calcular);
+    $('input[select="pais"]').change(calcular_flete);
+    $('input[name="peso"]').change(calcular_flete);
     $('input[name="aduanas"]').change(calcular);
     $('input[name="banco"]').change(calcular);
     $('input[name="divisa"]').change(calcular);

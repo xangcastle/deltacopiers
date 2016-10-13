@@ -12,11 +12,6 @@
 (function($) {
   $(document).ready(function(){
 
-    var sololectura = function() {
-      $('input[name=total_fob]').attr('readonly', 'true');
-      $('input[name=utilidad]').attr('readonly', 'true');
-    }
-
     var totalizar = function(campo){
       var cantidad = $('.cantidad>input');
       var valor = $('.'+campo+'>input');
@@ -65,7 +60,6 @@
     $('input[name="banco"]').change(calcular);
     $('input[name="divisa"]').change(calcular);
     $('input[name="factor"]').change(calcular);
-    sololectura();
     calcular();
   });
 })(grp.jQuery)
@@ -76,6 +70,9 @@
 <style media="screen">
 .blog {
     min-width: 800px;
+  }
+  #id_guia{
+    max-width: 220px;
   }
 </style>
 {% endblock %}

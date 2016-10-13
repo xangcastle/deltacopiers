@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import *
-from .forms import ImportacionForm
+from .forms import ImportacionForm, ItemForm
 
 class item_admin(admin.TabularInline):
+    form  = ItemForm
     model = Item
     extra = 0
     fields = ('cantidad', 'descripcion', 'fob', 'cif', 'cip', 'precio')
@@ -15,7 +16,7 @@ class importacion_admin(admin.ModelAdmin):
     list_filter = ('estado', )
     inlines = [item_admin,]
     fields = (('nombre', 'fecha', 'estado'), 'blog',
-                ('proforma_proveedor', 'proforma'),
+                ('proforma_proveedor', 'proforma', 'guia'),
                 ('total_fob', 'divisa', 'aduanas', 'factor'),
                 ('flete', 'banco', 'otros', 'utilidad'))
 

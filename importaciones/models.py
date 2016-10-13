@@ -19,6 +19,7 @@ class Importacion(models.Model):
     otros = models.FloatField(null=True, default=0.0)
     factor = models.FloatField(null=True, default=2.0)
     utilidad = models.FloatField(null=True, default=0.0)
+    guia = models.CharField(max_length=25, null=True, blank=True)
 
     def __unicode__(self):
         return self.nombre

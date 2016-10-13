@@ -38,7 +38,7 @@ class Importacion(models.Model):
     orden = models.FileField(null=True, blank=True, verbose_name="orden de compra")
     plist = models.FileField(null=True, blank=True, verbose_name="packing list")
     estado = models.CharField(max_length=100, null=True, blank=True)
-    peso = models.FloatField(null=True)
+    peso = models.FloatField(null=True, default=0.0)
     pais = models.ForeignKey(Pais, verbose_name="pais de origen", null=True)
     flete = models.FloatField(null=True, default=0.0,
         verbose_name="air cargo/flete")

@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^moneycash/', include('moneycash.urls')),
     url(r'^dtracking/', include('dtracking.urls')),
     url(r'^$', include('tienda.urls')),
+    url(r'^importaciones/', include('importaciones.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

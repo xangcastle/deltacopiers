@@ -24,11 +24,23 @@
       return total
     }
 
+    var calcular_flete = function() {
+      var flete = 0.0;
+      $.ajax('/importaciones/calcular_flete/', {
+        type: "POST",
+        data: {'pais': $('select[name=pais]').val(), 'peso': $('input[name=peso]').val()},
+        success: function(data){
+          $('input[name=flete]').val(data.total);
+        }
+      })
+    }
+
     var calcular = function(){
       var fob = $('.fob>input');
       var cip = $('.cip>input');
       var cif = $('.cif>input');
       var precio = $('.precio>input');
+      calcular_flete();
       var flete = parseFloat($('input[name=flete]').val());
       var aduana = parseFloat($('input[name=aduanas]').val());
       var divisa = parseFloat($('input[name=divisa]').val());
@@ -47,18 +59,21 @@
         var total_cip = totalizar('cip');
         var total = totalizar('precio');
         $('input[name=utilidad]').val((total - total_cip).toFixed(2));
-        $('input[name=total_cip]').val(total_cip);
+        $('input[name=total_cip]').val(total_cip.toFixed(2));
+        $('input[name=total_venta]').val(total.toFixed(2));
       }
 
     }
     $('#item_set-group').on('change', '.cantidad>input', calcular);
     $('#item_set-group').on('change', '.fob', calcular);
-    $('input[name="flete"]').change(calcular);
+    $('input[select="pais"]').change(calcular);
+    $('input[name="peso"]').change(calcular);
     $('input[name="aduanas"]').change(calcular);
     $('input[name="banco"]').change(calcular);
     $('input[name="divisa"]').change(calcular);
     $('input[name="factor"]').change(calcular);
     $('label[for="id_blog"').parent().remove();
+    $('#btn-proforma').on('click', calcular_flete);
     calcular();
   });
 })(grp.jQuery)

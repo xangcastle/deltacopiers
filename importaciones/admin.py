@@ -13,6 +13,7 @@ class importacion_admin(admin.ModelAdmin):
     list_filter = ('estado', )
     inlines = [item_admin,]
     fields = (('nombre', 'fecha', 'estado'), 'blog', ('proforma_proveedor',
-        'proforma'), ('flete', 'aduanas'), ('divisa', 'banco'))
+        'proforma'), ('flete', 'aduanas', 'factor'), ('divisa', 'banco',
+            'utilidad'))
 
 admin.site.register(Importacion, importacion_admin)

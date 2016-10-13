@@ -25,18 +25,23 @@
 
     var calcular = function(){
       var cip = $('.cip>input');
-      var cif = $('.cif>');
+      var cif = $('.cif>input');
       var precio = $('.precio>input');
       var flete = parseFloat($('input[name=flete]').val());
       var aduana = parseFloat($('input[name=aduanas]').val());
       var divisa = parseFloat($('input[name=divisa]').val());
       var banco = parseFloat($('input[name=banco]').val());
+      var factor = parseFloat($('input[name=factor]').val());
+      var utilidad = $('input[name=utilidad]');
       var total_fob = totalizar('fob');
       for (var i = 0; i < cip.length-1; i++) {
-        $(cip[i]).val( ( (total_fob + flete) / total_fob ) * parseFloat($(fob[i]).val()).toFixed(2) );
-        $(cif[i]).val( ( (total_fob + flete + aduana) / total_fob ) * parseFloat($(fob[i]).val()).toFixed(2) );
-        $(precio[i]).val( (( (total_fob + flete + aduana + banco + divisa) / total_fob ) * parseFloat($(fob[i]).val()) * 1.8).toFixed(2));
+        $(cip[i]).val( (( (total_fob + flete) / total_fob ) * parseFloat($(fob[i]).val())).toFixed(2));
+        $(cif[i]).val( ( (total_fob + flete + aduana + banco + divisa) / total_fob ) * parseFloat($(fob[i]).val()).toFixed(2) );
+        $(precio[i]).val( (( (total_fob + flete + aduana + banco + divisa) / total_fob ) * parseFloat($(fob[i]).val()) * factor).toFixed(2));
       }
+      var total_cif = totalizar('cif');
+      var total = totalizar('precio');
+      utilidad.val();
     }
     $('#item_set-group').on('change', '.cantidad>input', calcular);
     $('#item_set-group').on('change', '.fob>input', calcular);
@@ -44,6 +49,7 @@
     $('input[name="aduanas"]').change(calcular);
     $('input[name="banco"]').change(calcular);
     $('input[name="divisa"]').change(calcular);
+    $('input[name="factor"]').change(calcular);
   });
 })(grp.jQuery)
 </script>

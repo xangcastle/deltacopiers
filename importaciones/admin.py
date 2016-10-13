@@ -7,6 +7,7 @@ class item_admin(admin.TabularInline):
     model = Item
     extra = 0
     fields = ('cantidad', 'descripcion', 'fob', 'cif', 'cip', 'precio', 'anexo')
+    classes = ('grp-collapse grp-open',)
 
 class importacion_admin(admin.ModelAdmin):
     form = ImportacionForm
@@ -15,11 +16,25 @@ class importacion_admin(admin.ModelAdmin):
     change_form_template = "admin/importacion.html"
     list_filter = ('estado', )
     inlines = [item_admin,]
-    fields = (('nombre', 'fecha', 'estado'), 'blog',
-                ('proforma_proveedor', 'proforma', 'guia'),
-                ('pais', 'divisa', 'aduanas', 'factor'),
-                ('peso', 'banco'),
-                ('flete', 'otros', 'total_fob', 'utilidad'))
+
+    fieldsets = (
+        ('Datos Generales', {
+            'classes': ('grp-collapse grp-open',),
+            'fields': (('nombre', 'fecha', 'estado'), 'blog')
+        }),
+        ('Documentacion y Costos', {
+            'classes': ('grp-collapse grp-open',),
+            'fields': (('proforma_proveedor', 'guia', 'banco'),
+                        ('proforma', 'pais', 'divisa'),
+                        ('orden', 'peso', 'aduanas'),
+                        ('plist', 'flete', 'otros')),
+        }),
+        ('Totales Agrabados', {
+            'classes': ('grp-collapse grp-open',),
+            'fields': ('factor', ('total_cip', 'total_venta', 'utilidad')),
+        })
+    )
+
 
 admin.site.register(Importacion, importacion_admin)
 

@@ -18,6 +18,16 @@ class ImportacionForm(forms.ModelForm):
         'value': '0.0',
         'readonly': 'true',
         }))
+    total_cip = forms.FloatField(widget=forms.NumberInput(
+    attrs={
+        'value': '0.0',
+        'readonly': 'true',
+        }))
+    total_venta = forms.FloatField(widget=forms.NumberInput(
+    attrs={
+        'value': '0.0',
+        'readonly': 'true',
+        }))
     model = Importacion
 
 

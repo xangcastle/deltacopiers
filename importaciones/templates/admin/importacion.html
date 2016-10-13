@@ -7,7 +7,7 @@
 
 {% block extrahead %}
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea', height : 400 });</script>
+<script>tinymce.init({ selector:'textarea', height : 400, });</script>
 <script type="text/javascript">
 (function($) {
   $(document).ready(function(){
@@ -15,7 +15,6 @@
     var totalizar = function(campo){
       var cantidad = $('.cantidad>input');
       var valor = $('.'+campo+'>input');
-      console.log(valor.length);
       var total = 0.0;
       if (valor.length>1) {
         for (var i = 0; i < valor.length-1; i++) {
@@ -37,7 +36,6 @@
       var otros = parseFloat($('input[name=otros]').val());
       var factor = parseFloat($('input[name=factor]').val());
       var total_fob = totalizar('fob');
-      console.log(total_fob);
       if (total_fob>0) {
         var total_cif  = total_fob + flete + banco + divisa;
         var total_cip  = total_cif + aduana + otros;
@@ -49,7 +47,7 @@
         var total_cip = totalizar('cip');
         var total = totalizar('precio');
         $('input[name=utilidad]').val((total - total_cip).toFixed(2));
-        $('input[name=total_fob]').val(total_fob);
+        $('input[name=total_cip]').val(total_cip);
       }
 
     }
@@ -60,6 +58,7 @@
     $('input[name="banco"]').change(calcular);
     $('input[name="divisa"]').change(calcular);
     $('input[name="factor"]').change(calcular);
+    $('label[for="id_blog"').parent().remove();
     calcular();
   });
 })(grp.jQuery)
@@ -68,11 +67,12 @@
 
 {% block extrastyle %}
 <style media="screen">
-.blog {
-    min-width: 800px;
-  }
   #id_guia{
-    max-width: 220px;
+    max-width: 200px;
+    margin-left: -82px;
+  }
+  #id_pais {
+    margin-left: -1px;
   }
 </style>
 {% endblock %}

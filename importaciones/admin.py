@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 from .forms import ImportacionForm, ItemForm
 from deltacopiers.pdf_kit import render_to_pdf
+from django.conf import settings
 
 
 class item_admin(admin.TabularInline):
@@ -43,7 +44,7 @@ class importacion_admin(admin.ModelAdmin):
                     'pagesize': 'A4',
                     'productos': queryset[0].items(),
                     'pedido_detalle': None,
-                })
+                }, settings.STATIC_ROOT + 'importaciones/proforma.css')
     actions = [generar_proforma,]
 
 admin.site.register(Importacion, importacion_admin)

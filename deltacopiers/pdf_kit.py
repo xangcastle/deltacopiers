@@ -11,8 +11,8 @@ def render_to_pdf(template_src, context_dict):
     context = Context(context_dict)
     html = template.render(context)
 
-    pwd = os.path.dirname(__file__)
-    css = '/static/moneycash/bootstrap/css/bootstrap.css'
+    pwd = '/home/abel/aws/deltacopiers/importaciones'
+    css = pwd + '/static/importaciones/proforma.css'
     pdfkit.from_string(html, 'out.pdf', css=css)
     pdf = open("out.pdf")
     response = HttpResponse(pdf.read(), content_type='application/pdf')

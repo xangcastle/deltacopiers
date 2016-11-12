@@ -41,7 +41,7 @@ class importacion_admin(admin.ModelAdmin):
 
         return render_to_pdf('admin/importaciones/proforma.html', {
                     'pagesize': 'A4',
-                    'pedido': None,
+                    'productos': queryset[0].items(),
                     'pedido_detalle': None,
                 })
     actions = [generar_proforma,]

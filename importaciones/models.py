@@ -72,3 +72,7 @@ class Item(models.Model):
     cif = models.FloatField(null=True, default=0.0)
     precio = models.FloatField(null=True, default=0.0)
     anexo = models.FileField(null=True, blank=True)
+
+    @property
+    def total(self):
+        return self.cantidad * self.precio

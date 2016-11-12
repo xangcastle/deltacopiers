@@ -1,0 +1,33 @@
+.cabecera{
+  background-color:#A9BCF5;
+  width:100%;height:240px;
+}
+
+.tituloPrincipal{
+  float:right;color:#045FB4;
+  align:right;
+}
+
+.icono{
+  vertical-align:middle;
+  width:400px;height:80pxpx;
+}
+
+th{
+  background-color:#A9BCF5;
+  text-align:center;
+  }
+tr{
+  border-style: solid;
+  border-color:#0174DF;
+  }
+.pie{
+  background-color:#A9BCF5;
+  width:100%;height:100px;
+}
+p{
+  height:10px;
+}
+span{
+  float:right;
+}

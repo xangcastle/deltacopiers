@@ -10,6 +10,7 @@ def calculo_flete(peso, pais):
     if decimales > 0:
         peso = peso + 0.5
     flete = Tarifa.objects.get(zona=pais.zona, peso=peso).precio
+    return flete
 
 
 @csrf_exempt

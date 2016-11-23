@@ -10,6 +10,9 @@ class Pais(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    class Meta:
+        verbose_name_plural = "paises"
+
 
 class Zona(models.Model):
     nombre = models.CharField(max_length=65)
@@ -73,6 +76,9 @@ class Importacion(models.Model):
 
     def total(self):
         return self.sub_total() + self.iva()
+
+    class Meta:
+        verbose_name_plural = "importaciones"
 
 
 class Item(models.Model):

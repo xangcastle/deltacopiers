@@ -62,6 +62,18 @@ class Importacion(models.Model):
             t += (i.cantidad * i.fob)
         return t
 
+    def sub_total(self):
+        t = 0.0
+        for i in self.items():
+            t += (i.cantidad * i.precio)
+        return round(t, 2)
+
+    def iva(self):
+        return round(self.sub_total() * 0.15, 2)
+
+    def total(self):
+        return self.sub_total() + self.iva()
+
 
 class Item(models.Model):
     orden = models.ForeignKey(Importacion)

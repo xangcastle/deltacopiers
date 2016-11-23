@@ -1,9 +1,15 @@
 <html>
-<header>
+<head>
+  <link href="/static/importaciones/proforma.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body>
+  {% for q in queryset %}
+  <div class="pagina">
   <div class="cabecera">
     <h1 class="tituloPrincipal" align="right">PROFORMA </h1>
     <div>
-      <img class="icono" src=""/>
+      <img class="icono" src="/static/importaciones/logo.png"/>
     </div>
     <table width="100%">
       <tr>
@@ -25,10 +31,7 @@
       </tr>
     </table>
   </div>
-</header>
-<body>
-  <div>fechaExp</div>
-  <div>
+  <div class="cliente">
     <h4>Cliente</h4>
      <span>Nombre:    </span><br></br>
      <span>Email:     </span><br></br>
@@ -43,24 +46,24 @@
        <th>UNIT PRICE</th>
        <th>LINE TOTAL</th>
      </tr>
-    {% for productoSeleccionado in productos %}
+    {% for productoSeleccionado in q.items %}
      <tr>
-       <td>{{ productoSeleccionado.cantidad }}</td>
+       <td align="center">{{ productoSeleccionado.cantidad }}</td>
        <td>{{ productoSeleccionado.descripcion }}</td>
-       <td>U$ {{ productoSeleccionado.precio }}</td>
-       <td>U$ {{ productoSeleccionado.total }}</td>
+       <td align="center">U$ {{ productoSeleccionado.precio }}</td>
+       <td align="center">U$ {{ productoSeleccionado.total }}</td>
      </tr>
     {% endfor %}
 
    <tr>
      <td colspan="3" align="right">SUBTOTAL</td>
-     <td colspan="1" align="right">U$ </td></tr>
+     <td colspan="1" align="right">U$ {{q.sub_total}}</td></tr>
    <tr>
      <td colspan="3" align="right">IVA</td>
-     <td colspan="1" align="right">U$ </td></tr>
+     <td colspan="1" align="right">U$ {{q.iva}}</td></tr>
     <tr>
       <td colspan="3" align="right">TOTAL</td>
-      <td colspan="1" align="right">U$ </td>
+      <td colspan="1" align="right">U$ {{q.total}}</td>
     </tr>
   </table>
 
@@ -75,8 +78,10 @@
     <span><hr align="left" noshade="noshade" size="2" width="30%" /></span>
   </div>
   <div width="100%" height="20px"></div>
-  <footer>
+  <div class="footer">
     <div class="pie"><h3 align="center">GRACIAS POR PREFERIRNOS!</h3></div>
-  </footer>
+  </div>
+  </div>
+  {% endfor %}
 </body>
 </html>

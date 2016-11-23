@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import *
 from .forms import ImportacionForm, ItemForm
-from deltacopiers.pdf_kit import render_to_pdf
-from django.conf import settings
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 
 class item_admin(admin.TabularInline):
@@ -15,7 +15,7 @@ class item_admin(admin.TabularInline):
 class importacion_admin(admin.ModelAdmin):
     form = ImportacionForm
     date_hierarchy = 'fecha'
-    list_display = ('nombre', 'estado')
+    list_display = ('nombre', 'total_fob', 'utilidad', 'estado')
     change_form_template = "admin/importacion.html"
     list_filter = ('estado', )
     inlines = [item_admin,]
@@ -39,12 +39,9 @@ class importacion_admin(admin.ModelAdmin):
     )
 
     def generar_proforma(self, request, queryset):
-
-        return render_to_pdf('admin/importaciones/proforma.html', {
-                    'pagesize': 'A4',
-                    'productos': queryset[0].items(),
-                    'pedido_detalle': None,
-                }, settings.STATIC_ROOT + 'importaciones/proforma.css')
+        context = RequestContext(request)
+        context['queryset'] = queryset
+        return render_to_response('admin/importaciones/proforma.html', context)
     actions = [generar_proforma,]
 
 admin.site.register(Importacion, importacion_admin)

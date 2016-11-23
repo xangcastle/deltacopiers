@@ -1,3 +1,8 @@
+.pagina{
+  max-width: 216mm;
+  max-height: 279mm;
+}
+
 .cabecera{
   background-color:#A9BCF5;
   width:100%;height:240px;
@@ -10,7 +15,7 @@
 
 .icono{
   vertical-align:middle;
-  width:400px;height:80pxpx;
+  width:150px;
 }
 
 th{
@@ -29,5 +34,6 @@ p{
   height:10px;
 }
 span{
-  float:right;
+  float:left;
+  margin-left: 25px;
 }

@@ -51,7 +51,7 @@ class facturas_no_impresas(TemplateView):
     template_name = "moneycash/facturas_no_impresas.html"
     def get_context_data(self, **kwargs):
         context = super(facturas_no_impresas, self).get_context_data(**kwargs)
-        context['facturas'] = Factura.objects.filter(impresa=False)
+        context['facturas'] = Documento.objects.filter(impresa=False)
         context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
         return context
 

@@ -29,7 +29,7 @@ class Cliente(Entidad):
     address = models.TextField(max_length=400, null=True, blank=True)
 
     def facturas(self):
-        return Factura.objects.filter(cliente=self)
+        return Documento.objects.filter(cliente=self)
 
     def saldo(self):
         return self.facturas().filter(saldo__gt=0.009).aggregate(Sum('saldo'))['saldo__sum']
@@ -108,7 +108,22 @@ class Existencia(models.Model):
     cantidad = models.FloatField()
 
 
-class Factura(models.Model):
+TIPOS_AFECTACION = (
+    ( 1, "POSITIVA"),
+    ( 0, "SIN AFECTACION"),
+    (-1, "NEGATIVA"),
+    )
+
+
+class TipoDoc(Entidad):
+    contable = models.BooleanField(default=False)
+    afectacion = models.IntegerField(default=0, choices=TIPOS_AFECTACION)
+    afecta_costo = models.BooleanField(default=False)
+
+
+class Documento(models.Model):
+    tipodoc = models.ForeignKey(TipoDoc, null=True)
+    sucursal = models.ForeignKey(Sucursal, null=True)
     user = models.ForeignKey(User, null=True,
         related_name="moneycash_factura_user")
     date = models.DateTimeField(auto_now_add=True)
@@ -117,7 +132,8 @@ class Factura(models.Model):
     subtotal = models.FloatField(null=True)
     descuento = models.FloatField(null=True)
     iva = models.FloatField(null=True)
-    retension = models.FloatField(null=True)
+    ir = models.FloatField(null=True)
+    al = models.FloatField(null=True, verbose_name="alcaldia")
     total = models.FloatField(null=True)
     excento_iva = models.NullBooleanField()
     aplica_ir = models.NullBooleanField()
@@ -134,37 +150,16 @@ class Factura(models.Model):
 
 
 class Detalle(models.Model):
-    factura = models.ForeignKey(Factura)
+    documento = models.ForeignKey(Documento, null=True)
     producto = models.ForeignKey(Producto)
     bodega = models.ForeignKey(Bodega)
     cantidad = models.FloatField()
     price = models.FloatField()
     discount = models.FloatField(null=True)
     cost = models.FloatField()
-
-
-class Salida(models.Model):
-    numero = models.PositiveIntegerField(null=True, blank=True)
-    concepto = models.TextField(max_length=300, null=True)
-    fecha = models.DateTimeField(auto_now_add=True)
-    user_solicita = models.ForeignKey(User, null=True,
-        related_name="user_solicita")
-    user_entrega = models.ForeignKey(User, null=True,
-        related_name="user_entrega")
-    user_autoriza = models.ForeignKey(User, null=True,
-        related_name="user_autoriza")
-
-    def __unicode__(self):
-        return "salida # " + srt(self.numero)
-
-    def detalle(self):
-        return salidaDetalle.objects.filter(salida=self)
-
-class salidaDetalle(models.Model):
-    salida = models.ForeignKey(Salida)
-    producto = models.ForeignKey(Producto)
-    cantidad = models.FloatField()
-    costo = models.FloatField(null=True)
+    existencia = models.FloatField(null=True)
+    saldo = models.FloatField(null=True)
+    costo_promedio = models.FloatField(null=True)
 
 
 class SMS(models.Model):

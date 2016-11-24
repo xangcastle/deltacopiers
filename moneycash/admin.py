@@ -67,7 +67,7 @@ class producto_admin(entidad_admin):
 
 
 admin.site.register(Producto, producto_admin)
-
+admin.site.register(TipoDoc, entidad_admin)
 admin.site.register(Sucursal, entidad_admin)
 admin.site.register(Bodega, entidad_admin)
 admin.site.register(TipoPago, entidad_admin)
@@ -88,28 +88,10 @@ class detalle_factura(admin.TabularInline):
 class factura_admin(admin.ModelAdmin):
     inlines = [detalle_factura]
     list_display = ('numero', 'cliente', 'subtotal', 'descuento', 'iva',
-    'retension', 'total')
+    'ir', 'al', 'total')
 
 
-admin.site.register(Factura, factura_admin)
-
-
-class salidaDetalle_admin(admin.TabularInline):
-    model = salidaDetalle
-    extra = 0
-    raw_id_fields = ('producto',)
-    autocomplete_lookup_fields = {
-        'fk': ['producto',],
-        }
-
-
-class salida_admin(admin.ModelAdmin):
-    date_hierarchy = 'fecha'
-    list_display = ('numero', 'concepto', 'user_solicita')
-    inlines = [salidaDetalle_admin]
-    fields = ('numero', 'concepto')
-
-admin.site.register(Salida, salida_admin)
+admin.site.register(Documento, factura_admin)
 
 
 class preventa_detalle(admin.TabularInline):

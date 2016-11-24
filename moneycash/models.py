@@ -5,7 +5,7 @@ from base.models import Entidad
 from django.forms.models import model_to_dict
 #from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import Sum, Max
 
 #User = settings.AUTH_USER_MODEL
 
@@ -54,6 +54,9 @@ class Producto(Entidad):
     cost = models.FloatField(null=True, blank=True)
     imagen = models.ImageField(null=True, blank=True)
     details = models.TextField(max_length=255, null=True, blank=True)
+    vender = models.NullBooleanField()
+    comprar = models.NullBooleanField()
+    almacenar = models.NullBooleanField()
 
     def existencias(self):
         return Existencia.objects.filter(producto=self)
@@ -148,6 +151,13 @@ class Documento(models.Model):
         obj['cliente_data'] = self.cliente.to_json()
         return obj
 
+    def get_numero(self):
+        try:
+            return Documento.objects.filter(tipodoc=self.tipodoc).aggregate(Max('numero'))['numero__max'] + 1
+        except:
+            return 1
+
+
 
 class Detalle(models.Model):
     documento = models.ForeignKey(Documento, null=True)
@@ -161,6 +171,8 @@ class Detalle(models.Model):
     saldo = models.FloatField(null=True)
     costo_promedio = models.FloatField(null=True)
 
+    def aplicar(self):
+        pass
 
 class SMS(models.Model):
     numero = models.CharField(max_length=14)

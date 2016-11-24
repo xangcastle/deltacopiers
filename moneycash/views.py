@@ -8,6 +8,7 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 from wsgiref.util import FileWrapper
 import os
+from datetime import datetime
 
 
 def download_file(path):
@@ -46,9 +47,14 @@ class factura(TemplateView):
 class roc(TemplateView):
     template_name = "moneycash/roc.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(roc, self).get_context_data(**kwargs)
+        context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
+        return context
 
 class facturas_no_impresas(TemplateView):
     template_name = "moneycash/facturas_no_impresas.html"
+
     def get_context_data(self, **kwargs):
         context = super(facturas_no_impresas, self).get_context_data(**kwargs)
         context['facturas'] = Documento.objects.filter(impresa=False)
@@ -77,7 +83,7 @@ def detalle_cliente(request):
 
 
 def detalle_factura(request):
-    return entidad_to_json(Factura(), request)
+    return entidad_to_json(Documento(), request)
 
 
 def extract_cliente(request):
@@ -100,12 +106,15 @@ def extract_cliente(request):
 
 
 def grabar_cabecera(request):
-    f = Factura()
+    td, created = TipoDoc.objects.get_or_create(name="FACTURA")
+    f = Documento()
+    f.tipodoc = td
     try:
         f.user = request.user
     except:
         f.user = User.objects.get(id=int(request.POST.get('user_id', '')))
-    f.numero = 1
+    f.date = datetime.now()
+    f.numero = f.get_numero()
     f.cliente = extract_cliente(request)
     f.aplica_ir = request.POST.get('aplica_ir', '')
     f.aplica_al = request.POST.get('aplica_al', '')
@@ -129,7 +138,7 @@ def grabar_detalle(request, factura):
         b = Bodega.objects.get(id=int(
             request.POST.getlist('bodega_id', '')[i]))
         e = p.existencias().filter(bodega=b)[0]
-        dd.factura = factura
+        dd.documento = factura
         dd.producto = p
         dd.bodega = b
         dd.cantidad = float(request.POST.getlist('producto_cantidad', '')[i])

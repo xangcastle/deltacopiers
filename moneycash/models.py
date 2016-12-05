@@ -32,13 +32,17 @@ class Cliente(Entidad):
         return Documento.objects.filter(cliente=self)
 
     def saldo(self):
-        return self.facturas().filter(saldo__gt=0.009).aggregate(Sum('saldo'))['saldo__sum']
+        pendientes =  self.facturas().filter(saldo__gt=0.009)
+        if pendientes.count() > 0:
+            return pendientes.aggregate(Sum('saldo'))['saldo__sum']
+        else:
+            return 0.0
 
     def to_json(self):
         obj = super(Cliente, self).to_json()
         obj['facturas'] = []
         for f in self.facturas():
-            obj['facturas'].append(model_to_dict(f))
+            obj['facturas'].append(f.to_json())
         obj['saldo'] = self.saldo()
         return obj
 
@@ -148,7 +152,9 @@ class Documento(models.Model):
 
     def to_json(self):
         obj = model_to_dict(self)
-        obj['cliente_data'] = self.cliente.to_json()
+        obj['date'] = str(self.date)
+        obj['calculo_ir'] = self.calculo_ir()
+        obj['calculo_al'] = self.calculo_al()
         return obj
 
     def get_numero(self):
@@ -156,6 +162,18 @@ class Documento(models.Model):
             return Documento.objects.filter(tipodoc=self.tipodoc).aggregate(Max('numero'))['numero__max'] + 1
         except:
             return 1
+
+    def calculo_ir(self):
+        if self.subtotal > 1000:
+            return round(self.subtotal * 0.02, 2)
+        else:
+            return 0.0
+
+    def calculo_al(self):
+        if self.subtotal > 1000:
+            return round(self.subtotal * 0.01, 2)
+        else:
+            return 0.0
 
 
 

@@ -62,7 +62,11 @@
 
 {% block script_extra %}
 {{ block.super }}
+{% if caja %}
+<script src="/static/moneycash/js/cliente_caja.js"></script>
+{% else %}
 <script src="/static/moneycash/js/cliente.js"></script>
+{% endif %}
 <script src="/static/moneycash/js/caja.js"></script>
 <script src="/static/moneycash/js/NumeroALetras.js"></script>
 {% endblock script_extra %}

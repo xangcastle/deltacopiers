@@ -49,6 +49,7 @@ class roc(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(roc, self).get_context_data(**kwargs)
+        context['caja'] = True
         context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
         return context
 

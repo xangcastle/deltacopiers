@@ -20,7 +20,7 @@ var complete_cliente = function () {
                   readonly('.datos_cliente input, .datos_cliente textarea', true);
                   var tabla = $('#facturasPendientes tbody').empty();
                   $.each(ui.item.obj.facturas, function(key, value){
-                    var fila = '<tr><td>'+value.numero+'</td><td>'+value.fecha+'</td><td>'+value.total+'</td></tr>';
+                    var fila = '<tr><td>'+value.numero+'</td><td>'+value.date+'</td><td>'+value.total+'</td></tr>';
                     tabla.append(fila);
                   });
               }

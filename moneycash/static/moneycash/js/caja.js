@@ -76,8 +76,8 @@ var salvar_tarjeta = function () {
 }
 
 var totalizar_monto = function(){
-  var monto = (parseFloat($('.efectivo').html()) +parseFloat($('.cheque').html()) + parseFloat($('.transferencia').html()) + parseFloat($('.tarjeta').html()))
-  $('#monto').val(monto.toFixed(2));
+  var monto = (parseFloat($('#pago_efectivo').val()) +parseFloat($('#pago_cheque').val()) + parseFloat($('#pago_transferencia').val()) + parseFloat($('#pago_tarjeta').val()))
+  $('#pago_total').val(monto.toFixed(2));
   $('#montoLetras').val(NumeroALetras(monto));
 }
 

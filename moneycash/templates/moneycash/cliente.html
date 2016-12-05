@@ -50,33 +50,58 @@
 </div>
 
 <div class="modal fade" id="detalleCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Facturas Pendientes</h4>
       </div>
       <div class="modal-body">
+        <div class="form-group">
+          <label for="disponible">Monto Disponible</label>
+          <input type="text" class="form-control" id="disponible" readonly>
+        </div>
         <table class="table table-hover table-bordered table-striped table-responsive" id="facturasPendientes">
           <thead>
             <tr>
-              <th>
-                Numero
-              </th>
-              <th>
-                Fecha
-              </th>
-              <th>
-                Total
-              </th>
+            {% if caja %}
+              <th></th>
+              {% endif %}
+              <th>Numero</th>
+              <th>Fecha</th>
+              {% if caja %}
+              <th>Retension IR</th>
+              <th>Retension Alcaldia</th>
+              {% endif %}
+              <th>Total</th>
+              {% if caja %}
+              <th>Monto</th>
+              <th>Saldo</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
-
           </tbody>
         </table>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="saldo_total">Saldo Total</label>
+                <input type="text" class="form-control" id="saldo_total">
+            </div>
+          </div>
+          <div class="col-md-6">
+            {% if caja %}
+            <div class="form-group">
+                <label for="abono_total">Total a Pagar</label>
+                <input type="text" class="form-control" id="abono_total">
+            </div>
+            {% endif %}
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
+        <div class="error"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="clienteOk">ok</button>
       </div>

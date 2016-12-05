@@ -3,6 +3,7 @@
   <h3 class="panel-title">Pagos y Retensiones</h3>
 </div>
 <div class="panel-body">
+  {% if not caja %}
 <div class="form-group">
     <label for="tipopago">Tipo de pago</label>
     <select id="tipopago" class="form-control" name="factura_tipopago">
@@ -28,6 +29,7 @@
     <label for="factura_retencion">Monto Retenido</label>
     <input type="input" class="form-control" id="factura_retencion" readonly name="factura_retencion" value="0.0">
 </div>
+{% endif %}
 <div class="row">
   <div class="col-md-6">
     <div class="form-group">

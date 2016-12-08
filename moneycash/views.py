@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate
 from wsgiref.util import FileWrapper
 import os
 from datetime import datetime
+from .utils import render_to_pdf
+from django.template.loader import render_to_string
 
 
 def download_file(path):
@@ -41,6 +43,7 @@ class factura(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(factura, self).get_context_data(**kwargs)
         context['tipo_pagos'] = TipoPago.objects.all()
+        context['tc'] = cordobizar()
         return context
 
 
@@ -51,6 +54,7 @@ class roc(TemplateView):
         context = super(roc, self).get_context_data(**kwargs)
         context['caja'] = True
         context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
+        context['tc'] = cordobizar()
         return context
 
 class facturas_no_impresas(TemplateView):
@@ -58,7 +62,7 @@ class facturas_no_impresas(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(facturas_no_impresas, self).get_context_data(**kwargs)
-        context['facturas'] = Documento.objects.filter(impresa=False)
+        context['facturas'] = Factura.objects.filter(impresa=False)
         context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
         return context
 
@@ -84,7 +88,7 @@ def detalle_cliente(request):
 
 
 def detalle_factura(request):
-    return entidad_to_json(Documento(), request)
+    return entidad_to_json(Factura(), request)
 
 
 def extract_cliente(request):
@@ -107,9 +111,7 @@ def extract_cliente(request):
 
 
 def grabar_cabecera(request):
-    td, created = TipoDoc.objects.get_or_create(name="FACTURA")
-    f = Documento()
-    f.tipodoc = td
+    f = Factura()
     try:
         f.user = request.user
     except:
@@ -139,7 +141,7 @@ def grabar_detalle(request, factura):
         b = Bodega.objects.get(id=int(
             request.POST.getlist('bodega_id', '')[i]))
         e = p.existencias().filter(bodega=b)[0]
-        dd.documento = factura
+        dd.factura = factura
         dd.producto = p
         dd.bodega = b
         dd.cantidad = float(request.POST.getlist('producto_cantidad', '')[i])
@@ -320,3 +322,21 @@ def modelos_soportados(request):
         data.append(m.to_json())
     data = json.dumps(data)
     return HttpResponse(data, content_type="application/json")
+
+def generar_ecuenta(request):
+    cliente = Cliente.objects.get(id=int(request.GET.get('id_cliente', '')))
+    return render_to_pdf(
+                'moneycash/pdf/ecuenta.html',
+                {
+                    'pagesize': 'LTR',
+                    'cliente': cliente,
+                    'documentos': cliente.facturas(),
+                }
+            )
+
+@csrf_exempt
+def imprimir_factura(request):
+    print(int(request.POST.get('id', '')))
+    factura = Factura.objects.get(id=int(request.POST.get('id', '')))
+    html = render_to_string('moneycash/print/factura.html', {'f': factura})
+    return HttpResponse(html)

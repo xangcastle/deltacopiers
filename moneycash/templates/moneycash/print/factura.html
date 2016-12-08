@@ -1,0 +1,148 @@
+<HTML>
+    <HEAD>
+        <meta charset="utf-8" />
+        <title>Factura</title>
+        <style>
+            body{
+              font-size: 16px;
+              font-weight: 900;
+              font-family: sans-serif;
+            }
+            .factura {
+                width: 216mm;
+                height: 277mm;
+              }
+              .campo{
+                position: absolute;
+              }
+              .campo-numerico{
+                text-align: right;
+                width: 80px;
+              }
+            .cliente {
+              top: 34mm;
+              left: 28mm;
+            }
+            .dia {
+              top: 38mm;
+              left: 161mm;
+            }
+            .mes {
+              top: 38mm;
+              left: 179mm;
+            }
+            .ano {
+              top: 38mm;
+              left: 195mm;
+            }
+            .direccion {
+              top: 42mm;
+              left: 29mm;
+            }
+            .contacto {
+              top: 49mm;
+              left: 29mm;
+            }
+            .tasa {
+              top: 210mm;
+              left: 85mm;
+            }
+            .subtotal {
+              top: 208mm;
+              left: 182mm;
+            }
+            .subtotal-cordobas {
+              top: 216mm;
+              left: 184mm;
+            }
+            .iva {
+              top: 223mm;
+              left: 184mm;
+            }
+            .total {
+              top: 230mm;
+              left: 184mm;
+            }
+            .detalle{
+              top: 70mm;
+              left: 13mm;
+            }
+            .detalle-cantidad{
+              width: 90px;
+              text-align: center;
+            }
+            .detalle-descripcion{
+              width: 123mm;
+            }
+            .detalle-precio{
+              width: 62px;
+            }
+
+            .detalle-total{
+              width: 100px;
+            }
+            td{
+              height: 28px;
+              font-size: 14px;
+              font-weight: 600;
+            }
+        </style>
+    </HEAD>
+    <BODY>
+        <div class="factura">
+            <div class="campo cliente">
+              {{ f.cliente.name }} - {{ f.cliente.ident }}
+            </div>
+            <div class="campo dia">
+              {{ f.date.day }}
+            </div>
+            <div class="campo mes">
+              {{ f.date.month }}
+            </div>
+            <div class="campo ano">
+              {{ f.date.year }}
+            </div>
+            <div class="campo direccion">
+              {{ f.cliente.address }} - {{ f.cliente.phone }}
+            </div>
+            <div class="campo contacto">
+              {{ f.cliente.name }}
+            </div>
+            <table class="campo detalle">
+              <tbody>
+                {% for d in f.detalle %}
+                  <tr>
+                    <td class="detalle-cantidad campo-numerico">
+                      {{ d.cantidad|floatformat:0 }}
+                    </td>
+                    <td class="detalle-descripcion">
+                      {{ d.producto.name }}
+                    </td>
+                    <td class="detalle-precio campo-numerico">
+                      U$&nbsp;{{ d.precio|floatformat:3 }}
+                    </td>
+                    <td  class="detalle-total campo-numerico">
+                      U$&nbsp;{{ d.total|floatformat:2 }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="campo tasa">
+              Tasa&nbsp;de&nbsp;Cambio&nbsp;: {{ f.tc }}
+            </div>
+            <div class="campo campo-numerico subtotal">
+              U$&nbsp;{{ f.subtotal|floatformat:2  }}
+            </div>
+            <div class="campo campo-numerico subtotal-cordobas">
+              {{ f.subtotal_cordobas|floatformat:2  }}
+            </div>
+            <div class="campo campo-numerico iva">
+              {{ f.iva_cordobas|floatformat:2  }}
+            </div>
+            <div class="campo campo-numerico total">
+              {{ f.total_cordobas|floatformat:2 }}
+            </div>
+      </div>
+    </body>
+</html>

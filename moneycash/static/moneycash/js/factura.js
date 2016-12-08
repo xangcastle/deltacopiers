@@ -49,8 +49,13 @@ var load_modal = function (producto, bodega, cantidad, discount){
             modal.find('#code').val(data.code);
             modal.find('img').attr('src', data.imagen)
             modal.find('#no_part').val(data.no_part);
-            modal.find('#price').val(data.price);
-            modal.find('#cost').val(data.cost);
+            if ($('select[name="monedas"]').val()=="cordobas"){
+              modal.find('#price').val(cordobizar(data.price));
+              modal.find('#cost').val(cordobizar(data.cost));
+            } else{
+              modal.find('#price').val(data.price);
+              modal.find('#cost').val(data.cost);
+            }
             if(cantidad){
               modal.find('#cantidad').val(cantidad);
             }else{

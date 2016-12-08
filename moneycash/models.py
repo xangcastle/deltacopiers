@@ -6,8 +6,39 @@ from django.forms.models import model_to_dict
 #from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Sum, Max
+from datetime import datetime
 
 #User = settings.AUTH_USER_MODEL
+
+
+class TC(models.Model):
+    fecha = models.DateField()
+    oficial = models.FloatField()
+    venta = models.FloatField(null=True)
+    compra = models.FloatField(null=True)
+
+
+def dolarizar(cordobas=1, fecha=datetime.now()):
+    tc = TC.objects.get(fecha__year=fecha.year, fecha__month=fecha.month,
+        fecha__day=fecha.day)
+    if tc.venta and tc.venta > tc.oficial:
+        tc = tc.venta
+    else:
+        tc = tc.oficial
+    return round(cordobas / tc, 2)
+
+
+def cordobizar(dolares=1, fecha=datetime.now()):
+    tc = TC.objects.get(fecha__year=fecha.year, fecha__month=fecha.month,
+        fecha__day=fecha.day)
+    if tc.compra and tc.compra < tc.oficial:
+        tc = tc.compra
+    else:
+        tc = tc.oficial
+    return round(dolares * tc, 2)
+
+class Banco(Entidad):
+    pass
 
 
 class TipoPago(Entidad):
@@ -22,14 +53,21 @@ class Bodega(Entidad):
     sucursal = models.ForeignKey(Sucursal)
 
 
-class Cliente(Entidad):
+class datos_generales(models.Model):
     ident = models.CharField(max_length=14, null=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=125, null=True, blank=True)
     address = models.TextField(max_length=400, null=True, blank=True)
 
+    class Meta:
+        abstract = True
+
+
+class Cliente(datos_generales, Entidad):
+    pass
+
     def facturas(self):
-        return Documento.objects.filter(cliente=self)
+        return Factura.objects.filter(cliente=self)
 
     def saldo(self):
         pendientes =  self.facturas().filter(saldo__gt=0.009)
@@ -115,21 +153,7 @@ class Existencia(models.Model):
     cantidad = models.FloatField()
 
 
-TIPOS_AFECTACION = (
-    ( 1, "POSITIVA"),
-    ( 0, "SIN AFECTACION"),
-    (-1, "NEGATIVA"),
-    )
-
-
-class TipoDoc(Entidad):
-    contable = models.BooleanField(default=False)
-    afectacion = models.IntegerField(default=0, choices=TIPOS_AFECTACION)
-    afecta_costo = models.BooleanField(default=False)
-
-
-class Documento(models.Model):
-    tipodoc = models.ForeignKey(TipoDoc, null=True)
+class Factura(models.Model):
     sucursal = models.ForeignKey(Sucursal, null=True)
     user = models.ForeignKey(User, null=True,
         related_name="moneycash_factura_user")
@@ -155,11 +179,13 @@ class Documento(models.Model):
         obj['date'] = str(self.date)
         obj['calculo_ir'] = self.calculo_ir()
         obj['calculo_al'] = self.calculo_al()
+        obj['detalle'] = self.detalle_json()
         return obj
 
     def get_numero(self):
         try:
-            return Documento.objects.filter(tipodoc=self.tipodoc).aggregate(Max('numero'))['numero__max'] + 1
+            return Factura.objects.all(
+                ).aggregate(Max('numero'))['numero__max'] + 1
         except:
             return 1
 
@@ -175,10 +201,24 @@ class Documento(models.Model):
         else:
             return 0.0
 
+    def detalle(self):
+        return Detalle.objects.filter(factura=self)
+
+    def detalle_json(self):
+        return [x.to_json() for x in self.detalle()]
+
+    def subtotal_cordobas(self):
+        return cordobizar(self.subtotal)
+
+    def iva_cordobas(self):
+        return cordobizar(self.iva)
+
+    def total_cordobas(self):
+        return cordobizar(self.total)
 
 
 class Detalle(models.Model):
-    documento = models.ForeignKey(Documento, null=True)
+    factura = models.ForeignKey(Factura, null=True)
     producto = models.ForeignKey(Producto)
     bodega = models.ForeignKey(Bodega)
     cantidad = models.FloatField()
@@ -187,10 +227,34 @@ class Detalle(models.Model):
     cost = models.FloatField()
     existencia = models.FloatField(null=True)
     saldo = models.FloatField(null=True)
-    costo_promedio = models.FloatField(null=True)
+
+    def to_json(self):
+        return model_to_dict(self)
 
     def aplicar(self):
         pass
+
+    def total(self):
+        return round(self.cantidad * self.price, 2)
+
+
+class Proveedor(datos_generales, Entidad):
+    pass
+
+
+class Compra(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    numero = models.PositiveIntegerField(null=True)
+    proveedor = models.ForeignKey(Proveedor)
+    comentarios = models.TextField(max_length=999, null=True)
+
+
+class Item(models.Model):
+    compra = models.ForeignKey(Compra)
+    producto = models.ForeignKey(Producto)
+    cantidad = models.FloatField()
+    precio = models.FloatField()
+    descuento = models.FloatField()
 
 class SMS(models.Model):
     numero = models.CharField(max_length=14)

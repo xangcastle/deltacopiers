@@ -5,6 +5,7 @@ var factura = function(){
     success: function(data){
       console.log(data);
       var form = $('form');
+      form.find('#factura').val(data.id);
       form.find('#factura_numero').val(data.numero);
       form.find('#factura_subtotal').val(data.subtotal);
       form.find('#factura_descuento').val(data.descuento);
@@ -18,6 +19,7 @@ var factura = function(){
       form.find('#phone').val(data.cliente_data.phone);
       form.find('#address').val(data.cliente_data.address);
       form.find('#tipopago').val(data.cliente_data.tipopago);
+      generar_impresa(data);
     }
   })
   $('#metodos-pago').show();
@@ -25,8 +27,22 @@ var factura = function(){
   $('#listado').hide();
 }
 
+var imprimir = function () {
+    $.ajax({
+        url:"../imprimir_factura/",
+        type:"POST",
+        data: {'id': $('#factura').val()},
+        success:function (result) {
+            $(".impreso").empty().html(result);
+            var resultado = $('.impreso').print();
+            console.log(resultado);
+        }
+    });
+}
+
 $(document).on('ready', function(){
   $('#formulario').hide();
   $('#metodos-pago').hide();
   $('#listado tbody').on('dblclick', 'tr', factura);
+  $('#imprimir').on('click', imprimir);
 });

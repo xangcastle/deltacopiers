@@ -202,6 +202,19 @@ var validar_modal = function(){
 
 }
 
+
+var generar_ecuenta = function(){
+  var cliente = $('#cliente');
+  if (parseInt(cliente.val()) > 0) {
+    var frame = $('#conten-pdf-preview');
+    var url="../generar_ecuenta/?id_cliente=" + $('#cliente').val();
+    frame.attr('src',url);
+    $("#modal-pdf-preview").modal('show');
+    return false;
+  }
+}
+
+
 var funka = function (){
   alert('funka');
 }
@@ -216,4 +229,5 @@ $(document).on('ready', function(){
     $('#detalleCliente').on('change', 'input[name="aplica_ir"]', calcular_fila);
     $('#detalleCliente').on('change', 'input[name="aplica_al"]', calcular_fila);
     $('#clienteOk').on('click', validar_modal);
+    $('#btnpdf').on('click', generar_ecuenta);
 });

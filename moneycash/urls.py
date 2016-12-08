@@ -49,4 +49,8 @@ urlpatterns = patterns('moneycash.views',
         name='descarga_app'),
     url(r'^descarga_cendis/$', 'descarga_cendis',
         name='descarga_cendis'),
+    url(r'^generar_ecuenta/$', 'generar_ecuenta',
+        name='generar_ecuenta'),
+    url(r'^imprimir_factura/$', 'imprimir_factura',
+        name='imprimir_factura'),
 )

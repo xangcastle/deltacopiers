@@ -67,10 +67,10 @@ class producto_admin(entidad_admin):
 
 
 admin.site.register(Producto, producto_admin)
-admin.site.register(TipoDoc, entidad_admin)
 admin.site.register(Sucursal, entidad_admin)
 admin.site.register(Bodega, entidad_admin)
 admin.site.register(TipoPago, entidad_admin)
+admin.site.register(Banco, entidad_admin)
 
 
 class existencia_admin(admin.ModelAdmin):
@@ -91,7 +91,7 @@ class factura_admin(admin.ModelAdmin):
     'ir', 'al', 'total')
 
 
-admin.site.register(Documento, factura_admin)
+admin.site.register(Factura, factura_admin)
 
 
 class preventa_detalle(admin.TabularInline):
@@ -124,3 +124,10 @@ class modelo_admin(admin.ModelAdmin):
 
 
 admin.site.register(Modelo, modelo_admin)
+
+class tc_admin(entidad_admin):
+    date_hierarchy = 'fecha'
+    list_display = ('fecha', 'oficial', 'compra', 'venta')
+    ordering = ('fecha',)
+    actions = []
+admin.site.register(TC, tc_admin)

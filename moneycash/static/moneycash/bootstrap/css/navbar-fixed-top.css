@@ -10,3 +10,6 @@ body {
   color: #ffffff;
   margin-top: 15px;
 }
+.invicible{
+  display: None;
+}

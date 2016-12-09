@@ -102,9 +102,9 @@ var insertar_detalle = function(code, name, cantidad, price, discount, total, pr
     .append($('<td colspan="3"><input type="text" id="name" class="form-control" value="'+name+'" readonly></td>'))
     .append($('<td colspan="2"><input type="text" id="bodega_name" class="form-control" value="'+bodega_name+'" readonly><input type="hidden" id="bodega" name="bodega_id" value="'+bodega+'" readonly></td>'))
     .append($('<td><input type="text" id="cantidad" name="producto_cantidad" class="form-control" value="'+cantidad+'" readonly></td>'))
-    .append($('<td><input type="text" id="price" name="producto_price" class="form-control" value="'+price+'" readonly></td>'))
-    .append($('<td><input type="text" id="discount" name="producto_discount" class="form-control" value="'+discount+'" readonly></td>'))
-    .append($('<td><input type="text" id="total" class="form-control" value="'+total+'" readonly></td>'));
+    .append($('<td><input type="text" id="price" name="producto_price" class="form-control moneda" value="'+price+'" readonly></td>'))
+    .append($('<td><input type="text" id="discount" name="producto_discount" class="form-control moneda" value="'+discount+'" readonly></td>'))
+    .append($('<td><input type="text" id="total" class="form-control moneda" value="'+total+'" readonly></td>'));
   tabla.append(row);
   $('#buscador_productos')
     .focus()
@@ -234,6 +234,7 @@ var eliminar_detalle = function(){
 
 var grabar_factura = function(){
   var form = $('form');
+  form.append($('select[name="monedas"]'));
   $.ajax("/moneycash/grabar_factura/",{
       type: "POST",
       data: form.serialize(),

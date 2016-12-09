@@ -18,32 +18,27 @@ class TC(models.Model):
     compra = models.FloatField(null=True)
 
 
-def dolarizar(cordobas=1, fecha=datetime.now()):
+def dolarizar(cordobas=1, fecha=datetime.now(), digitos=2):
     tc = TC.objects.get(fecha__year=fecha.year, fecha__month=fecha.month,
         fecha__day=fecha.day)
     if tc.venta and tc.venta > tc.oficial:
         tc = tc.venta
     else:
         tc = tc.oficial
-    return round(cordobas / tc, 2)
+    return round(cordobas / tc, digitos)
 
 
-def cordobizar(dolares=1, fecha=datetime.now()):
+def cordobizar(dolares=1, fecha=datetime.now(), digitos=2):
     tc = TC.objects.get(fecha__year=fecha.year, fecha__month=fecha.month,
         fecha__day=fecha.day)
     if tc.compra and tc.compra < tc.oficial:
         tc = tc.compra
     else:
         tc = tc.oficial
-    return round(dolares * tc, 2)
+    return round(dolares * tc, digitos)
 
 class Banco(Entidad):
     pass
-
-
-class TipoPago(Entidad):
-    pass
-
 
 class Sucursal(Entidad):
     pass
@@ -64,10 +59,10 @@ class datos_generales(models.Model):
 
 
 class Cliente(datos_generales, Entidad):
-    pass
+    limite_credito = models.FloatField(default=0.0)
 
     def facturas(self):
-        return Factura.objects.filter(cliente=self)
+        return Factura.objects.filter(cliente=self, impresa=True)
 
     def saldo(self):
         pendientes =  self.facturas().filter(saldo__gt=0.009)
@@ -76,12 +71,16 @@ class Cliente(datos_generales, Entidad):
         else:
             return 0.0
 
+    def saldo_disponible(self):
+        return self.limite_credito - self.saldo()
+
     def to_json(self):
         obj = super(Cliente, self).to_json()
         obj['facturas'] = []
         for f in self.facturas():
             obj['facturas'].append(f.to_json())
         obj['saldo'] = self.saldo()
+        obj['saldo_disponible'] = self.saldo_disponible()
         return obj
 
 
@@ -155,6 +154,7 @@ class Existencia(models.Model):
 
 class Factura(models.Model):
     sucursal = models.ForeignKey(Sucursal, null=True)
+    moneda = models.CharField(max_length=25, null=True)
     user = models.ForeignKey(User, null=True,
         related_name="moneycash_factura_user")
     date = models.DateTimeField(auto_now_add=True)
@@ -169,10 +169,16 @@ class Factura(models.Model):
     excento_iva = models.NullBooleanField()
     aplica_ir = models.NullBooleanField()
     aplica_al = models.NullBooleanField()
-    tipopago = models.ForeignKey(TipoPago, null=True)
+    tipopago = models.CharField(max_length=25, null=True)
     impresa = models.BooleanField(default=False)
     saldo = models.FloatField(null=True)
     monto = models.FloatField(null=True)
+
+    def simbolo(self):
+        if self.moneda == "cordobas":
+            return "C$"
+        else:
+            return "U$"
 
     def to_json(self):
         obj = model_to_dict(self)
@@ -180,7 +186,50 @@ class Factura(models.Model):
         obj['calculo_ir'] = self.calculo_ir()
         obj['calculo_al'] = self.calculo_al()
         obj['detalle'] = self.detalle_json()
+        cliente = model_to_dict(self.cliente)
+        if self.moneda == "cordobas":
+            cliente['limite_credito'] = self.cliente.limite_credito
+            cliente['saldo'] = self.cliente.saldo()
+            cliente['saldo_disponible'] = self.cliente.saldo_disponible()
+        else:
+            cliente['limite_credito'] = dolarizar(self.cliente.limite_credito,
+                self.date)
+            cliente['saldo'] = dolarizar(self.cliente.saldo(),
+                self.date)
+            cliente['saldo_disponible'] = dolarizar(
+                self.cliente.saldo_disponible(), self.date)
+        obj['cliente_data'] = cliente
         return obj
+
+    def tc(self):
+        return cordobizar(1, self.date, digitos=4)
+
+    def pasar_a_dolares(self):
+        if self.moneda == "cordobas":
+            self.moneda = "dolares"
+            for d in self.detalle():
+                d.price = dolarizar(d.price, self.date)
+                d.cost = dolarizar(d.cost, self.date)
+                d.save()
+            #self.recalcular()
+            self.subtotal = dolarizar(self.subtotal, self.date)
+            self.iva = dolarizar(self.iva, self.date)
+            self.total = dolarizar(self.total, self.date)
+            self.saldo = dolarizar(self.saldo, self.date)
+            self.save()
+
+    def pasar_a_cordobas(self):
+        if self.moneda == "dolares":
+            self.moneda = "cordobas"
+            for d in self.detalle():
+                d.price = cordobizar(d.price, self.date)
+                d.cost = cordobizar(d.cost, self.date)
+                d.save()
+            #self.recalcular()
+            self.subtotal = cordobizar(self.subtotal, self.date)
+            self.iva = cordobizar(self.iva, self.date)
+            self.total = cordobizar(self.total, self.date)
+            self.save()
 
     def get_numero(self):
         try:
@@ -208,13 +257,28 @@ class Factura(models.Model):
         return [x.to_json() for x in self.detalle()]
 
     def subtotal_cordobas(self):
-        return cordobizar(self.subtotal)
+        if self.moneda == "cordobas":
+            return self.subtotal
+        else:
+            return cordobizar(self.subtotal)
 
     def iva_cordobas(self):
-        return cordobizar(self.iva)
+        if self.moneda == "cordobas":
+            return self.iva
+        else:
+            return cordobizar(self.iva)
 
     def total_cordobas(self):
-        return cordobizar(self.total)
+        if self.moneda == "cordobas":
+            return self.total
+        else:
+            return cordobizar(self.total, self.date)
+
+    def subtotal_dolares(self):
+        if self.moneda == "cordobas":
+            return dolarizar(self.subtotal, self.date)
+        else:
+            return self.subtotal
 
 
 class Detalle(models.Model):
@@ -225,8 +289,6 @@ class Detalle(models.Model):
     price = models.FloatField()
     discount = models.FloatField(null=True)
     cost = models.FloatField()
-    existencia = models.FloatField(null=True)
-    saldo = models.FloatField(null=True)
 
     def to_json(self):
         return model_to_dict(self)
@@ -235,7 +297,16 @@ class Detalle(models.Model):
         pass
 
     def total(self):
-        return round(self.cantidad * self.price, 2)
+        return self.cantidad * self.price
+
+    def precio_impreso(self):
+        if self.factura.moneda == "cordobas":
+            return dolarizar(self.price, self.factura.date)
+        else:
+            return self.price
+
+    def total_impreso(self):
+        return round(self.cantidad * self.precio_impreso(), 2)
 
 
 class Proveedor(datos_generales, Entidad):

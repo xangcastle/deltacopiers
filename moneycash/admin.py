@@ -69,7 +69,6 @@ class producto_admin(entidad_admin):
 admin.site.register(Producto, producto_admin)
 admin.site.register(Sucursal, entidad_admin)
 admin.site.register(Bodega, entidad_admin)
-admin.site.register(TipoPago, entidad_admin)
 admin.site.register(Banco, entidad_admin)
 
 

@@ -12,14 +12,17 @@ var factura = function(){
       form.find('#factura_iva').val(data.iva);
       form.find('#factura_retencion').val(data.retension);
       form.find('#factura_total').val(data.total);
+      $('select[name="monedas"]').val(data.moneda);
       form.find('#code').val(data.cliente_data.code);
       form.find('#name').val(data.cliente_data.name);
       form.find('#ident').val(data.cliente_data.ident);
       form.find('#email').val(data.cliente_data.email);
       form.find('#phone').val(data.cliente_data.phone);
       form.find('#address').val(data.cliente_data.address);
-      form.find('#tipopago').val(data.cliente_data.tipopago);
-      generar_impresa(data);
+      $('#saldo-disponible').val(data.cliente_data.saldo_disponible);
+      $('#limite-credito').val(data.cliente_data.limite_credito);
+      $('#saldo-actual').val(data.cliente_data.saldo);
+      form.find('#tipopago').val(data.tipopago);
     }
   })
   $('#metodos-pago').show();
@@ -31,7 +34,7 @@ var imprimir = function () {
     $.ajax({
         url:"../imprimir_factura/",
         type:"POST",
-        data: {'id': $('#factura').val()},
+        data: {'id': $('#factura').val(), 'moneda': $('select[name="monedas"]').val()},
         success:function (result) {
             $(".impreso").empty().html(result);
             var resultado = $('.impreso').print();
@@ -40,9 +43,15 @@ var imprimir = function () {
     });
 }
 
+var cambiar_metodo = function(){
+  $('.invicible').css('display', 'None');
+  $('.'+$('#tipopago').val()).css('display', 'block');
+}
+
 $(document).on('ready', function(){
   $('#formulario').hide();
   $('#metodos-pago').hide();
   $('#listado tbody').on('dblclick', 'tr', factura);
   $('#imprimir').on('click', imprimir);
+  $('#tipopago').on('change', cambiar_metodo);
 });

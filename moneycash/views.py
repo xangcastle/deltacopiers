@@ -42,7 +42,6 @@ class factura(TemplateView):
     template_name = "moneycash/factura.html"
     def get_context_data(self, **kwargs):
         context = super(factura, self).get_context_data(**kwargs)
-        context['tipo_pagos'] = TipoPago.objects.all()
         context['tc'] = cordobizar()
         return context
 
@@ -53,7 +52,6 @@ class roc(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(roc, self).get_context_data(**kwargs)
         context['caja'] = True
-        context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
         context['tc'] = cordobizar()
         return context
 
@@ -63,7 +61,7 @@ class facturas_no_impresas(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(facturas_no_impresas, self).get_context_data(**kwargs)
         context['facturas'] = Factura.objects.filter(impresa=False)
-        context['tipo_pagos'] = TipoPago.objects.all().order_by('name')
+        context['tc'] = cordobizar()
         return context
 
 
@@ -117,6 +115,7 @@ def grabar_cabecera(request):
     except:
         f.user = User.objects.get(id=int(request.POST.get('user_id', '')))
     f.date = datetime.now()
+    f.moneda = request.POST.get('monedas', '')
     f.numero = f.get_numero()
     f.cliente = extract_cliente(request)
     f.aplica_ir = request.POST.get('aplica_ir', '')
@@ -127,6 +126,7 @@ def grabar_cabecera(request):
     f.iva = request.POST.get('factura_iva', '')
     f.retension = request.POST.get('factura_retencion', '')
     f.total = request.POST.get('factura_total', '')
+    f.saldo = request.POST.get('factura_total', '')
     f.save()
     return f
 
@@ -336,7 +336,12 @@ def generar_ecuenta(request):
 
 @csrf_exempt
 def imprimir_factura(request):
-    print(int(request.POST.get('id', '')))
     factura = Factura.objects.get(id=int(request.POST.get('id', '')))
+    factura.impresa = True
+    factura.save()
+    if request.POST.get('moneda', '') == "cordobas":
+        factura.pasar_a_cordobas()
+    elif request.POST.get('moneda', '') == "dolares":
+        factura.pasar_a_dolares()
     html = render_to_string('moneycash/print/factura.html', {'f': factura})
     return HttpResponse(html)

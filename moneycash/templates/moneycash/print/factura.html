@@ -119,10 +119,10 @@
                       {{ d.producto.name }}
                     </td>
                     <td class="detalle-precio campo-numerico">
-                      U$&nbsp;{{ d.precio|floatformat:3 }}
+                      U$&nbsp;{{ d.precio_impreso|floatformat:3 }}
                     </td>
                     <td  class="detalle-total campo-numerico">
-                      U$&nbsp;{{ d.total|floatformat:2 }}
+                      U$&nbsp;{{ d.total_impreso|floatformat:2 }}
                     </td>
                   </tr>
                 {% endfor %}
@@ -132,16 +132,16 @@
               Tasa&nbsp;de&nbsp;Cambio&nbsp;: {{ f.tc }}
             </div>
             <div class="campo campo-numerico subtotal">
-              U$&nbsp;{{ f.subtotal|floatformat:2  }}
+              U$&nbsp;{{ f.subtotal_dolares|floatformat:2  }}
             </div>
             <div class="campo campo-numerico subtotal-cordobas">
-              {{ f.subtotal_cordobas|floatformat:2  }}
+              {{f.simbolo}}{{ f.subtotal|floatformat:2  }}
             </div>
             <div class="campo campo-numerico iva">
-              {{ f.iva_cordobas|floatformat:2  }}
+              {{f.simbolo}}{{ f.iva|floatformat:2  }}
             </div>
             <div class="campo campo-numerico total">
-              {{ f.total_cordobas|floatformat:2 }}
+              {{f.simbolo}}{{ f.total|floatformat:2 }}
             </div>
       </div>
     </body>

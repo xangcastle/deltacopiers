@@ -28,9 +28,14 @@
             <div class="panel-heading">
                 <h4>Cliente : <a href="#">{{ cliente }}</a></h4>
             </div>
-            <div class="panel-body">Dirección
-                detalles
-                más detalles
+            <div class="panel-body">
+              Identificacion: {{ cliente.ident }}
+              <br>
+              Dirección: {{ cliente.address }}
+              <br>
+              Telefono: {{ cliente.phone }}
+              <br>
+              Email: {{ cliente.email }}
             </div>
         </div>
     </div>
@@ -40,10 +45,10 @@
     <thead>
         <tr>
             <th>
-            <h4>Documento</h4>
+            <h4>Factura No.</h4>
             </th>
             <th>
-            <h4>Descripción</h4>
+            <h4>Moneda</h4>
             </th>
             <th>
             <h4>Fecha Emision</h4>
@@ -62,11 +67,11 @@
     <tbody>
     {% for documento in documentos %}
     <tr>
-        <td><a href="#">{{ documento.nodoc }}</a></td>
-        <td>{{ documento.descripcion }}</td>
-        <td class=" text-right ">{{ documento.fecha }}</td>
+        <td><a href="#">{{ documento.numero }}</a></td>
+        <td>{{ documento.moneda }}</td>
+        <td class=" text-right ">{{ documento.date }}</td>
         <td class=" text-right ">{{ documento.total }}</td>
-        <td class=" text-right ">{{ documento.saldo_factura }}</td>
+        <td class=" text-right ">{{ documento.saldo }}</td>
         <td class=" text-right ">VECIDO/AL CORRIENTE</td>
     </tr>
     {% endfor %}
@@ -75,6 +80,16 @@
 
 
 <div class="row text-right">
+  <div class="col-xs-3 col-xs-offset-7">
+      <strong>
+      Saldo Total: <br>
+      </strong>
+  </div>
+  <div class="col-xs-2">
+      <strong>
+      {{ cliente.saldo.dolares }}<br>
+      </strong>
+  </div>
     <div class="col-xs-3 col-xs-offset-7">
         <strong>
         Saldo Total: <br>
@@ -82,7 +97,7 @@
     </div>
     <div class="col-xs-2">
         <strong>
-        {{ cliente.saldo_cliente }}<br>
+        {{ cliente.saldo.cordobas }}<br>
         </strong>
     </div>
 </div>

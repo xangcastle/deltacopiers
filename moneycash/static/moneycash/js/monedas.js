@@ -9,13 +9,29 @@ var dolarizar = function(cordobas){
 }
 
 var cordobizar_documento = function(){
-  $.each($('.moneda'), function(i,o){
-    var monto = $(o).val()
-    if ($('select[name="monedas"]').val()=="cordobas") {
-      $(o).val(cordobizar(monto));
+  var monedas = $('.moneda');
+  $.each(monedas, function(i,o){
+    if ($(o).val()=="") {
+
+      var monto = $(o).html();
+      if ($('select[name="monedas"]').val()=="cordobas") {
+        $(o).html(cordobizar(monto));
+      }else {
+        $(o).html(dolarizar(monto));
+      }
+
     }else {
-      $(o).val(dolarizar(monto));
+
+      var monto = $(o).val();
+      if ($('select[name="monedas"]').val()=="cordobas") {
+        $(o).val(cordobizar(monto));
+      }else {
+        $(o).val(dolarizar(monto));
+      }
+
     }
+    console.log(o);
+    console.log(monto);
   });
 }
 

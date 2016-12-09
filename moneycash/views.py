@@ -338,6 +338,9 @@ def generar_ecuenta(request):
 def imprimir_factura(request):
     factura = Factura.objects.get(id=int(request.POST.get('id', '')))
     factura.impresa = True
+    factura.tipopago = request.POST.get('tipopago', '')
+    if request.POST.get('tipopago', '') == "contado":
+        factura.saldo = 0.0
     factura.save()
     if request.POST.get('moneda', '') == "cordobas":
         factura.pasar_a_cordobas()

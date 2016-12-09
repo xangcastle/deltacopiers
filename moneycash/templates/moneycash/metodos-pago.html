@@ -29,7 +29,7 @@
     <input type="input" class="form-control" id="factura_retencion" readonly name="factura_retencion" value="0.0">
 </div>
 {% endif %}
-<div class="invicible contado">
+<div class="{% if not caja %}invicible{% endif %} contado">
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">

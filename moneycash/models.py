@@ -62,17 +62,24 @@ class Cliente(datos_generales, Entidad):
     limite_credito = models.FloatField(default=0.0)
 
     def facturas(self):
-        return Factura.objects.filter(cliente=self, impresa=True)
+        return Factura.objects.filter(cliente=self, impresa=True, saldo__gt=0.0)
 
     def saldo(self):
-        pendientes =  self.facturas().filter(saldo__gt=0.009)
-        if pendientes.count() > 0:
-            return pendientes.aggregate(Sum('saldo'))['saldo__sum']
+        data = {}
+        cordobas =  self.facturas().filter(moneda="cordobas")
+        dolares =  self.facturas().filter(moneda="dolares")
+        if cordobas.count() > 0:
+            data['cordobas'] = cordobas.aggregate(Sum('saldo'))['saldo__sum']
         else:
-            return 0.0
+            data['cordobas'] = 0.0
+        if dolares.count() > 0:
+            data['dolares'] = dolares.aggregate(Sum('saldo'))['saldo__sum']
+        else:
+            data['dolares'] = 0.0
+        return data
 
     def saldo_disponible(self):
-        return self.limite_credito - self.saldo()
+        return self.limite_credito - (self.saldo()['cordobas'] + cordobizar(self.saldo()['dolares']))
 
     def to_json(self):
         obj = super(Cliente, self).to_json()
@@ -229,6 +236,7 @@ class Factura(models.Model):
             self.subtotal = cordobizar(self.subtotal, self.date)
             self.iva = cordobizar(self.iva, self.date)
             self.total = cordobizar(self.total, self.date)
+            self.saldo = cordobizar(self.saldo, self.date)
             self.save()
 
     def get_numero(self):
@@ -239,10 +247,16 @@ class Factura(models.Model):
             return 1
 
     def calculo_ir(self):
-        if self.subtotal > 1000:
-            return round(self.subtotal * 0.02, 2)
+        if self.moneda == "cordobas":
+            if self.subtotal > 1000:
+                return round(self.subtotal * 0.02, 2)
+            else:
+                return 0.0
         else:
-            return 0.0
+            if (self.subtotal * self.tc()) > 1000:
+                return round(self.subtotal * 0.02, 2)
+            else:
+                return 0.0
 
     def calculo_al(self):
         if self.subtotal > 1000:

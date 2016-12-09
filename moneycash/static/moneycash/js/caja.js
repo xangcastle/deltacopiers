@@ -79,6 +79,7 @@ var totalizar_monto = function(){
   var monto = (parseFloat($('#pago_efectivo').val()) +parseFloat($('#pago_cheque').val()) + parseFloat($('#pago_transferencia').val()) + parseFloat($('#pago_tarjeta').val()))
   $('#pago_total').val(monto.toFixed(2));
   $('#montoLetras').val(NumeroALetras(monto));
+  $('#pago_cambio').val((monto - parseFloat($('#factura_total').val())).toFixed(2));
 }
 
 $(document).on('ready', function () {

@@ -31,16 +31,34 @@ var factura = function(){
 }
 
 var imprimir = function () {
-    $.ajax({
-        url:"../imprimir_factura/",
-        type:"POST",
-        data: {'id': $('#factura').val(), 'moneda': $('select[name="monedas"]').val()},
-        success:function (result) {
-            $(".impreso").empty().html(result);
-            var resultado = $('.impreso').print();
-            console.log(resultado);
-        }
-    });
+  if ($('#tipopago').val()=="contado") {
+    if ( parseFloat($('#pago_total').val())>=parseFloat($('#factura_total').val()) ) {
+      $.ajax({
+          url:"../imprimir_factura/",
+          type:"POST",
+          data: {'id': $('#factura').val(), 'moneda': $('select[name="monedas"]').val(), 'tipopago': $('#tipopago').val()},
+          success:function (result) {
+              $(".impreso").empty().html(result);
+              var resultado = $('.impreso').print();
+              location.reload();
+          }
+      });
+    }
+  }else if ($('#tipopago').val()=="credito") {
+    if ( parseFloat($('#saldo-disponible').val())>=parseFloat($('#factura_total').val()) ) {
+      $.ajax({
+          url:"../imprimir_factura/",
+          type:"POST",
+          data: {'id': $('#factura').val(), 'moneda': $('select[name="monedas"]').val(), 'tipopago': $('#tipopago').val()},
+          success:function (result) {
+              $(".impreso").empty().html(result);
+              var resultado = $('.impreso').print();
+              location.reload();
+          }
+      });
+    }
+  }
+
 }
 
 var cambiar_metodo = function(){

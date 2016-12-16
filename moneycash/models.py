@@ -11,6 +11,8 @@ from datetime import datetime
 #User = settings.AUTH_USER_MODEL
 
 
+MONEDAS = (("cordobas", "C$ Cordobas"), ("dolares", "U$ Dolares"))
+
 class TC(models.Model):
     fecha = models.DateField()
     oficial = models.FloatField()
@@ -40,6 +42,14 @@ def cordobizar(dolares=1, fecha=datetime.now(), digitos=2):
 class Banco(Entidad):
     pass
 
+class CuentaBanco(models.Model):
+    banco = models.ForeignKey(Banco)
+    numero = models.CharField(max_length=30)
+    moneda = models.CharField(max_length=25, default="cordobas", choices=MONEDAS)
+
+    def __unicode__(self):
+        return "%s %s- %s" % (self.banco.name, self.moneda, self.numero)
+
 class Sucursal(Entidad):
     pass
 
@@ -60,6 +70,7 @@ class datos_generales(models.Model):
 
 class Cliente(datos_generales, Entidad):
     limite_credito = models.FloatField(default=0.0)
+    cuenta_credito = models.ForeignKey('cuenta_credito', null=True, blank=True)
 
     def facturas(self):
         return Factura.objects.filter(cliente=self, impresa=True, saldo__gt=0.0)
@@ -76,10 +87,71 @@ class Cliente(datos_generales, Entidad):
             data['dolares'] = dolares.aggregate(Sum('saldo'))['saldo__sum']
         else:
             data['dolares'] = 0.0
+        data['total_cordobas'] = cordobizar(data['dolares']) + data['cordobas']
+        data['total_dolares'] = dolarizar(data['cordobas']) + data['dolares']
         return data
 
     def saldo_disponible(self):
         return self.limite_credito - (self.saldo()['cordobas'] + cordobizar(self.saldo()['dolares']))
+
+    def ecuenta(self):
+        data = []
+        facturas = Factura.objects.filter(cliente=self, impresa=True)
+        for f in facturas:
+            if f.moneda == "cordobas":
+                data.append({'fecha': f.date,
+                'referencia': "F - " + str(f.numero),
+                'descripcion': "Factura Numero " + str(f.numero),
+                'cordobas': f.total,
+                'dolares': 0.0})
+                if f.aplica_ir:
+                    print("aplica ir")
+                    data.append({'fecha': f.date,
+                    'referencia': "IR - " + str(f.numero_ir),
+                    'descripcion': "Retencion en la Fuente # " + str(f.numero_ir),
+                    'cordobas': -f.ir,
+                    'dolares': 0.0})
+                if f.aplica_al:
+                    data.append({'fecha': f.date,
+                    'referencia': "AL - " + str(f.numero_al),
+                    'descripcion': "Retencion Alcaldia Municipal # " + str(f.numero_al),
+                    'cordobas': -f.al,
+                    'dolares': 0.0})
+            else:
+                data.append({'fecha': f.date,
+                'referencia': "F - " + str(f.numero),
+                'descripcion': "Factura Numero " + str(f.numero),
+                'dolares': f.total,
+                'cordobas': 0.0})
+                if f.aplica_ir:
+                    print("aplica ir")
+                    data.append({'fecha': f.date,
+                    'referencia': "IR - " + str(f.numero_ir),
+                    'descripcion': "Retencion en la Fuente # " + str(f.numero_ir),
+                    'dolares': -f.ir,
+                    'cordobas': 0.0})
+                if f.aplica_al:
+                    data.append({'fecha': f.date,
+                    'referencia': "AL - " + str(f.numero_al),
+                    'descripcion': "Retencion Alcaldia Municipal # " + str(f.numero_al),
+                    'dolares': -f.al,
+                    'cordobas': 0.0})
+        abonos = Roc.objects.filter(cliente=self)
+        for a in abonos:
+            if a.moneda == "cordobas":
+                data.append({'fecha': a.fecha,
+                'referencia': "ROC - " + str(a.numero),
+                'descripcion': a.concepto,
+                'dolares': 0.0,
+                'cordobas': -a.monto})
+            else:
+                data.append({'fecha': a.fecha,
+                'referencia': "ROC - " + str(a.numero),
+                'descripcion': a.concepto,
+                'cordobas': 0.0,
+                'dolares': -a.monto})
+        data = sorted(data, key=lambda doc: doc['fecha'], reverse=False)
+        return data
 
     def to_json(self):
         obj = super(Cliente, self).to_json()
@@ -161,7 +233,7 @@ class Existencia(models.Model):
 
 class Factura(models.Model):
     sucursal = models.ForeignKey(Sucursal, null=True)
-    moneda = models.CharField(max_length=25, null=True)
+    moneda = models.CharField(max_length=25, null=True, choices=MONEDAS)
     user = models.ForeignKey(User, null=True,
         related_name="moneycash_factura_user")
     date = models.DateTimeField(auto_now_add=True)
@@ -170,16 +242,19 @@ class Factura(models.Model):
     subtotal = models.FloatField(null=True)
     descuento = models.FloatField(null=True)
     iva = models.FloatField(null=True)
+    aplica_ir = models.NullBooleanField()
     ir = models.FloatField(null=True)
+    numero_ir = models.PositiveIntegerField(null=True)
+    aplica_al = models.NullBooleanField()
     al = models.FloatField(null=True, verbose_name="alcaldia")
+    numero_al = models.PositiveIntegerField(null=True)
     total = models.FloatField(null=True)
     excento_iva = models.NullBooleanField()
-    aplica_ir = models.NullBooleanField()
-    aplica_al = models.NullBooleanField()
     tipopago = models.CharField(max_length=25, null=True)
     impresa = models.BooleanField(default=False)
+    cerrada = models.BooleanField(default=False)
+    entregada = models.BooleanField(default=False)
     saldo = models.FloatField(null=True)
-    monto = models.FloatField(null=True)
 
     def simbolo(self):
         if self.moneda == "cordobas":
@@ -196,15 +271,14 @@ class Factura(models.Model):
         cliente = model_to_dict(self.cliente)
         if self.moneda == "cordobas":
             cliente['limite_credito'] = self.cliente.limite_credito
-            cliente['saldo'] = self.cliente.saldo()
+            cliente['saldo'] = self.cliente.saldo()['total_cordobas']
             cliente['saldo_disponible'] = self.cliente.saldo_disponible()
         else:
             cliente['limite_credito'] = dolarizar(self.cliente.limite_credito,
                 self.date)
-            cliente['saldo'] = dolarizar(self.cliente.saldo(),
-                self.date)
+            cliente['saldo'] = self.cliente.saldo()['total_dolares']
             cliente['saldo_disponible'] = dolarizar(
-                self.cliente.saldo_disponible(), self.date)
+                self.cliente.saldo_disponible())
         obj['cliente_data'] = cliente
         return obj
 
@@ -218,7 +292,6 @@ class Factura(models.Model):
                 d.price = dolarizar(d.price, self.date)
                 d.cost = dolarizar(d.cost, self.date)
                 d.save()
-            #self.recalcular()
             self.subtotal = dolarizar(self.subtotal, self.date)
             self.iva = dolarizar(self.iva, self.date)
             self.total = dolarizar(self.total, self.date)
@@ -232,7 +305,6 @@ class Factura(models.Model):
                 d.price = cordobizar(d.price, self.date)
                 d.cost = cordobizar(d.cost, self.date)
                 d.save()
-            #self.recalcular()
             self.subtotal = cordobizar(self.subtotal, self.date)
             self.iva = cordobizar(self.iva, self.date)
             self.total = cordobizar(self.total, self.date)
@@ -253,16 +325,22 @@ class Factura(models.Model):
             else:
                 return 0.0
         else:
-            if (self.subtotal * self.tc()) > 1000:
+            if cordobizar(self.subtotal) > 1000:
                 return round(self.subtotal * 0.02, 2)
             else:
                 return 0.0
 
     def calculo_al(self):
-        if self.subtotal > 1000:
-            return round(self.subtotal * 0.01, 2)
+        if self.moneda == "cordobas":
+            if self.subtotal > 1000:
+                return round(self.subtotal * 0.01, 2)
+            else:
+                return 0.0
         else:
-            return 0.0
+            if cordobizar(self.subtotal) > 1000:
+                return round(self.subtotal * 0.01, 2)
+            else:
+                return 0.0
 
     def detalle(self):
         return Detalle.objects.filter(factura=self)
@@ -294,6 +372,36 @@ class Factura(models.Model):
         else:
             return self.subtotal
 
+    def abonar(self, recibo, monto, moneda, comentario="", saldo=0.0):
+        abono = 0.0
+        if self.moneda == moneda:
+            abono = monto
+        else:
+            if self.moneda == "cordobas" and moneda == "dolares":
+                abono = cordobizar(monto)
+            else:
+                abono = dolarizar(monto)
+        self.saldo = round(self.saldo - abono, 2)
+        self.save()
+        ab = Abono(factura=self, monto=monto, roc=recibo,
+            comentario=comentario, saldo=saldo)
+        ab.save()
+
+    def aplicar_ir(self, recibo, numero, saldo):
+        abono = self.calculo_ir()
+        self.abonar(recibo, abono, self.moneda, "Retencion IR # " + numero + "aplica a factura # " + str(self.numero), saldo)
+        self.aplica_ir = True
+        self.ir = abono
+        self.save()
+
+    def aplicar_al(self, recibo, numero, saldo):
+        abono = self.calculo_al()
+        self.abonar(recibo, abono, self.moneda,
+            "Retencion Alcaldia Municipal # " + numero + "aplica a factura # " + str(self.numero), saldo)
+        self.aplica_al = True
+        self.al = abono
+        self.save()
+
 
 class Detalle(models.Model):
     factura = models.ForeignKey(Factura, null=True)
@@ -322,6 +430,40 @@ class Detalle(models.Model):
     def total_impreso(self):
         return round(self.cantidad * self.precio_impreso(), 2)
 
+
+class Roc(models.Model):
+    numero = models.PositiveIntegerField(null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    cliente = models.ForeignKey(Cliente)
+    monto = models.FloatField(default=0.0)
+    concepto = models.TextField(max_length=999, null=True)
+    moneda = models.CharField(max_length=25, default="cordobas", choices=MONEDAS)
+
+    def get_numero(self):
+        try:
+            return Roc.objects.all(
+                ).aggregate(Max('numero'))['numero__max'] + 1
+        except:
+            return 1
+
+    def save(self, *args, **kwargs):
+        if not self.numero:
+            self.numero = self.get_numero()
+        super(Roc, self).save()
+
+class Abono(models.Model):
+    roc = models.ForeignKey(Roc)
+    factura = models.ForeignKey(Factura)
+    monto = models.FloatField(default=0.0)
+    saldo = models.FloatField(null=True)
+    comentario = models.CharField(max_length=255, null=True, blank=True)
+
+
+class Efectivo(models.Model):
+    roc = models.ForeignKey(Roc)
+    nominacion = models.PositiveIntegerField()
+    cantidad = models.PositiveIntegerField()
+    moneda = models.CharField(max_length=25, default="cordobas", choices=MONEDAS)
 
 class Proveedor(datos_generales, Entidad):
     pass
@@ -397,3 +539,77 @@ class Codigo(models.Model):
         return {'codigo': self.codigo,
         'short_description': self.short_description,
         'details': self.details}
+
+
+###########################################################################################
+
+
+TIPOS_CUENTA = (
+    ("ACTIVO", "ACTIVO"),
+    ("PASIVO", "PASIVO"),
+    ("CAPITAL", "CAPITAL"),
+    ("INGRESO", "INGRESO"),
+    ("EGRESO", "EGRESO"),
+)
+
+class Cuenta(models.Model):
+    tipo = models.CharField(max_length=10, choices=TIPOS_CUENTA)
+    codigo = models.CharField(max_length=14, null=True)
+    nombre = models.CharField(max_length=400)
+    operativa = models.BooleanField(default=True)
+    cuenta = models.ForeignKey('self', null=True, related_name="cuenta_padre",
+        blank=True)
+
+    def __unicode__(self):
+        return "%s - %s" % (self.codigo, self.nombre)
+
+    def buscar_padre(self):
+        cuenta = None
+        if self.codigo:
+            if len(self.codigo) == 4:
+                try:
+                    cuenta = Cuenta.objects.get(codigo=self.codigo[:2])
+                except Exception as e:
+                    pass
+            elif len(self.codigo) == 6:
+                try:
+                    return Cuenta.objects.get(codigo=self.codigo[:4])
+                except Exception as e:
+                    pass
+            elif len(self.codigo) == 9:
+                try:
+                    return Cuenta.objects.get(codigo=self.codigo[:6])
+                except Exception as e:
+                    pass
+            else:
+                return None
+        else:
+            return cuenta
+
+    def inactivar_padre(self):
+        if self.cuenta and self.cuenta.operativa:
+            self.cuenta.operativa = False
+            self.cuenta.save()
+
+    def prueba(self):
+        return "padre %s" % str(self.codigo[:4])
+    prueba.allow_tags = True
+
+    def save(self, *args, **kwargs):
+        self.cuenta = self.buscar_padre()
+        if self.cuenta:
+            self.inactivar_padre()
+        super(Cuenta, self).save()
+
+
+class manager_cuenta_credito(models.Manager):
+    def get_queryset(self):
+        ocupados = Cliente.objects.filter(cuenta_credito__isnull=False).values_list('cuenta_credito', flat=True)
+        return super(manager_cuenta_credito, self).get_queryset().filter(codigo__startswith="112101",
+        operativa=True).exclude(id__in=ocupados)
+
+class cuenta_credito(Cuenta):
+    objects = models.Manager()
+    objects = manager_cuenta_credito()
+    class Meta:
+        proxy = True

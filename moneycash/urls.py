@@ -1,16 +1,21 @@
 
 
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required, permission_required
 from .views import *
 
 
 urlpatterns = patterns('moneycash.views',
-    url(r'^$', index.as_view(), name='moneycash'),
-    url(r'^factura/', factura.as_view(), name='moneycash_factura'),
-    url(r'^roc/', roc.as_view(), name='moneycash_roc'),
-    url(r'^bodega/', bodega.as_view(), name='moneycash_bodega'),
-    url(r'^facturas_no_impresas/', facturas_no_impresas.as_view(),
+    url(r'^$', login_required(index.as_view(), login_url='/admin/login/'),  name='moneycash'),
+    url(r'^factura/', login_required(factura.as_view(), login_url='/admin/login/'), name='moneycash_factura'),
+    url(r'^roc/', login_required(roc.as_view(), login_url='/admin/login/'), name='moneycash_roc'),
+    url(r'^bodega/', login_required(bodega.as_view(), login_url='/admin/login/'), name='moneycash_bodega'),
+    url(r'^facturas_no_impresas/', login_required(facturas_no_impresas.as_view(), login_url='/admin/login/'),
         name='facturas_no_impresas'),
+    url(r'^cierre_caja/', login_required(cierre_caja.as_view(), login_url='/admin/login/'),
+        name='cierre_caja'),
+    url(r'^depositos/', login_required(depositos.as_view(), login_url='/admin/login/'),
+        name='depositos'),
     url(r'^autocomplete_cliente/$', 'autocomplete_cliente',
         name='autocomplete_cliente'),
     url(r'^autocomplete_producto/$', 'autocomplete_producto',
@@ -25,6 +30,8 @@ urlpatterns = patterns('moneycash.views',
         name='detalle_factura'),
     url(r'^grabar_factura/$', 'grabar_factura',
         name='grabar_factura'),
+    url(r'^grabar_recibo/$', 'grabar_recibo',
+        name='grabar_recibo'),
     url(r'^movil/clientes/$', 'clientes',
         name='movil_clientes'),
     url(r'^movil/grud_cliente/$', 'grud_cliente',
@@ -51,6 +58,8 @@ urlpatterns = patterns('moneycash.views',
         name='descarga_cendis'),
     url(r'^generar_ecuenta/$', 'generar_ecuenta',
         name='generar_ecuenta'),
+    url(r'^generar_facturas_pendientes/$', 'generar_facturas_pendientes',
+        name='generar_facturas_pendientes'),
     url(r'^imprimir_factura/$', 'imprimir_factura',
         name='imprimir_factura'),
 )

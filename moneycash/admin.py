@@ -17,6 +17,7 @@ admin.site.register(Cliente, cliente_admin)
 
 
 admin.site.register(Categoria)
+admin.site.register(CuentaBanco)
 
 
 class producto_admin(entidad_admin):
@@ -70,6 +71,7 @@ admin.site.register(Producto, producto_admin)
 admin.site.register(Sucursal, entidad_admin)
 admin.site.register(Bodega, entidad_admin)
 admin.site.register(Banco, entidad_admin)
+admin.site.register(Roc)
 
 
 class existencia_admin(admin.ModelAdmin):
@@ -130,3 +132,11 @@ class tc_admin(entidad_admin):
     ordering = ('fecha',)
     actions = []
 admin.site.register(TC, tc_admin)
+
+
+class cuenta_admin(entidad_admin):
+    list_display = ('codigo', 'nombre', 'operativa', 'tipo', 'prueba')
+    list_filter = ('tipo', 'operativa')
+    search_fields = ('codigo', 'nombre')
+    ordering = ('codigo',)
+admin.site.register(Cuenta, cuenta_admin)

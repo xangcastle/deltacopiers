@@ -31,10 +31,30 @@ var totalizar_cheque = function(){
   return total;
 }
 
+var campos_incompletos = function(selector) {
+  var valor = false;
+  var objects = $(selector);
+  $.each(objects, function(i,o){
+    if ($(o).val() == "") {
+      $(o).focus();
+      valor = true;
+    }
+  });
+  return valor
+}
+
 var salvar_cheque = function () {
-  $('#pago_cheque').val($('#chequeTotal').val());
-  $('#chequeModal').modal('hide');
-  totalizar_monto();
+  if (campos_incompletos('input[name="chequeNumero"]')) {
+      var err = $('<div class="alert alert-danger" role="alert">Por favor Complete todos los Campos..</div>');
+      $(this).parent().find('.error').empty().append(err);
+  } else if (campos_incompletos('input[name="chequeMonto"]')) {
+      var err = $('<div class="alert alert-danger" role="alert">Por favor Complete todos los Campos..</div>');
+      $(this).parent().find('.error').empty().append(err);
+  } else {
+    $('#pago_cheque').val($('#chequeTotal').val());
+    $('#chequeModal').modal('hide');
+    totalizar_monto();
+  }
 }
 
 var totalizar_transferencia = function(){
@@ -46,14 +66,24 @@ var totalizar_transferencia = function(){
       total += parseFloat(monto.val());
     }
   })
+  $(this).parent().find('.error').empty()
   $('#transferenciaTotal').val(total.toFixed(2));
   return total;
 }
 
 var salvar_transferencia = function () {
-  $('#pago_transferencia').val($('#transferenciaTotal').val());
-  $('#transferenciaModal').modal('hide');
-  totalizar_monto();
+  if (campos_incompletos('input[name="transferenciaReferencia"]')) {
+      var err = $('<div class="alert alert-danger" role="alert">Por favor Complete todos los Campos..</div>');
+      $(this).parent().find('.error').empty().append(err);
+  } else if (campos_incompletos('input[name="transferenciaMonto"]')) {
+      var err = $('<div class="alert alert-danger" role="alert">Por favor Complete todos los Campos..</div>');
+      $(this).parent().find('.error').empty().append(err);
+  } else {
+      $(this).parent().find('.error').empty()
+      $('#pago_transferencia').val($('#transferenciaTotal').val());
+      $('#transferenciaModal').modal('hide');
+      totalizar_monto();
+  }
 }
 
 var totalizar_tarjeta = function(){
@@ -76,9 +106,15 @@ var salvar_tarjeta = function () {
 }
 
 var totalizar_monto = function(){
+  var moneda = "";
+  if ($('select[name="monedas"]').val() == "cordobas") {
+    moneda = "CORDOBA";
+  } else {
+    moneda = "DOLARE";
+  }
   var monto = (parseFloat($('#pago_efectivo').val()) +parseFloat($('#pago_cheque').val()) + parseFloat($('#pago_transferencia').val()) + parseFloat($('#pago_tarjeta').val()))
   $('#pago_total').val(monto.toFixed(2));
-  $('#montoLetras').val(NumeroALetras(monto));
+  $('#montoLetras').val(NumeroALetras(monto, moneda));
   $('#pago_cambio').val((monto - parseFloat($('#factura_total').val())).toFixed(2));
 }
 

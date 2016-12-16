@@ -116,14 +116,14 @@
               <td><input type="text" class="form-control efectivoNominacion" value="0.50" readonly></td>
               <td><input type="text" class="form-control efectivoCantidad" value=""></td>
             </tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="1.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="5.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="10.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="20.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="50.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="100.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="200.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
-              <td><input type="text" class="form-control efectivoNominacion" value="500.00" readonly></td><td><input type="text" class="form-control efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="1.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="5.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="10.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="20.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="50.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="100.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="200.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
+              <td><input type="text" class="form-control efectivoNominacion" name="efectivoNominacion" value="500.00" readonly></td><td><input type="text" class="form-control efectivoCantidad" name="efectivoCantidad"></td></tr>
             </tr>
           </tbody>
           <tfoot>
@@ -142,7 +142,7 @@
 </div>
 
 <div class="modal fade" id="chequeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -153,20 +153,24 @@
           <thead>
             <tr>
               <th>Banco</th>
+              <th>Moneda</th>
               <th>Numero</th>
               <th>Monto</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><input type="text" class="form-control chequeBanco"></td>
-              <td><input type="text" class="form-control chequeNumero"></td>
-              <td><input type="text" class="form-control chequeMonto"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control chequeBanco"></td>
-              <td><input type="text" class="form-control chequeNumero"></td>
-              <td><input type="text" class="form-control chequeMonto"></td>
+              <td><select class="form-control" name="chequeBanco">
+                {%for b in bancos%}
+                <option value="{{b.id}}">{{b.name}}</option>
+                {%endfor%}
+              </select></td>
+              <td><select class="form-control moneda" name="chequeMoneda" disabled>
+                <option value="cordobas">C$ Cordobas</option>
+                <option value="dolares">U$ Dolares</option>
+              </select></td>
+              <td><input type="text" class="form-control" name="chequeNumero"></td>
+              <td><input type="text" class="form-control chequeMonto" name="chequeMonto"></td>
             </tr>
           </tbody>
           <tfoot>
@@ -179,6 +183,7 @@
         </table>
       </div>
       <div class="modal-footer">
+        <div class="error"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="chequeOk">Ok</button>
       </div>
@@ -187,7 +192,7 @@
 </div>
 
 <div class="modal fade" id="transferenciaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -197,33 +202,33 @@
         <table class="table table-bordered table-striped table-responsive" id="transferenciaTable">
           <thead>
             <tr>
-              <th>Banco</th>
-              <th>Numero Transaccion</th>
+              <th>Cuenta</th>
+              <th>Numero Referencia</th>
               <th>Monto</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><input type="text" class="form-control transferenciaBanco"></td>
-              <td><input type="text" class="form-control transferenciaNumero"></td>
-              <td><input type="text" class="form-control transferenciaMonto"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control transferenciaBanco"></td>
-              <td><input type="text" class="form-control transferenciaNumero"></td>
-              <td><input type="text" class="form-control transferenciaMonto"></td>
+              <td><select class="form-control cuenta-moneda" name="transferenciaCuenta" disabled>
+                {%for c in cuentas %}
+                <option value="{{c.id}}" name="{{c.moneda}}">{{c}}</option>
+                {%endfor%}
+              </select></td>
+              <td><input type="text" class="form-control" name="transferenciaReferencia"></td>
+              <td><input type="text" class="form-control transferenciaMonto" name="transferenciaMonto"></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td><input type="text" value="total" readonly class="form-control"></td>
-              <td></td>
+              <td><input type="text" value="Total" readonly class="form-control"></td>
+              <td><input type="text" value="" class="form-control" readonly></td>
               <td><input type="text" id="transferenciaTotal" value="0.0" class="form-control" readonly></td>
             </tr>
           </tfoot>
         </table>
       </div>
       <div class="modal-footer">
+        <div class="error"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="transferenciaOk">ok</button>
       </div>
@@ -250,13 +255,11 @@
           </thead>
           <tbody>
             <tr>
-              <td><input type="text" class="form-control tarjetaBanco"></td>
-              <td><input type="text" class="form-control tarjetaNumero"></td>
-              <td><input type="text" class="form-control tarjetaTransaccion"></td>
-              <td><input type="text" class="form-control tarjetaMonto"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control tarjetaBanco"></td>
+              <td><select class="form-control" name="tarjetaBanco">
+                {%for b in bancos%}
+                <option value="{{b.id}}">{{b.name}}</option>
+                {%endfor%}
+              </select></td>
               <td><input type="text" class="form-control tarjetaNumero"></td>
               <td><input type="text" class="form-control tarjetaTransaccion"></td>
               <td><input type="text" class="form-control tarjetaMonto"></td>
@@ -272,6 +275,7 @@
         </table>
       </div>
       <div class="modal-footer">
+        <div class="error"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="tarjetaOk">Ok</button>
       </div>

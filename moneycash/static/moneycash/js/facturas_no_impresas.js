@@ -69,7 +69,7 @@ var cambiar_metodo = function(){
 $(document).on('ready', function(){
   $('#formulario').hide();
   $('#metodos-pago').hide();
-  $('#listado tbody').on('dblclick', 'tr', factura);
+  $('#listado tbody').on('click', 'tr', factura);
   $('#imprimir').on('click', imprimir);
   $('#tipopago').on('change', cambiar_metodo);
 });

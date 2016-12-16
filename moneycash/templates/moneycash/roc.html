@@ -1,6 +1,17 @@
 {% extends "moneycash/base.html" %}
 
 {% block titulo %}Recibo Oficial de Caja{%endblock%}
+{% block extra_head %}
+<style media="screen">
+  .impreso {
+    display: None;
+  }
+</style>
+{% endblock %}
+{% block options %}
+<a href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-times"></i></a>
+<a href="#" class="btn btn-info btn-xs pull-right" id="imprimir"><i class="fa fa-print"></i></a>
+{% endblock options %}
 {% block form %}
   <form class="form" action="." method="post">
     <div class="container-fluid">
@@ -41,15 +52,15 @@
       </div>
     </div>
   </form>
+  <div class="impreso">
+
+  </div>
 {% endblock %}
 
 {% block script_extra %}
 {{ block.super }}
-{% if caja %}
 <script src="/static/moneycash/js/cliente_caja.js"></script>
-{% else %}
-<script src="/static/moneycash/js/cliente.js"></script>
-{% endif %}
 <script src="/static/moneycash/js/caja.js"></script>
 <script src="/static/moneycash/js/NumeroALetras.js"></script>
+<script src="/static/moneycash/jquery/jQuery.print.js"></script>
 {% endblock script_extra %}

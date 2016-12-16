@@ -155,14 +155,14 @@ function Millones(num) {
     return strMillones + ' ' + strMiles;
 }//Millones()
 
-function NumeroALetras(num) {
+function NumeroALetras(num, moneda) {
     var data = {
         numero: num,
         enteros: Math.floor(num),
         centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
         letrasCentavos: '',
-        letrasMonedaPlural: 'CORDOBAS',//'PESOS', 'Dólares', 'Bolívares', 'etcs'
-        letrasMonedaSingular: 'CORDOBA', //'PESO', 'Dólar', 'Bolivar', 'etc'
+        letrasMonedaPlural: moneda + 'S',//'PESOS', 'Dólares', 'Bolívares', 'etcs'
+        letrasMonedaSingular: moneda, //'PESO', 'Dólar', 'Bolivar', 'etc'
 
         letrasMonedaCentavoPlural: 'CENTAVOS',
         letrasMonedaCentavoSingular: 'CENTAVO'

@@ -15,7 +15,7 @@
         Logo aquí </a></h1>
 </div>
 <div class="col-xs-6 text-right">
-<h1>ESTADO DE CUENTA</h1>
+<h1>FACTURAS PENDIENTES</h1>
 </div>
 </div>
 
@@ -45,30 +45,34 @@
     <thead>
         <tr>
             <th>
-              <h4>Fecha</h4>
+            <h4>Factura No.</h4>
             </th>
             <th>
-              <h4>Referencia</h4>
+            <h4>Moneda</h4>
             </th>
             <th>
-              <h4>Descripcion</h4>
+            <h4>Fecha Emision</h4>
             </th>
             <th>
-              <h4>Cordobas</h4>
+            <h4>Monto</h4>
             </th>
             <th>
-              <h4>Dolares</h4>
+            <h4>Saldo</h4>
+            </th>
+            <th>
+            <h4>Estado</h4>
             </th>
         </tr>
     </thead>
     <tbody>
     {% for documento in documentos %}
     <tr>
-        <td><a href="#">{{ documento.fecha }}</a></td>
-        <td>{{ documento.referencia }}</td>
-        <td class=" text-right ">{{ documento.descripcion }}</td>
-        <td class=" text-right ">{{ documento.cordobas }}</td>
-        <td class=" text-right ">{{ documento.dolares }}</td>
+        <td><a href="#">{{ documento.numero }}</a></td>
+        <td>{{ documento.moneda }}</td>
+        <td class=" text-right ">{{ documento.date }}</td>
+        <td class=" text-right ">{{ documento.total }}</td>
+        <td class=" text-right ">{{ documento.saldo }}</td>
+        <td class=" text-right ">VECIDO/AL CORRIENTE</td>
     </tr>
     {% endfor %}
 </tbody>
@@ -105,13 +109,10 @@
             <h4>Datos bancarios</h4>
             </div>
             <div class="panel-body">
-             DELTACOPIERS SOCIEDAD ANONIMA
-             <br>
-             BANPRO
-             <br>
-             Número de cuenta Dolares: 10011710001663
-             <br>
-             Número de cuenta Cordobas: 10011700001798
+             DELTACOPIERS SOCIEDAD ANONIMA <br>
+             BANPRO <br>
+             Número de cuenta Dolares: 10011710001663 <br>
+             Número de cuenta Cordobas: 10011700001798 <br>
             </div>
         </div>
     </div>
@@ -121,11 +122,9 @@
                 <div class="panel-heading">
                     <h4> Datos de contacto </h4>
                     <div class=" panel-body ">
-                     Email: cesarabel@deltacopiers.com
-                     <br>
-                     Móvil Claro: +505 8354 5689
-                     <br>
-                     Móvil Movistar: +505 8966 5644
+                     Email: cesarabel@deltacopiers.com <br>
+                     Móvil Claro: +505 8354 5689 <br>
+                     Móvil Movistar: +505 8966 5644 <br>
                     </div>
                 </div>
             </div>

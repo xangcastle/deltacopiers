@@ -13,3 +13,7 @@ body {
 .invicible{
   display: None;
 }
+td input, td select {
+  max-height: 30px;
+  font-size: 12px !important;
+}

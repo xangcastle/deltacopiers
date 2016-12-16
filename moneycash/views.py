@@ -36,6 +36,16 @@ def descarga_cendis(request):
 
 class index(TemplateView):
     template_name = "moneycash/base.html"
+    def get_context_data(self, **kwargs):
+        context = super(index, self).get_context_data(**kwargs)
+        context['tc'] = cordobizar()
+        context['ventas'] = [{'mes': "enero", 'ventas': 100},
+                            {'mes': "febrero", 'ventas': 85},
+                            {'mes': "marzo", 'ventas': 95},
+                            {'mes': "abril", 'ventas': 80},
+                            {'mes': "mayo", 'ventas': 77},
+                            {'mes': "junio", 'ventas': 66}]
+        return context
 
 
 class factura(TemplateView):
@@ -46,14 +56,40 @@ class factura(TemplateView):
         return context
 
 
+class devolucion(TemplateView):
+    template_name = "moneycash/devolucion.html"
+    def get_context_data(self, **kwargs):
+        context = super(devolucion, self).get_context_data(**kwargs)
+        context['tc'] = cordobizar()
+        return context
+
+
 class roc(TemplateView):
     template_name = "moneycash/roc.html"
 
     def get_context_data(self, **kwargs):
         context = super(roc, self).get_context_data(**kwargs)
+        context['bancos'] = Banco.objects.all()
+        context['cuentas'] = CuentaBanco.objects.all()
         context['caja'] = True
         context['tc'] = cordobizar()
         return context
+
+
+class cierre_caja(TemplateView):
+    template_name = "moneycash/cierre_caja.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(cierre_caja, self).get_context_data(**kwargs)
+        context['caja'] = True
+        context['tc'] = cordobizar()
+        context['facturas'] = Factura.objects.filter(cerrada=False)
+        return context
+
+
+class depositos(TemplateView):
+    template_name = "moneycash/depositos.html"
+
 
 class facturas_no_impresas(TemplateView):
     template_name = "moneycash/facturas_no_impresas.html"
@@ -330,6 +366,17 @@ def generar_ecuenta(request):
                 {
                     'pagesize': 'LTR',
                     'cliente': cliente,
+                    'documentos': cliente.ecuenta(),
+                }
+            )
+
+def generar_facturas_pendientes(request):
+    cliente = Cliente.objects.get(id=int(request.GET.get('id_cliente', '')))
+    return render_to_pdf(
+                'moneycash/pdf/facturas_pendientes.html',
+                {
+                    'pagesize': 'LTR',
+                    'cliente': cliente,
                     'documentos': cliente.facturas(),
                 }
             )
@@ -347,4 +394,40 @@ def imprimir_factura(request):
     elif request.POST.get('moneda', '') == "dolares":
         factura.pasar_a_dolares()
     html = render_to_string('moneycash/print/factura.html', {'f': factura})
+    return HttpResponse(html)
+
+
+def crear_recibo(request):
+    r = Roc()
+    r.cliente = Cliente.objects.get(id=int(request.POST.get('cliente_id', '')))
+    r.monto = request.POST.get('pago_total', '')
+    r.concepto = request.POST.get('concepto', '')
+    r.moneda = request.POST.get('monedas', '')
+    r.save()
+    return r
+
+def grabar_abonos(request, recibo):
+    t = len(request.POST.getlist('factura', ''))
+    data = []
+    for i in range(0, t):
+        f = Factura.objects.get(id=int(request.POST.getlist('factura', '')[i]))
+        ab = Abono()
+        ab.roc = recibo
+        saldo = float(request.POST.getlist('saldo')[i])
+        f.abonar(recibo, float(request.POST.getlist('monto')[i]), recibo.moneda,
+            "Abono a Factura # " + str(f.numero) + ', quedando saldo ' + str(saldo), saldo)
+        if request.POST.getlist('val_ir')[i] == "True":
+            f.numero_ir = request.POST.getlist('ir')[i]
+            f.aplicar_ir(recibo, request.POST.getlist('ir')[i], saldo)
+        if request.POST.getlist('val_al')[i] == "True":
+            f.numero_al = request.POST.getlist('al')[i]
+            f.aplicar_al(recibo, request.POST.getlist('al')[i], saldo)
+        data.append(ab)
+    return data
+
+@csrf_exempt
+def grabar_recibo(request):
+    r = crear_recibo(request)
+    grabar_abonos(request, r)
+    html = render_to_string('moneycash/print/recibo.html', {'r': r})
     return HttpResponse(html)

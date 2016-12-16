@@ -50,9 +50,20 @@ var detalle_cliente = function(){
   }
 }
 
+var generar_facturas_pendientes = function(){
+  var cliente = $('#cliente');
+  if (parseInt(cliente.val()) > 0) {
+    var frame = $('#conten-pdf-preview');
+    var url="../generar_facturas_pendientes/?id_cliente=" + $('#cliente').val();
+    frame.attr('src',url);
+    $("#modal-pdf-preview").modal('show');
+    return false;
+  }
+}
+
 $(document).on('ready', function(){
     $('.datos_cliente #name').on('keyup', complete_cliente);
     $('#borrar_cliente').on('click', limpiar_cliente);
     $('#editar_cliente').on('click', editar_cliente);
-    $('#ecuenta').on('click', detalle_cliente)
+    $('#btnpdf').on('click', generar_facturas_pendientes);
 });

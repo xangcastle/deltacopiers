@@ -104,16 +104,6 @@ DATABASES = {
     'HOST': 'localhost',
     'PORT': '5432',
 },
-    'default_': {
-       'ENGINE': "django_pyodbc",
-       'HOST': "190.212.84.140,1433",
-       'USER': "sa",
-       'PASSWORD': "Miloes1985",
-       'NAME': "NOI70EMPRE01",
-       'OPTIONS': {
-           'host_is_server': True
-       },
-   }
 }
 
 

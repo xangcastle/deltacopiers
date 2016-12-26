@@ -1,0 +1,39 @@
+{% extends "lacteos/pagos.html" %}
+{% block body %}
+		<section id='containerPlanilla'>	
+			<p class='msg'><span class="label label-info">{{ msg }}</span></p>				
+			<table class="table table-bordered TableListaProductores">
+				 <caption>
+				 	<div>COOPERATIVA AGROPECUARIA DE SERVICIOS</div>
+				 	<div class='text1'>&quot;El Milagro&quot; de Acoyapa (COOSERAMA) R.L.</div>
+				 	<div class='text1'>Planilla de recoleccion {{ linea.nombre }}</div>
+				 </caption>
+				<thead>
+					<tr>
+						<th><span class='badge badge-inverse'>Nombre Productor</span></th>
+						<th><span class='badge badge-inverse'>Miercoles</span></th>
+						<th><span class='badge badge-inverse'>Jueves</span></th>
+						<th><span class='badge badge-inverse'>Viernes</span></th>
+						<th><span class='badge badge-inverse'>Sabado</span></th>
+						<th><span class='badge badge-inverse'>Domingo</span></th>
+						<th><span class='badge badge-inverse'>Lunes</span></th>
+						<th><span class='badge badge-inverse'>Martes</span></th>										
+					</tr>
+				</thead>				
+				<tbody>
+					{% for p in productores %}		
+					<tr>
+						<td>{{ p.nombre }}</td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+					{% endfor %}
+					</tr>					
+				</tbody>
+			</table>							
+		</section>				
+{% endblock body %}

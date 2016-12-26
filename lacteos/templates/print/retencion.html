@@ -1,0 +1,16 @@
+{% extends "print/base.html" %}
+
+{% block content %}
+	{% for r in retenciones %}
+		<page class="retencion">
+			<div class="campo nombre">{{ r.productor.nombre }}</div>
+			<div class="campo direccion">Acoyapa, Chontales.</div>
+			<div class="campo ruc"></div>
+			<div class="campo cedula">{{ r.productor.cedula }}</div>
+			<div class="campo monto">{{ r.total_pago }}</div>
+			<div class="campo suma_retenida">ir = {{ r.ir }} | bacsa = {{ r.bacsa }}</div>
+			<div class="campo tasa_retencion">1% ir | 0.4% bacsa</div>
+			<div class="campo concepto">Compra de Leche</div>
+		</page><end-page></end-page>
+	{% endfor %}
+{% endblock content %}

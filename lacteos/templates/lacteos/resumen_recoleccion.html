@@ -1,0 +1,73 @@
+{% extends "lacteos/pagos.html" %}
+{% block body %}
+<div id="content-main">
+<div class="module">
+
+{% if periodo.recolecciones %}
+			<table class="table table-bordered TablePeriodo2">
+					<caption>
+				 	<div>COOPERATIVA AGROPECUARIA DE SERVICIOS</div>
+				 	<div class='text1'>&quot;El Milagro&quot; de Acoyapa (COOSERAMA) R.L.</div>
+				 	<div class='text1'>Resumen del periodo {{ periodo.fecha_inicial }} al {{ periodo.fecha_final }}</div>
+				 </caption>
+					<thead>
+						<tr>
+							<th><span class='badge badge-inverse'>Linea</span></th>
+							<th><span class='badge badge-inverse'>Miercoles</span></th>
+							<th><span class='badge badge-inverse'>Jueves</span></th>
+							<th><span class='badge badge-inverse'>Viernes</span></th>
+							<th><span class='badge badge-inverse'>Sabado</span></th>
+							<th><span class='badge badge-inverse'>Domingo</span></th>
+							<th><span class='badge badge-inverse'>Lunes</span></th>
+							<th><span class='badge badge-inverse'>Martes</span></th>
+							<th><span class='badge badge-inverse'>Total Recolectado</span></th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+								<td>Total</td>
+					    	<td class="total_dia_1"></td>
+					    	<td class="total_dia_2"></td>
+					    	<td class="total_dia_3"></td>
+					    	<td class="total_dia_4"></td>
+					    	<td class="total_dia_5"></td>
+					    	<td class="total_dia_6"></td>
+					    	<td class="total_dia_7"></td>
+					    	<td class="total_recolectado"></td>
+						</tr>
+					</tfoot>
+					<tbody>
+					{% for r in periodo.recolecciones %}
+						<tr>
+							<td class="nombre">{{ r.linea.nombre }}</td>
+							<td class="total_dia_1">{{ r.total_dia_1 }}</td>
+							<td class="total_dia_2">{{ r.total_dia_2 }}</td>
+							<td class="total_dia_3">{{ r.total_dia_3 }}</td>
+							<td class="total_dia_4">{{ r.total_dia_4 }}</td>
+							<td class="total_dia_5">{{ r.total_dia_5 }}</td>
+							<td class="total_dia_6">{{ r.total_dia_6 }}</td>
+							<td class="total_dia_7">{{ r.total_dia_7 }}</td>
+							<td class="total_recolectado">{{ r.total_recolectado }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+{% else %}
+    <p>No exiten datos.</p>
+{% endif %}
+</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var totales = $('tfoot td');
+		$.each(totales, function(key, value){
+			var clase = $(value).attr('class');
+			var total = 0.0;
+			$.each($('tbody .' + clase), function(i, o){
+				total += parseFloat($(o).html());
+			});
+			$(value).html(total);
+		});
+	});
+</script>
+{% endblock %}

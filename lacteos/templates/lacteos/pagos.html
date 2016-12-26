@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	{% block head %}
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="/static/lacteos/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/lacteos/css/style.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<style type="text/css">
+			body {
+				background: #FFF;
+			}
+		</style>
+	{% endblock head %}
+		<title>{% block title %}Reporte de Pago{% endblock title %}</title>
+	</head>
+	<body>
+	{% block body %}
+		<section id='containerPlanilla'>
+			{% for p in pagos %}
+
+					<table class="table table-bordered table-planillaPago">
+						<caption class="cabecera">
+						 	<div class='text0' >COOPERATIVA AGROPECUARIA DE SERVICIOS</div>
+						 	<div class='text1'>&quot;El Milagro&quot; de Acoyapa (COOSERAMA) R.L.</div>
+						 	<div class='text2'>SEMANA DEL: {{ p.fecha_inicial }} AL {{ p.fecha_final }}</div>
+						 	<div class='text3'>{{ p.productor.nombre }}</div>
+						 </caption>
+						<thead>
+							<tr>
+								<th><span class='badge badge-inverse'>M</span></th>
+								<th><span class='badge badge-inverse'>J</span></th>
+								<th><span class='badge badge-inverse'>V</span></th>
+								<th><span class='badge badge-inverse'>S</span></th>
+								<th><span class='badge badge-inverse'>D</span></th>
+								<th><span class='badge badge-inverse'>L</span></th>
+								<th><span class='badge badge-inverse'>M</span></th>
+								<th><span class='badge badge-inverse'>Produccion</span></th>
+								<th><span class='badge badge-inverse'>Precio</span></th>
+								<th><span class='badge badge-inverse'>SubTotal</span></th>
+								<th><span class='badge badge-inverse'>Retencion</span></th>
+								<th><span class='badge badge-inverse'>Total</span></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+						    	<td colspan="11" class="text5">Total</td>
+						    	<td>{{ p.neto_recibir }}</td>
+							</tr>
+						</tfoot>
+						<tbody>
+							<tr>
+								<td class="dia_1">{{ p.dia_1 }}</td>
+								<td class="dia_2">{{ p.dia_2 }}</td>
+								<td class="dia_3">{{ p.dia_3 }}</td>
+								<td class="dia_4">{{ p.dia_4 }}</td>
+								<td class="dia_5">{{ p.dia_5 }}</td>
+								<td class="dia_6">{{ p.dia_6 }}</td>
+								<td class="dia_7_">{{ p.dia_7 }}</td>
+								<td class="total_recolectado ">{{ p.total_recolectado }}</td>
+								<td class="precio">{{ p.precio }}</td>
+								<td class="total_pago">{{ p.total_pago }}</td>
+								<td class="total_retencion">{{ p.total_retencion }}</td>
+								<td class="subtotal">{{ p.subtotal }}</td>
+							</tr>
+							<tr class="Pintar">
+								<td class="text4" colspan="12">Deducciones</td>
+							</tr>
+							<tr>
+								<td colspan="4"><span class='badge badge-inverse'>Prestamos</span></td>
+								<td colspan="4"><span class='badge badge-inverse'>Ferreteria</span></td>
+								<td colspan="2"><span class='badge badge-inverse'>Veterinaria</span></td>
+								<td colspan="2"><span class='badge badge-inverse'>Abarrotes</span></td>
+							</tr>
+							<tr>
+								<td colspan="4">{{ p.total_prestamos }}</td>
+								<td colspan="4">{{ p.total_ferreteria }}</td>
+								<td colspan="2">{{ p.total_veterinaria }}</td>
+								<td colspan="2">{{ p.total_abarrotes }}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="saltopagina"></dib>
+			{% endfor %}
+		</section>
+		<script type="text/javascript">
+			$(document).on('ready', function(){
+
+			});
+		</script>
+	</body>{% endblock body %}
+</html>

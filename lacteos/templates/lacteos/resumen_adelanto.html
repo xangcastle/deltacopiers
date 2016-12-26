@@ -1,0 +1,57 @@
+{% extends "lacteos/pagos.html" %}
+{% block body %}
+<div id="content-main">
+<div class="module">
+{% if periodo %}
+<table class="table table-bordered">
+	<caption>
+		<div>COOPERATIVA AGROPECUARIA DE SERVICIOS</div>
+		<div class='text1'>&quot;El Milagro&quot; de Acoyapa (COOSERAMA) R.L.</div>
+		<div class='text1'>Resumen de pagos del periodo {{ periodo.fecha_inicial }} al {{ periodo.fecha_final }}</div>
+	</caption>
+	<thead>
+		<tr>
+			<th><span class='badge badge-inverse'>Productor</span></th>
+			<th><span class='badge badge-inverse'>Monto</span></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>Productor</th>
+			<th>Monto</th>
+		</tr>
+	</tfoot>
+	<tbody>
+	{% for d in datos %}
+	<tr>
+		<td colspan="2">{{d}}</td>
+	</tr>
+	{% if d.prestamos %}
+	<tr>
+		<td>
+			<td colspan="2">Prestamos</td>
+		</td>
+	</tr>
+	{% endif %}
+	{% if d.abarrotes %}
+	<tr>
+		<td>
+			<td colspan="2">Abarrotes</td>
+		</td>
+	</tr>
+	{% endif %}
+	{% endfor %}
+</tbody>
+</table>
+{% else %}
+    <p>No exiten datos.</p>
+{% endif %}
+</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var reporte = {{ datos }};
+		console.log(reporte);
+	});
+</script>
+{% endblock %}

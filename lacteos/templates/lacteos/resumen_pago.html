@@ -1,0 +1,67 @@
+{% extends "lacteos/pagos.html" %}
+{% block body %}
+<div id="content-main">
+<div class="module">
+
+{% if periodo.recolecciones %}
+			<table class="table table-bordered">
+				<caption>
+				 	<div>COOPERATIVA AGROPECUARIA DE SERVICIOS</div>
+				 	<div class='text1'>&quot;El Milagro&quot; de Acoyapa (COOSERAMA) R.L.</div>
+				 	<div class='text1'>Resumen de pagos del periodo {{ periodo.fecha_inicial }} al {{ periodo.fecha_final }}</div>
+				 </caption>
+					<thead>
+						<tr>
+							<th><span class='badge badge-inverse'>Linea</span></th>
+							<th><span class='badge badge-inverse'>Total Pagado</span></th>
+							<th><span class='badge badge-inverse'>Total Retenciones</span></th>
+							<th><span class='badge badge-inverse'>Total Abarrotes</span></th>
+							<th><span class='badge badge-inverse'>Total Ferreteria</span></th>
+							<th><span class='badge badge-inverse'>Total Prestamos</span></th>
+							<th><span class='badge badge-inverse'>Total Veterinaria</span></th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td>Total</td>
+							<td class="total_pagado"></td>
+							<td class="total_retencion"></td>
+							<td class="total_abarrotes"></td>
+							<td class="total_ferreteria"></td>
+							<td class="total_prestamos"></td>
+							<td class="total_veterinaria"></td>
+						</tr>
+					</tfoot>
+					<tbody>
+					{% for r in periodo.recolecciones %}
+						<tr>
+							<td>{{ r.linea.nombre }}</td>
+							<td class="total_pagado">{{ r.total_pagado }}</td>
+							<td class="total_retencion">{{ r.total_retencion }}</td>
+							<td class="total_abarrotes">{{ r.total_abarrotes }}</td>
+							<td class="total_ferreteria">{{ r.total_ferreteria }}</td>
+							<td class="total_prestamos">{{ r.total_prestamos }}</td>
+							<td class="total_veterinaria">{{ r.total_veterinaria }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+{% else %}
+    <p>No exiten datos.</p>
+{% endif %}
+</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var totales = $('tfoot td');
+		$.each(totales, function(key, value){
+			var clase = $(value).attr('class');
+			var total = 0.0;
+			$.each($('tbody .' + clase), function(i, o){
+				total += parseFloat($(o).html());
+			});
+			$(value).html(total);
+		});
+	});
+</script>
+{% endblock %}

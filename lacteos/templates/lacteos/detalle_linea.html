@@ -1,0 +1,77 @@
+{% extends "lacteos/pagos.html" %}
+{% block body %}
+<div id="content-main">
+<div class="module">
+
+{% if productores %}
+    <table class="table table-bordered TableListaProductores">
+				 <caption>
+  				 	<div>COOPERATIVA AGROPECUARIA DE SERVICIOS</div>
+  				 	<div class='text1'>&quot;El Milagro&quot; de Acoyapa (COOSERAMA) R.L.</div>
+            <div class='text1'>Resumen de pagos del periodo {{ periodo.fecha_inicial }} al {{ periodo.fecha_final }}</div>
+  				 	<div class='text1'>Estadisticas {{ linea.nombre }}</div>
+				 </caption>
+				<thead>
+					<tr>
+						<th><span class='badge badge-inverse'>Nombre Productor</span></th>
+						<th><span class='badge badge-inverse'>Total Semana</span></th>
+						<th><span class='badge badge-inverse'>Precio</span></th>
+						<th><span class='badge badge-inverse'>Total Ingresos</span></th>
+						<th><span class='badge badge-inverse'>Total Retencion</span></th>
+						<th><span class='badge badge-inverse'>Total Ferreteria</span></th>
+						<th><span class='badge badge-inverse'>Total Veterinaria</span></th>
+						<th><span class='badge badge-inverse'>Total Abarrotes</span></th>
+						<th><span class='badge badge-inverse'>Total Adelantos</span></th>
+						<th><span class='badge badge-inverse'>Neto a Recibir</span></th>
+					</tr>
+				</thead>
+        <tfoot>
+          <tr>
+            <td>{{ p.productor.nombre }}</td>
+						<td class="total_recolectado"></td>
+						<td class="precio"></td>
+						<td class="total_pago"></td>
+						<td class="total_retencion"></td>
+						<td class="total_ferreteria"></td>
+						<td class="total_veterinaria"></td>
+						<td class="total_abarrotes"></td>
+						<td class="total_prestamos"></td>
+						<td class="neto_recibir"></td>
+          </tr>
+        </tfoot>
+				<tbody>
+            {% for p in productores %}
+            <tr>
+						<td>{{ p.productor.nombre }}</td>
+            <td class="total_recolectado">{{ p.total_recolectado }}</td>
+						<td class="precio">{{ p.precio }}</td>
+						<td class="total_pago">{{ p.total_pago }}</td>
+						<td class="total_retencion">{{ p.total_retencion }}</td>
+						<td class="total_ferreteria">{{ p.total_ferreteria }}</td>
+						<td class="total_veterinaria">{{ p.total_veterinaria }}</td>
+						<td class="total_abarrotes">{{ p.total_abarrotes }}</td>
+						<td class="total_prestamos">{{ p.total_prestamos }}</td>
+						<td class="neto_recibir">{{ p.neto_recibir }}</td>
+            </tr>
+					{% endfor %}
+				</tbody>
+			</table>
+{% else %}
+    <p>No exiten datos.</p>
+{% endif %}
+</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var totales = $('tfoot td');
+		$.each(totales, function(key, value){
+			var clase = $(value).attr('class');
+			var total = 0.0;
+			$.each($('tbody .' + clase), function(i, o){
+				total += parseFloat($(o).html());
+			});
+			$(value).html(total);
+		});
+	});
+</script>
+{% endblock %}

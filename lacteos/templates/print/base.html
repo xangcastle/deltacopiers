@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<link href="{{ STATIC_URL }}print/print.css" rel="stylesheet">
+	</head>
+	<body class="printer {% block document-class %}{% endblock document-class %}">
+		{% block content %}
+		<page>
+			
+		</page>	
+		<end-page></end-page>
+		{% endblock content %}
+	</body>
+</html>

@@ -1,0 +1,59 @@
+page {
+	background-color: white;
+	color: black;
+	font-size: 20px;
+	font-family: sans-serif;
+	width: 210mm;
+	height: 279mm;
+	display: block;
+}
+.retencion {
+	height: 137mm;
+}
+.retencion .campo {
+	position: absolute;
+}
+.retencion .nombre {
+	margin-left: 52mm;
+	margin-top: 50mm;
+}
+.retencion .direccion {
+	margin-left: 40mm;
+	margin-top: 60mm;
+}
+.retencion .ruc {
+	margin-left: 20mm;
+	margin-top: 70mm;
+}
+.retencion .cedula {
+	margin-left: 80mm;
+	margin-top: 70mm;
+}
+.retencion .monto {
+	margin-left: 70mm;
+	margin-top: 77mm;
+}
+.retencion .suma_retenida {
+	margin-left: 30mm;
+	margin-top: 95mm;
+}
+.retencion .tasa_retencion {
+	margin-left: 140mm;
+	margin-top: 95mm;
+}
+.retencion .concepto {
+	margin-left: 65mm;
+	margin-top: 115mm;
+}
+
+@media all{
+	end-page{	
+	}
+}
+   
+@media print{
+   end-page{ 
+      display:block; 
+      page-break-before:always;
+   }
+}

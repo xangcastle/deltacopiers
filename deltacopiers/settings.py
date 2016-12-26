@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'dtracking',
     'inventario',
     'importaciones',
+    'lacteos',
 ]
 
 MIDDLEWARE_CLASSES = [

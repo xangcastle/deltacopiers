@@ -25,7 +25,7 @@ var complete_producto = function () {
       if($.trim($(_self).val()) != '') {
           $(_self).autocomplete({
               minLength: 2,
-              source: "/moneycash/autocomplete_producto",
+              source: "/moneycash/autocomplete_producto/?tipo_producto=" + $('input[name="tipo_producto"]').val(),
               select: function(event, ui) {
                 var modal = $('#detalleModal')
                   load_modal(ui.item.obj.id);
@@ -49,6 +49,7 @@ var load_modal = function (producto, bodega, cantidad, discount){
             modal.find('#code').val(data.code);
             modal.find('img').attr('src', data.imagen)
             modal.find('#no_part').val(data.no_part);
+            modal.find('#almacenar').val(data.almacenar);
             if ($('select[name="monedas"]').val()=="cordobas"){
               modal.find('#price').val(cordobizar(data.price));
               modal.find('#cost').val(cordobizar(data.cost));
@@ -79,6 +80,7 @@ var load_modal = function (producto, bodega, cantidad, discount){
               existencias.append(row);
             });
             modal.modal('show');
+            $('#cantidad').focus();
         }
     });
 }
@@ -127,30 +129,37 @@ var validar_modal = function(){
   var producto = modal.find('#producto').val();
   var bodega = modal.find('#bodega').val();
   var bodega_name = modal.find('tr.active').find('.bodega').html();
+  var almacenar = modal.find('#almacenar').val();
   var mensaje = ""
   var valido = false;
-  if(bodega.length==0){
-    valido = false;
-    mensaje = "Por favor seleccione una bodega!"
-    $('#mensaje')
-      .empty()
-      .html(mensaje)
-      .addClass('alert-danger');
-  } else {
-    if(cantidad > existencia){
+
+  if (almacenar=="true") {
+    if(bodega.length==0){
       valido = false;
-      mensaje = "La cantidad no puede ser mayor que la existencia!"
+      mensaje = "Por favor seleccione una bodega!"
       $('#mensaje')
         .empty()
         .html(mensaje)
         .addClass('alert-danger');
-    }else{
-      $('#mensaje')
-        .empty()
-        .removeClass('alert-danger');
-        valido = true;
+    } else {
+      if(cantidad > existencia){
+        valido = false;
+        mensaje = "La cantidad no puede ser mayor que la existencia!"
+        $('#mensaje')
+          .empty()
+          .html(mensaje)
+          .addClass('alert-danger');
+      }else{
+        $('#mensaje')
+          .empty()
+          .removeClass('alert-danger');
+          valido = true;
+      }
     }
+  } else {
+    valido = true;
   }
+
   if(valido){
     insertar_detalle(code, name, cantidad, price, discount, total, producto, bodega, bodega_name);
     calcular_factura();

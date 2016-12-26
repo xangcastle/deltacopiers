@@ -10,8 +10,9 @@ import adminactions.actions as actions
 actions.add_to_site(site)
 
 class cliente_admin(entidad_admin):
-    list_display = ('code', 'name', 'ident', 'phone', 'email', 'address')
+    list_display = ('code', 'name', 'ident', 'phone', 'email', 'address', 'tipo')
     search_fields = ('code', 'name', 'ident', 'email')
+    list_filter = ('tipo',)
 
 admin.site.register(Cliente, cliente_admin)
 
@@ -23,13 +24,14 @@ admin.site.register(CuentaBanco)
 class producto_admin(entidad_admin):
     change_form_template = "admin/moneycash/producto.html"
     list_display = ('code', 'name', 'no_part', 'price', 'cost', 'categoria',
-    'existencia_total', 'details', 'image_thumb')
+    'existencia_total', 'details', 'vender', 'comprar', 'almacenar', 'image_thumb')
     search_fields = ('code', 'name', 'no_part')
-    list_filter = ('categoria',)
+    list_filter = ('categoria', 'vender', 'comprar', 'almacenar')
     fieldsets = (
         ('Datos Generales', {
             'fields': ('name', ('code', 'short_name'),
                       ('categoria', 'price', 'cost'), ('imagen', 'no_part'),
+                      ('vender', 'comprar', 'almacenar'),
                       'details')
         }),
     )

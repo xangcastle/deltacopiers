@@ -39,19 +39,27 @@ class index(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(index, self).get_context_data(**kwargs)
         context['tc'] = cordobizar()
-        context['ventas'] = [{'mes': "enero", 'ventas': 100},
-                            {'mes': "febrero", 'ventas': 85},
-                            {'mes': "marzo", 'ventas': 95},
-                            {'mes': "abril", 'ventas': 80},
-                            {'mes': "mayo", 'ventas': 77},
-                            {'mes': "junio", 'ventas': 66}]
+        context['ventas'] = ventas()
+        context['iva_pendiente'] = iva_pendiente()
         return context
 
 
-class factura(TemplateView):
+class factura_venta(TemplateView):
     template_name = "moneycash/factura.html"
     def get_context_data(self, **kwargs):
-        context = super(factura, self).get_context_data(**kwargs)
+        context = super(factura_venta, self).get_context_data(**kwargs)
+        context['tipo_cliente'] = 'cliente'
+        context['tipo_producto'] = 'vender'
+        context['tc'] = cordobizar()
+        return context
+
+
+class factura_compra(TemplateView):
+    template_name = "moneycash/factura.html"
+    def get_context_data(self, **kwargs):
+        context = super(factura_compra, self).get_context_data(**kwargs)
+        context['tipo_cliente'] = 'proveedor'
+        context['tipo_producto'] = 'comprar'
         context['tc'] = cordobizar()
         return context
 
@@ -96,7 +104,7 @@ class facturas_no_impresas(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(facturas_no_impresas, self).get_context_data(**kwargs)
-        context['facturas'] = Factura.objects.filter(impresa=False)
+        context['facturas'] = Factura.objects.filter(impresa=False, tipo="venta")
         context['tc'] = cordobizar()
         return context
 
@@ -106,11 +114,11 @@ class bodega(TemplateView):
 
 @csrf_exempt
 def autocomplete_cliente(request):
-    return autocomplete_entidad(Cliente(), request)
+    return autocomplete_entidad(Cliente(), request, [('tipo', request.GET.get('tipo_cliente', '')), ])
 
 @csrf_exempt
 def autocomplete_producto(request):
-    return autocomplete_entidad(Producto(), request)
+    return autocomplete_entidad(Producto(), request, [(request.GET.get('tipo_producto', ''), True), ])
 
 @csrf_exempt
 def detalle_producto(request):
@@ -174,9 +182,11 @@ def grabar_detalle(request, factura):
         dd = Detalle()
         p = Producto.objects.get(id=int(
             request.POST.getlist('producto_id', '')[i]))
-        b = Bodega.objects.get(id=int(
-            request.POST.getlist('bodega_id', '')[i]))
-        e = p.existencias().filter(bodega=b)[0]
+        id_bodega = request.POST.getlist('bodega_id', None)[i]
+        if id_bodega:
+            b = Bodega.objects.get(id=int(id_bodega))
+        else:
+            b = None
         dd.factura = factura
         dd.producto = p
         dd.bodega = b
@@ -185,8 +195,10 @@ def grabar_detalle(request, factura):
         dd.discount = float(request.POST.getlist('producto_discount', '')[i])
         dd.cost = p.cost
         dd.save()
-        e.cantidad -= dd.cantidad
-        e.save()
+        if b:
+            e = p.existencias().filter(bodega=b)[0]
+            e.cantidad -= dd.cantidad
+            e.save()
         data.append(dd)
     return data
 

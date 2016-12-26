@@ -10,12 +10,12 @@
   {% endblock reportes %}
 
   {% block options %}
-  <a id="btn_borrar" href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
-  <a id="btn_grabar" href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-save"></i></a>
-  <a href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-file-pdf-o"></i></a>
+  <a id="btn_borrar" href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-paint-brush"> Limpiar Formulario</i></a>
+  <a id="btn_grabar" href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-save"> Guardar</i></a>
+  <a href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-file-pdf-o">  Generar Proforma</i></a>
   {% endblock %}
 
-{% block titulo %}Formulario de Facturacion{% endblock titulo %}
+{% block titulo %}Factura de Ventas{% endblock titulo %}
 
 {% block script_extra %}
 {{ block.super }}
@@ -39,8 +39,12 @@
 
                           <div class="panel panel-success">
                             <div class="panel-heading">
-                              <h3 class="panel-title">Detalle de Productos</h3>
+                              <h3 class="panel-title">
+                                {% ifequal tipo_producto "vender" %}Detalle de Productos Vendidos {% endifequal %}
+                                {% ifequal tipo_producto "comprar" %}Detalle de Productos Comprados {% endifequal %}
+                              </h3>
                             </div>
+                            <input type="hidden" name="tipo_producto" value="{{ tipo_producto }}">
                             <div class="panel-body">
                             <div class="row">
                                 <div class=" container-fluid">
@@ -149,6 +153,7 @@
                   </div>
                 </div>
               </div>
+                <input type="hidden" name="almacenar" id="almacenar">
                 <table class="table table-bordered table-responsive table-hover" id="existencias">
                   <thead>
                     <tr>

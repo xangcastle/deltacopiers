@@ -5,22 +5,23 @@ import json
 import operator
 
 
-def find_entidad(sentence):
-    words = sentence.split(" ")
+def find_entidad(sentence, filters=None):
     predicates = []
-    for word in words:
+    if filters:
+        predicates = filters
+    for word in sentence.split(" "):
         predicates.append(('name__icontains', word))
     return [Q(x) for x in predicates]
 
 
-def autocomplete_entidad(instance, request):
+def autocomplete_entidad(instance, request, filters=None):
     data = []
     if request.is_ajax:
         model = type(instance)
         result = []
         term = request.GET.get('term', None)
         if term:
-            qs = model.objects.filter(reduce(operator.and_, find_entidad(term)))
+            qs = model.objects.filter(reduce(operator.and_, find_entidad(term, filters)))
             for obj in qs:
                 obj_json = {}
                 obj_json['label'] = obj.name

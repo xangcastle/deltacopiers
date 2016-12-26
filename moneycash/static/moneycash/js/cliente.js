@@ -8,7 +8,7 @@ var complete_cliente = function () {
       if($.trim($(_self).val()) != '') {
           $(_self).autocomplete({
               minLength: 2,
-              source: "/moneycash/autocomplete_cliente",
+              source: "/moneycash/autocomplete_cliente/?tipo_cliente=" + $('input[name="tipo_cliente"]').val(),
               select: function(event, ui) {
                   $('#cliente').val(ui.item.obj.id);
                   $('#code').val(ui.item.obj.code);
@@ -23,6 +23,7 @@ var complete_cliente = function () {
                     var fila = '<tr><td>'+value.numero+'</td><td>'+value.date+'</td><td>'+value.total+'</td></tr>';
                     tabla.append(fila);
                   });
+                  $("#buscador_productos").focus();
               }
           });
       }

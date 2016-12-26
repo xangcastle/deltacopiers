@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title>{% block titulo-cabecera %}MoneyCash{% endblock titulo-cabecera %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/moneycash/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -52,9 +52,9 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown moneycash_facturacion">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Facturacion<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ventas<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="{% url "moneycash_factura" %}">Crear Nueva Factura</a></li>
+                <li><a href="{% url "factura_venta" %}">Crear Nueva Factura</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Reportes y Estadisticas</li>
                 <li><a href="#">Reporte de Consumo por Cliente</a></li>
@@ -92,7 +92,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compras<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">Cuentas Por Pagar</a></li>
-                <li><a href="#">Compras Locales</a></li>
+                <li><a href="{% url "factura_compra" %}">Agregar Compra Local</a></li>
                 <li><a href="#">Liquidacion de Polizas</a></li>
                 <li class="dropdown-header">Reportes y Estadisticas</li>
                 <li><a href="#">Reporte Cuentas Por Pagar</a></li>
@@ -256,6 +256,9 @@
 
                     </script>
 
+                  </div>
+                  <div class="col-md-4">
+                    <h2>Iva por Pagar: {{iva_pendiente}}</h2>
                   </div>
                 </div>
         {% endblock form %}

@@ -23,6 +23,7 @@ var factura = function(){
       $('#limite-credito').val(data.cliente_data.limite_credito);
       $('#saldo-actual').val(data.cliente_data.saldo);
       form.find('#tipopago').val(data.tipopago);
+      $('title').text("Factura # " + data.numero)
     }
   })
   $('#metodos-pago').show();

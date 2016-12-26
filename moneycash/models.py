@@ -6,7 +6,7 @@ from django.forms.models import model_to_dict
 #from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Sum, Max
-from datetime import datetime
+from datetime import datetime, timedelta
 
 #User = settings.AUTH_USER_MODEL
 
@@ -67,8 +67,14 @@ class datos_generales(models.Model):
     class Meta:
         abstract = True
 
+TIPOS_CLIENTE = (
+('cliente', "CLIENTE"),
+('proveedor', "PROVEEDOR"),
+)
+
 
 class Cliente(datos_generales, Entidad):
+    tipo = models.CharField(max_length=20, default="cliente", choices=TIPOS_CLIENTE)
     limite_credito = models.FloatField(default=0.0)
     cuenta_credito = models.ForeignKey('cuenta_credito', null=True, blank=True)
 
@@ -204,6 +210,7 @@ class Producto(Entidad):
         obj['no_part'] = self.no_part
         obj['price'] = self.price
         obj['cost'] = self.cost
+        obj['almacenar'] = self.almacenar
         obj['imagen'] = self.url_imagen()
         obj['details'] = self.details
         obj['existencias'] = []
@@ -231,8 +238,15 @@ class Existencia(models.Model):
     cantidad = models.FloatField()
 
 
+TIPOS_FACTURA = (
+("venta", "VENTA"),
+("compra", "COMPRA"),
+)
+
+
 class Factura(models.Model):
-    sucursal = models.ForeignKey(Sucursal, null=True)
+    tipo = models.CharField(max_length=20, default="venta", choices=TIPOS_FACTURA)
+    sucursal = models.ForeignKey(Sucursal, null=True, blank=True)
     moneda = models.CharField(max_length=25, null=True, choices=MONEDAS)
     user = models.ForeignKey(User, null=True,
         related_name="moneycash_factura_user")
@@ -243,17 +257,20 @@ class Factura(models.Model):
     descuento = models.FloatField(null=True)
     iva = models.FloatField(null=True)
     aplica_ir = models.NullBooleanField()
-    ir = models.FloatField(null=True)
-    numero_ir = models.PositiveIntegerField(null=True)
+    ir = models.FloatField(null=True, blank=True)
+    numero_ir = models.PositiveIntegerField(null=True, blank=True)
     aplica_al = models.NullBooleanField()
-    al = models.FloatField(null=True, verbose_name="alcaldia")
-    numero_al = models.PositiveIntegerField(null=True)
+    al = models.FloatField(null=True, verbose_name="alcaldia", blank=True)
+    numero_al = models.PositiveIntegerField(null=True, blank=True)
     total = models.FloatField(null=True)
     excento_iva = models.NullBooleanField()
     tipopago = models.CharField(max_length=25, null=True)
     impresa = models.BooleanField(default=False)
     cerrada = models.BooleanField(default=False)
     entregada = models.BooleanField(default=False)
+    dec_ir = models.NullBooleanField(default=False)
+    dec_al = models.NullBooleanField(default=False)
+    dec_iva = models.NullBooleanField(default=False)
     saldo = models.FloatField(null=True)
 
     def simbolo(self):
@@ -406,7 +423,7 @@ class Factura(models.Model):
 class Detalle(models.Model):
     factura = models.ForeignKey(Factura, null=True)
     producto = models.ForeignKey(Producto)
-    bodega = models.ForeignKey(Bodega)
+    bodega = models.ForeignKey(Bodega, null=True, blank=True)
     cantidad = models.FloatField()
     price = models.FloatField()
     discount = models.FloatField(null=True)
@@ -423,7 +440,7 @@ class Detalle(models.Model):
 
     def precio_impreso(self):
         if self.factura.moneda == "cordobas":
-            return dolarizar(self.price, self.factura.date)
+            return dolarizar(self.price, self.factura.date, 3)
         else:
             return self.price
 
@@ -606,10 +623,43 @@ class manager_cuenta_credito(models.Manager):
     def get_queryset(self):
         ocupados = Cliente.objects.filter(cuenta_credito__isnull=False).values_list('cuenta_credito', flat=True)
         return super(manager_cuenta_credito, self).get_queryset().filter(codigo__startswith="112101",
-        operativa=True).exclude(id__in=ocupados)
+            operativa=True).exclude(id__in=ocupados)
+
 
 class cuenta_credito(Cuenta):
     objects = models.Manager()
     objects = manager_cuenta_credito()
     class Meta:
         proxy = True
+
+
+def total_ventas(fecha, moneda):
+    if moneda == "cordobas":
+        try:
+            return Factura.objects.filter(date__month=fecha.month, moneda=moneda).aggregate(Sum('total'))['total__sum'] + \
+            cordobizar(Factura.objects.filter(date__month=fecha.month, moneda="dolares").aggregate(Sum('total'))['total__sum'])
+        except Exception as e:
+            return 0.0
+
+    else:
+        try:
+            return Factura.objects.filter(date__month=fecha.month, moneda=moneda).aggregate(Sum('total'))['total__sum'] + \
+            dolarizar(Factura.objects.filter(date__month=fecha.month, moneda="cordobas").aggregate(Sum('total'))['total__sum'])
+        except Exception as e:
+            return 0.0
+
+
+def ventas():
+    hoy = datetime.now()
+    data = []
+    for n in range(0, 6):
+        data.append({'mes': hoy.month, 'ventas': total_ventas(hoy, "cordobas")})
+        hoy = hoy - timedelta(days=30)
+    return sorted(data, key=lambda x: x['mes'])
+
+
+def iva_pendiente():
+    iva = Factura.objects.filter(dec_iva=False, moneda="cordobas").aggregate(Sum('iva'))['iva__sum']
+    for f in Factura.objects.filter(dec_iva=False, moneda="dolares"):
+        iva += cordobizar(f.iva, f.date)
+    return iva

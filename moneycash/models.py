@@ -660,6 +660,8 @@ def ventas():
 
 def iva_pendiente():
     iva = Factura.objects.filter(dec_iva=False, moneda="cordobas").aggregate(Sum('iva'))['iva__sum']
+    if not iva:
+        iva = 0.0
     for f in Factura.objects.filter(dec_iva=False, moneda="dolares"):
         iva += cordobizar(f.iva, f.date)
     return iva

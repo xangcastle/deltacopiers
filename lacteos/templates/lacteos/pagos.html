@@ -2,6 +2,8 @@
 <html>
 	<head>
 	{% block head %}
+		<meta name="pdfkit-page-size" content="A5"/>
+		<meta name="pdfkit-orientation" content="Landscape"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link href="/static/lacteos/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/static/lacteos/css/style.css" rel="stylesheet">
@@ -9,6 +11,12 @@
 		<style type="text/css">
 			body {
 				background: #FFF;
+			}
+			@media print{
+			   div.saltopagina{
+			      display:block;
+			      page-break-before:always;
+			   }
 			}
 		</style>
 	{% endblock head %}

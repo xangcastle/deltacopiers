@@ -61,9 +61,9 @@ class linea(models.Model):
 
 
 class periodo_manager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return super(periodo_manager,
-            self).get_query_set().filter(cerrado=False)
+            self).get_queryset().filter(cerrado=False)
 
 
 class periodo(models.Model):

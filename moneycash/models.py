@@ -243,6 +243,11 @@ TIPOS_FACTURA = (
 ("compra", "COMPRA"),
 )
 
+TIPOS_PAGO = (
+("contado", "CONTADO"),
+("credito", "CREDITO"),
+)
+
 
 class Factura(models.Model):
     tipo = models.CharField(max_length=20, default="venta", choices=TIPOS_FACTURA)
@@ -264,7 +269,7 @@ class Factura(models.Model):
     numero_al = models.PositiveIntegerField(null=True, blank=True)
     total = models.FloatField(null=True)
     excento_iva = models.NullBooleanField()
-    tipopago = models.CharField(max_length=25, null=True)
+    tipopago = models.CharField(max_length=25, null=True, choices=TIPOS_PAGO)
     impresa = models.BooleanField(default=False)
     cerrada = models.BooleanField(default=False)
     entregada = models.BooleanField(default=False)

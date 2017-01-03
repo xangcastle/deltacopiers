@@ -3,6 +3,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 import pdfkit
+from django.conf import settings
 
 
 def render_to_pdf(template_src, context_dict, css=None):
@@ -10,7 +11,7 @@ def render_to_pdf(template_src, context_dict, css=None):
     context = Context(context_dict)
     html = template.render(context)
     if css:
-        css = css
+        css = settings.BASE_DIR + css
     else:
         pwd = os.path.dirname(__file__)
         css = pwd + '/static/moneycash/bootstrap/css/bootstrap.css'

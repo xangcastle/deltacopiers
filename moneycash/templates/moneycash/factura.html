@@ -1,26 +1,12 @@
 {% extends "moneycash/base.html" %}
 
 
-  {% block reportes %}
-  <li><a href="#">Reporte de Ventas por Cliente</a></li>
-  <li><a href="#">Reporte de Ventas por Categoria</a></li>
-  <li role="separator" class="divider"></li>
-  <li class="dropdown-header">Reporte de Ventas Marginal</li>
-  <li><a href="#">Reporte de Consumo por Cliente</a></li>
-  {% endblock reportes %}
-
-  {% block options %}
-  <a id="btn_borrar" href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-paint-brush"> Limpiar Formulario</i></a>
-  <a id="btn_grabar" href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-save"> Guardar</i></a>
-  <a href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-file-pdf-o">  Generar Proforma</i></a>
-  {% endblock %}
-
 {% block titulo %}Factura de Ventas{% endblock titulo %}
 
 {% block script_extra %}
 {{ block.super }}
 <script src="/static/moneycash/js/cliente.js"></script>
-<script src="/static/moneycash/js/factura.js"></script>
+<script src="/static/moneycash/js/factura_venta.js"></script>
 <script type="text/javascript">
   $('.moneycash_facturacion').addClass('active');
 </script>

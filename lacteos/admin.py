@@ -68,7 +68,7 @@ class recoleccion_admin(admin.ModelAdmin):
         'retenciones', 'detalle_linea')
     inlines = [detalle_tabular]
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         periodos = periodo.objects.filter(cerrado=False)
         return recoleccion.objects.filter(periodo__in=periodos)
 

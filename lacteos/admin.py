@@ -78,7 +78,7 @@ class adelanto_admin(admin.ModelAdmin):
     list_filter = ('tipo',)
     search_fields = ('productor', 'monto')
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         periodos = periodo.objects.filter(cerrado=False)
         return adelanto.objects.filter(periodo__in=periodos)
 

@@ -48,17 +48,17 @@
                 <li><a href="{% url "factura_venta" %}">Crear Nueva Factura</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Reportes y Estadisticas</li>
-                <li><a href="#">Reporte de Consumo por Cliente</a></li>
-                <li><a href="#">Reporte de Ventas por Cliente</a></li>
+                <li><a href="{% url "xls_catalogo_productos" %}">Catalogo de Productos</a></li>
+                <li><a href="{% url "xls_ventas_cliente" %}">Reporte de Ventas por Cliente</a></li>
                 <li><a href="#">Reporte de Ventas por Categoria</a></li>
               </ul>
             </li>
             <li class="dropdown moneycash_caja">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Caja<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="{% url "moneycash_roc" %}">Recibo de Caja</a></li>
-                <li><a href="{% url "facturas_no_impresas" %}">Facturas no Impresas</a></li>
-                <li><a href="{% url "depositos" %}">Depositos</a></li>
+                <li><a href="{% url "moneycash_roc" %}">Impresion de Recibos</a></li>
+                <li><a href="{% url "facturas_no_impresas" %}">Impresion de Facturas</a></li>
+                <li><a href="{% url "facturas_no_impresas" %}">Impresion de Retenciones</a></li>
                 <li><a href="{% url "cierre_caja" %}">Cierres de Caja</a></li>
                 <li class="dropdown-header">Reportes y Estadisticas</li>
                 <li><a href="#">Movimientos de Caja</a></li>
@@ -144,112 +144,83 @@
         {% block form %}
                 <div class="row">
                   <div class="col-md-4">
-                  <style>
+                    <table class="table table-responsive table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Gastos
+                          </th>
+                          <th>
 
-                              .bar {
-                                  fill: steelblue;
-                              }
-
-                              .bar:hover {
-                                  fill: brown;
-                              }
-
-                              .axis {
-                                  font: 10px sans-serif;
-                              }
-
-                              .axis path,
-                              .axis line {
-                                  fill: none;
-                                  stroke: #000;
-                                  shape-rendering: crispEdges;
-                              }
-
-                              .x.axis path {
-                                  display: none;
-                              }
-
-
-                          </style>
-                    <svg class="chart"></svg>
-                    <script src="/static/moneycash/js/d3.v3.min.js"></script>
-                    <script>
-                        var data = [
-                            {% for d in ventas %}
-                            { name: '{{d.mes}}', meta: {{d.ventas}} },
-                            {% endfor %}
-                        ];
-                    </script>
-                    <script>
-
-                        var margin = {top: 0, right: 0, bottom: 0, left: 0},
-                            width = 400, height = 450;
-
-                        var x = d3.scale.ordinal()
-                        .rangeRoundBands([0, width], .1)
-                        .domain(data.map(function(d) { return d.name; }));
-
-                        var y = d3.scale.linear()
-                        .range([height, 0])
-                        .domain([0, d3.max(data, function(d) { return d.meta; })]);
-
-                        var xAxis = d3.svg.axis()
-                        .scale(x)
-                        .orient("bottom");
-
-                        var yAxis = d3.svg.axis()
-                        .scale(y)
-                        .orient("left");
-
-                        var chart = d3.select(".chart")
-                        .attr("width", width + margin.left + margin.right)
-                        .attr("height", height + margin.top + margin.bottom)
-                        .append("g")
-                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                        chart.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(xAxis);
-
-                        chart.append("g")
-                        .attr("class", "y axis")
-                        .call(yAxis);
-
-                        chart.selectAll(".bar")
-                        .data(data)
-                        .enter().append("rect")
-                        .attr("class", "bar")
-                        .attr("x", function(d) { return x(d.name); })
-                        .attr("y", height)
-                        .attr("height", 0)
-                        .attr("width", x.rangeBand())
-                        .transition().duration(1500)
-                        .attr("height", function(d) { return height - y(d.meta); })
-                        .attr("y", function(d) { return y(d.meta); });
-
-                        chart.selectAll(".bar")
-                        .data(data)
-                        .enter().append("rect")
-                        .attr("class", "bar")
-                        .attr("x", function(d) { return x(d.name); })
-                        .attr("y", height)
-                        .attr("height", 0)
-                        .attr("width", x.rangeBand())
-                        .transition().duration(1500)
-                        .attr("height", function(d) { return height - y(d.venta); })
-                        .attr("y", function(d) { return y(d.venta); });
-
-                        function type(d) {
-                            d.value = +d.meta; // coerce to number
-                            return d;
-                        }
-
-                    </script>
-
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in gastos %}
+                        <tr>
+                          <td>
+                            {{i.name}}
+                          </td>
+                          <td>
+                            {{i.total}}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
                   </div>
                   <div class="col-md-4">
-                    <h2>Iva por Pagar: {{iva_pendiente}}</h2>
+                    <table class="table table-responsive table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Ingresos
+                          </th>
+                          <th>
+
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in ingresos %}
+                        <tr>
+                          <td>
+                            {{i.name}}
+                          </td>
+                          <td>
+                            {{i.total}}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="col-md-4">
+                    <table class="table table-responsive table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Impuestos
+                          </th>
+                          <th>
+
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in impuestos %}
+                        <tr>
+                          <td>
+                            {{i.name}}
+                          </td>
+                          <td>
+                            {{i.total}}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
         {% endblock form %}

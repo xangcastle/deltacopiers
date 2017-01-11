@@ -8,7 +8,7 @@ var complete_cliente = function () {
       if($.trim($(_self).val()) != '') {
           $(_self).autocomplete({
               minLength: 2,
-              source: "/moneycash/autocomplete_cliente",
+              source: "/moneycash/autocomplete_cliente/?tipo_cliente=" + $('input[name="tipo_cliente"]').val(),
               select: function(event, ui) {
                   console.log(ui.item.obj);
                   $('#cliente').val(ui.item.obj.id);

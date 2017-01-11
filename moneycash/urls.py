@@ -62,4 +62,8 @@ urlpatterns = patterns('moneycash.views',
         name='generar_facturas_pendientes'),
     url(r'^imprimir_factura/$', 'imprimir_factura',
         name='imprimir_factura'),
+    url(r'^xls_ventas_cliente/', xls_ventas_cliente,
+        name='xls_ventas_cliente'),
+    url(r'^xls_catalogo_productos/', xls_catalogo_productos,
+        name='xls_catalogo_productos'),
 )

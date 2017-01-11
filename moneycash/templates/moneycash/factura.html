@@ -2,7 +2,14 @@
 
 
 {% block titulo %}Factura de Ventas{% endblock titulo %}
-
+{% block options %}
+<a href="#" class="btn btn-info btn-xs pull-right" id="btn_borrar">
+  <i class="fa fa-times"></i>
+</a>
+<a href="#" class="btn btn-info btn-xs pull-right" id="btn_grabar">
+  <i class="fa fa-edit"></i>
+</a>
+{% endblock options %}
 {% block script_extra %}
 {{ block.super }}
 <script src="/static/moneycash/js/cliente.js"></script>

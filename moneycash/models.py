@@ -5,7 +5,7 @@ from base.models import Entidad
 from django.forms.models import model_to_dict
 #from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Sum, Max
+from django.db.models import Sum, Max, F
 from datetime import datetime, timedelta
 
 #User = settings.AUTH_USER_MODEL
@@ -180,9 +180,9 @@ class Producto(Entidad):
     cost = models.FloatField(null=True, blank=True)
     imagen = models.ImageField(null=True, blank=True)
     details = models.TextField(max_length=255, null=True, blank=True)
-    vender = models.NullBooleanField()
-    comprar = models.NullBooleanField()
-    almacenar = models.NullBooleanField()
+    vender = models.BooleanField(default=False)
+    comprar = models.BooleanField(default=False)
+    almacenar = models.BooleanField(default=False)
 
     def existencias(self):
         return Existencia.objects.filter(producto=self)
@@ -255,28 +255,36 @@ class Factura(models.Model):
     moneda = models.CharField(max_length=25, null=True, choices=MONEDAS)
     user = models.ForeignKey(User, null=True,
         related_name="moneycash_factura_user")
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField()
     numero = models.PositiveIntegerField(null=True)
     cliente = models.ForeignKey(Cliente, null=True)
     subtotal = models.FloatField(null=True)
     descuento = models.FloatField(null=True)
+
+    excento_iva = models.BooleanField(default=False)
     iva = models.FloatField(null=True)
-    aplica_ir = models.NullBooleanField()
+
+    aplica_ir = models.BooleanField(default=False)
     ir = models.FloatField(null=True, blank=True)
     numero_ir = models.PositiveIntegerField(null=True, blank=True)
-    aplica_al = models.NullBooleanField()
+
+    aplica_al = models.BooleanField(default=False)
     al = models.FloatField(null=True, verbose_name="alcaldia", blank=True)
     numero_al = models.PositiveIntegerField(null=True, blank=True)
+
     total = models.FloatField(null=True)
-    excento_iva = models.NullBooleanField()
     tipopago = models.CharField(max_length=25, null=True, choices=TIPOS_PAGO)
+    saldo = models.FloatField(null=True)
+
     impresa = models.BooleanField(default=False)
     cerrada = models.BooleanField(default=False)
     entregada = models.BooleanField(default=False)
-    dec_ir = models.NullBooleanField(default=False)
-    dec_al = models.NullBooleanField(default=False)
-    dec_iva = models.NullBooleanField(default=False)
-    saldo = models.FloatField(null=True)
+    dec_ir = models.BooleanField(default=False)
+    dec_al = models.BooleanField(default=False)
+    dec_iva = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "Factura No " + str(self.numero)
 
     def simbolo(self):
         if self.moneda == "cordobas":
@@ -428,11 +436,17 @@ class Factura(models.Model):
 class Detalle(models.Model):
     factura = models.ForeignKey(Factura, null=True)
     producto = models.ForeignKey(Producto)
-    bodega = models.ForeignKey(Bodega, null=True, blank=True)
     cantidad = models.FloatField()
     price = models.FloatField()
     discount = models.FloatField(null=True)
     cost = models.FloatField()
+
+    bodega = models.ForeignKey(Bodega, null=True, blank=True)
+    existencia = models.FloatField(null=True)
+    saldo = models.FloatField(null=True)
+    existencia_total = models.FloatField(null=True)
+    saldo_total = models.FloatField(null=True)
+    costo_promedio = models.FloatField(null=True)
 
     def to_json(self):
         return model_to_dict(self)
@@ -451,6 +465,24 @@ class Detalle(models.Model):
 
     def total_impreso(self):
         return round(self.cantidad * self.precio_impreso(), 2)
+
+
+class compra_manager(models.Manager):
+    def get_queryset(self):
+        return super(compra_manager, self).get_queryset().filter(tipo='compra')
+
+
+class Compra(Factura):
+    objects = models.Manager()
+    objects = compra_manager()
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        self.tipo = 'compra'
+        self.moneda = 'cordobas'
+        super(Compra, self).save()
+
 
 
 class Roc(models.Model):
@@ -487,23 +519,7 @@ class Efectivo(models.Model):
     cantidad = models.PositiveIntegerField()
     moneda = models.CharField(max_length=25, default="cordobas", choices=MONEDAS)
 
-class Proveedor(datos_generales, Entidad):
-    pass
-
-
-class Compra(models.Model):
-    fecha = models.DateTimeField(auto_now_add=True)
-    numero = models.PositiveIntegerField(null=True)
-    proveedor = models.ForeignKey(Proveedor)
-    comentarios = models.TextField(max_length=999, null=True)
-
-
-class Item(models.Model):
-    compra = models.ForeignKey(Compra)
-    producto = models.ForeignKey(Producto)
-    cantidad = models.FloatField()
-    precio = models.FloatField()
-    descuento = models.FloatField()
+#########################
 
 class SMS(models.Model):
     numero = models.CharField(max_length=14)
@@ -638,6 +654,12 @@ class cuenta_credito(Cuenta):
         proxy = True
 
 
+def is_none(v):
+    if v:
+        return v
+    else:
+        return 0.0
+
 def total_ventas(fecha, moneda):
     if moneda == "cordobas":
         try:
@@ -670,3 +692,86 @@ def iva_pendiente():
     for f in Factura.objects.filter(dec_iva=False, moneda="dolares"):
         iva += cordobizar(f.iva, f.date)
     return iva
+
+def ingresos_categoria():
+    cordobas = Factura.objects.filter(tipo='venta', dec_iva=False, moneda="cordobas")
+    dolares = Factura.objects.filter(tipo='venta', dec_iva=False, moneda="dolares")
+    dcor = Detalle.objects.filter(factura__in=cordobas)
+    ddol = Detalle.objects.filter(factura__in=dolares)
+    cats = Detalle.objects.filter(factura__in=Factura.objects.filter(
+    tipo='venta', dec_iva=False)).distinct('producto')
+    data = []
+    for c in cats:
+        data.append({'name': c.producto.name,
+        'total': is_none(dcor.filter(producto=c.producto).annotate(
+            total_producto=F('cantidad')*F('price')).aggregate(
+                Sum('total_producto'))['total_producto__sum']) +
+                cordobizar(is_none(ddol.filter(producto=c.producto).annotate(
+                total_producto=F('cantidad')*F('price')).aggregate(
+                Sum('total_producto'))['total_producto__sum']))
+        })
+    return data
+
+
+def egresos_categoria():
+    cordobas = Factura.objects.filter(tipo='compra', dec_iva=False, moneda="cordobas")
+    dolares = Factura.objects.filter(tipo='compra', dec_iva=False, moneda="dolares")
+    dcor = Detalle.objects.filter(factura__in=cordobas)
+    ddol = Detalle.objects.filter(factura__in=dolares)
+    cats = Detalle.objects.filter(factura__in=Factura.objects.filter(
+    tipo='compra', dec_iva=False)).distinct('producto')
+    data = []
+    for c in cats:
+        data.append({'name': c.producto.name,
+        'total': is_none(dcor.filter(producto=c.producto).annotate(
+            total_producto=F('cantidad')*F('price')).aggregate(
+                Sum('total_producto'))['total_producto__sum']) +
+                cordobizar(is_none(ddol.filter(producto=c.producto).annotate(
+                total_producto=F('cantidad')*F('price')).aggregate(
+                Sum('total_producto'))['total_producto__sum']))
+        })
+    return data
+
+def impuestos():
+    compras_cordobas = Factura.objects.filter(tipo='compra', dec_iva=False, moneda="cordobas")
+    compras_dolares = Factura.objects.filter(tipo='compra', dec_iva=False, moneda="dolares")
+    ventas_cordobas = Factura.objects.filter(tipo='venta', dec_iva=False, moneda="cordobas")
+    ventas_dolares = Factura.objects.filter(tipo='venta', dec_iva=False, moneda="dolares")
+
+    iva_acreditable = is_none(compras_cordobas.filter(excento_iva=False).aggregate(Sum('iva'))['iva__sum']) + \
+    cordobizar(is_none(compras_dolares.filter(excento_iva=False).aggregate(Sum('iva'))['iva__sum']))
+
+    iva_debitable = is_none(ventas_cordobas.filter(excento_iva=False).aggregate(Sum('iva'))['iva__sum']) + \
+    cordobizar(is_none(ventas_dolares.filter(excento_iva=False).aggregate(Sum('iva'))['iva__sum']))
+
+    data = [{'name': 'IVA ACREDITABLE', 'total': iva_acreditable}, {'name': 'IVA POR PAGAR', 'total': iva_debitable}]
+    return data
+
+def ventas_cliente():
+    data = []
+    images = None
+    data.append(("Cliente", "Ventas"))
+    ventas_cordobas = Factura.objects.filter(tipo='venta', dec_iva=False, moneda="cordobas")
+    ventas_dolares = Factura.objects.filter(tipo='venta', dec_iva=False, moneda="dolares")
+    clientes = Factura.objects.filter(tipo='venta', dec_iva=False).distinct('cliente')
+    for c in clientes:
+        data.append((c.cliente.name,
+        is_none(ventas_cordobas.filter(cliente=c.cliente).aggregate(Sum('subtotal'))['subtotal__sum'])
+        +
+        cordobizar(is_none(ventas_dolares.filter(cliente=c.cliente).aggregate(Sum('subtotal'))['subtotal__sum']))
+        ))
+    return data, images
+
+
+def catalogo_productos():
+    ps = Producto.objects.filter(vender=True)
+    data = []
+    data.append(('Codigo', 'Descripcion', 'Precio', 'Costo', 'Existencia', 'Imagen'))
+    images = []
+    for p in ps:
+        data.append((p.code, p.name, p.price, p.cost, p.existencia_total(), ''))
+        if p.imagen:
+            images.append(p.imagen.path)
+        else:
+            images.append('')
+    return data, images

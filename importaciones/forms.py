@@ -27,14 +27,14 @@ class ItemForm(forms.ModelForm):
     attrs={
         'value': '0.0',
         'readonly': 'true',
-        }))
+        }), label='costo cif')
     cip = forms.FloatField(widget=forms.NumberInput(
     attrs={
         'value': '0.0',
         'readonly': 'true',
-        }))
+        }), label='costo cip')
     precio = forms.FloatField(widget=forms.NumberInput(
     attrs={
         'value': '0.0',
         'readonly': 'true',
-        }))
+        }), label='precio publico')

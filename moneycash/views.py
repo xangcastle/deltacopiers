@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate
 from wsgiref.util import FileWrapper
 import os
 from datetime import datetime
-from .utils import render_to_pdf
+from .utils import *
 from django.template.loader import render_to_string
 
 
@@ -40,7 +40,9 @@ class index(TemplateView):
         context = super(index, self).get_context_data(**kwargs)
         context['tc'] = cordobizar()
         context['ventas'] = ventas()
-        context['iva_pendiente'] = iva_pendiente()
+        context['impuestos'] = impuestos()
+        context['ingresos'] = ingresos_categoria()
+        context['gastos'] = egresos_categoria()
         return context
 
 
@@ -81,6 +83,7 @@ class roc(TemplateView):
         context['cuentas'] = CuentaBanco.objects.all()
         context['caja'] = True
         context['tc'] = cordobizar()
+        context['tipo_cliente'] = 'cliente'
         return context
 
 
@@ -443,3 +446,13 @@ def grabar_recibo(request):
     grabar_abonos(request, r)
     html = render_to_string('moneycash/print/recibo.html', {'r': r})
     return HttpResponse(html)
+
+
+def xls_ventas_cliente(request):
+    data, images = ventas_cliente()
+    return render_to_excel("Ventas por Cliente", data, images)
+
+
+def xls_catalogo_productos(request):
+    data, images = catalogo_productos()
+    return render_to_excel("Catalogo de Productos", data, images)

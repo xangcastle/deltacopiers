@@ -18,7 +18,12 @@ admin.site.register(Cliente, cliente_admin)
 
 
 admin.site.register(Categoria)
-admin.site.register(CuentaBanco)
+
+class cuentabanco_admin(admin.ModelAdmin):
+    list_display = ('numero', 'moneda', 'banco')
+    list_filter = ('banco', 'moneda')
+
+admin.site.register(CuentaBanco, cuentabanco_admin)
 
 
 class producto_admin(entidad_admin):
@@ -92,6 +97,16 @@ class factura_admin(admin.ModelAdmin):
     inlines = [detalle_factura]
     list_display = ('numero', 'cliente', 'subtotal', 'descuento', 'iva',
     'ir', 'al', 'total')
+    list_filter = ('tipo', )
+    fieldsets = (
+        ('', {
+            'fields': (('date', 'tipo'), ('user', 'moneda', 'sucursal', 'numero'),
+                    ('cliente', 'tipopago', 'saldo'), ('aplica_ir', 'ir', 'numero_ir'),
+                    ('aplica_al', 'al', 'numero_al'),
+                    ('excento_iva', 'iva'), ('subtotal', 'descuento', 'total')
+                    )
+        }),
+    )
 
 
 admin.site.register(Factura, factura_admin)
@@ -142,3 +157,17 @@ class cuenta_admin(entidad_admin):
     search_fields = ('codigo', 'nombre')
     ordering = ('codigo',)
 admin.site.register(Cuenta, cuenta_admin)
+
+
+class compra_admin(admin.ModelAdmin):
+    list_display = ('cliente', 'date')
+    fieldsets = (
+        ('', {
+            'fields': (('date', ), ('sucursal', 'numero'),
+                    ('cliente', 'tipopago', 'saldo'), 
+                    ('excento_iva', 'iva'), ('subtotal', 'descuento', 'total')
+                    )
+        }),
+    )
+
+admin.site.register(Compra, compra_admin)

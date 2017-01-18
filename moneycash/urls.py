@@ -9,6 +9,8 @@ urlpatterns = patterns('moneycash.views',
     url(r'^$', login_required(index.as_view(), login_url='/admin/login/'),  name='moneycash'),
 
     url(r'^factura_venta/', login_required(factura_venta.as_view(), login_url='/admin/login/'), name='factura_venta'),
+    url(r'^facturas_venta/', login_required(facturas_venta.as_view(), login_url='/admin/login/'), name='facturas_venta'),
+
     url(r'^autocomplete_cliente/$', 'autocomplete_cliente', name='autocomplete_cliente'),
     url(r'^autocomplete_producto/$', 'autocomplete_producto', name='autocomplete_producto'),
     url(r'^detalle_producto/$', 'detalle_producto', name='detalle_producto'),
@@ -62,8 +64,16 @@ urlpatterns = patterns('moneycash.views',
         name='generar_facturas_pendientes'),
     url(r'^imprimir_factura/$', 'imprimir_factura',
         name='imprimir_factura'),
+
+    url(r'^tableFactura/$', 'tableFactura',
+        name='tableFactura'),
+    url(r'^anular_factura/$', 'anular_factura',
+        name='anular_factura'),
+        
     url(r'^xls_ventas_cliente/', xls_ventas_cliente,
         name='xls_ventas_cliente'),
+    url(r'^xls_ventas_categoria/', xls_ventas_categoria,
+        name='xls_ventas_categoria'),
     url(r'^xls_catalogo_productos/', xls_catalogo_productos,
         name='xls_catalogo_productos'),
 )

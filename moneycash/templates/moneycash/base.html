@@ -23,6 +23,7 @@
     <link href="/static/moneycash/jquery/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="/static/moneycash/jquery/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
     <link href="/static/moneycash/jquery/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet">
+    <link href="/static/moneycash/css/sweetalert.css" rel="stylesheet">
     {% block extra_head %}{% endblock %}
   </head>
 
@@ -46,11 +47,12 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ventas<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="{% url "factura_venta" %}">Crear Nueva Factura</a></li>
+                <li><a href="{% url "facturas_venta" %}">Crear Nueva Factura</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Reportes y Estadisticas</li>
                 <li><a href="{% url "xls_catalogo_productos" %}">Catalogo de Productos</a></li>
                 <li><a href="{% url "xls_ventas_cliente" %}">Reporte de Ventas por Cliente</a></li>
-                <li><a href="#">Reporte de Ventas por Categoria</a></li>
+                <li><a href="{% url "xls_ventas_categoria" %}">Reporte de Ventas por Categoria</a></li>
               </ul>
             </li>
             <li class="dropdown moneycash_caja">
@@ -82,8 +84,8 @@
             <li class="dropdown moneycash_compras">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compras<span class="caret"></span></a>
               <ul class="dropdown-menu">
+                <li><a href="{% url "factura_compra" %}">Nueva Compra Local</a></li>
                 <li><a href="#">Cuentas Por Pagar</a></li>
-                <li><a href="{% url "factura_compra" %}">Agregar Compra Local</a></li>
                 <li><a href="#">Liquidacion de Polizas</a></li>
                 <li class="dropdown-header">Reportes y Estadisticas</li>
                 <li><a href="#">Reporte Cuentas Por Pagar</a></li>
@@ -224,6 +226,10 @@
                   </div>
                 </div>
         {% endblock form %}
+        <div class="impreso" id="impreso"></div>
+        <div class="impreso" id="iframe">
+
+        </div>
       </div>
     </div>
 
@@ -253,6 +259,7 @@
     <script src="/static/moneycash/bootstrap/js/bootstrap-datepicker.js"></script>
     <script src="/static/moneycash/bootstrap/js/bootstrap-datepicker.es.js"></script>
     <script src="/static/moneycash/js/monedas.js"></script>
+    <script src="/static/moneycash/js/sweetalert.min.js"></script>
     {% block script_extra %}{% endblock script_extra %}
   </body>
 </html>

@@ -142,24 +142,9 @@ var validar_modal = function(){
         .html(mensaje)
         .addClass('alert-danger');
     } else {
-      if(cantidad > existencia){
-        valido = false;
-        mensaje = "La cantidad no puede ser mayor que la existencia!"
-        $('#mensaje')
-          .empty()
-          .html(mensaje)
-          .addClass('alert-danger');
-      }else{
-        $('#mensaje')
-          .empty()
-          .removeClass('alert-danger');
-          valido = true;
-      }
+      valido = true;
     }
-  } else {
-    valido = true;
-  }
-
+}
   if(valido){
     insertar_detalle(code, name, cantidad, price, discount, total, producto, bodega, bodega_name);
     calcular_factura();
@@ -241,6 +226,42 @@ var eliminar_detalle = function(){
   limpiar_modal();
 }
 
+var aplica_ir = function(){
+  if ($(this).is(':checked')) {
+    $('#val_aplica_ir').val("True");
+    $('input[name="numero_ir"]').attr('readonly', false);
+    $('#ir').html(
+      ((parseFloat($('#factura_subtotal').val()) - parseFloat($('#factura_discount').val())) * 0.02).toFixed(2)
+      );
+    $('input[name="ir"]').val(
+      ((parseFloat($('#factura_subtotal').val()) - parseFloat($('#factura_discount').val())) * 0.02).toFixed(2)
+    );
+  } else {
+    $('#val_aplica_ir').val("False");
+    $('input[name="numero_ir"]').attr('readonly', true);
+    $('#ir').html("0.00");
+    $('input[name="ir"]').val(0.00);
+  }
+}
+
+var aplica_al = function(){
+  if ($(this).is(':checked')) {
+    $('#val_aplica_al').val("True");
+    $('input[name="numero_al"]').attr('readonly', false);
+    $('#al').html(
+      ((parseFloat($('#factura_subtotal').val()) - parseFloat($('#factura_discount').val())) * 0.01).toFixed(2)
+      );
+      $('input[name="al"]').val(
+        ((parseFloat($('#factura_subtotal').val()) - parseFloat($('#factura_discount').val())) * 0.01).toFixed(2)
+      );
+  } else {
+    $('#val_aplica_al').val("False");
+    $('input[name="numero_al"]').attr('readonly', true);
+    $('#al').html("0.00");
+    $('input[name="al"]').val(0.00);
+  }
+}
+
 var grabar_factura = function(){
   var form = $('form');
   form.append($('select[name="monedas"]'));
@@ -251,9 +272,18 @@ var grabar_factura = function(){
         console.log(response);
       }
     });
-
+    swal({title: "MoneyCash", text: "Factura grabada con Exito!", type: "success"});
     location.reload();
-    swal({title: "MoneyCash", text:"Factura grabada con Exito!", type: "success"});
+}
+
+var tipo_pago = function(){
+  if ($(this).val() == "contado") {
+    $('.contado').show();
+    $('.credito').hide();
+  } else if ($(this).val() == "credito") {
+    $('.credito').show();
+    $('.contado').hide();
+  }
 }
 
 var limpiar_factura = function(){
@@ -276,4 +306,8 @@ $(document).on('ready', function(){
     $('input[type="checkbox"]').on('change', calcular_factura);
     $('#btn_grabar').on('click', grabar_factura);
     $('#btn_borrar').on('click', limpiar_factura);
+    $('#aplica_ir').on('change', aplica_ir);
+    $('#aplica_al').on('change', aplica_al);
+    $('#tipopago').on('change', tipo_pago);
+    $('#tipopago').trigger('change');
 });

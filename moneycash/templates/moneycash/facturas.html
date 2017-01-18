@@ -1,0 +1,140 @@
+{% extends "moneycash/base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/moneycash/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/moneycash/datatables/css/buttons.dataTables.min.css">
+
+{% endblock %}
+
+{% block form %}
+<div class="row">
+    <div class="col-sm-12">
+        <br/>
+        <div class="panel panel-default" id="documento">
+            <div class="panel-heading">
+                Listado de Facturas
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table id="table" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Cliente</th>
+                            <th>Identificacion</th>
+                            <th>Moneda</th>
+                            <th>Subtotal</th>
+                            <th>Descuento</th>
+                            <th>Iva</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                          <th>Numero</th>
+                          <th>Cliente</th>
+                          <th>Identificacion</th>
+                          <th>Moneda</th>
+                          <th>Subtotal</th>
+                          <th>Descuento</th>
+                          <th>Iva</th>
+                          <th>Total</th>
+                          <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+</div>
+
+{% endblock form %}
+
+
+{% block script_extra %}
+<script src="/static/moneycash/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/moneycash/datatables/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/moneycash/datatables/js/dataTables.buttons.min.js"></script>
+<script src="/static/moneycash/datatables/js/dataTables.select.min.js"></script>
+<script src="/static/moneycash/datatables/js/dataTables.editor.min.js"></script>
+<script src="/static/moneycash/datatables/js/buttons.flash.min.js"></script>
+<script src="/static/moneycash/datatables/js/jszip.min.js"></script>
+<script src="/static/moneycash/datatables/js/pdfmake.min.js"></script>
+<script src="/static/moneycash/datatables/js/vfs_fonts.js"></script>
+<script src="/static/moneycash/datatables/js/buttons.html5.min.js"></script>
+<script src="/static/moneycash/datatables/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+<script type="text/javascript">
+var anular = function(){
+  swal({
+  title: "Estas seguro que deseas anular la factura?",
+  text: "Una vez realizada esta accion no podras visualizarla!",
+  type: "warning",
+  showCancelButton: true,
+  confirmButtonClass: "btn-danger",
+  confirmButtonText: "Si, anular!",
+  closeOnConfirm: false
+},
+function(){
+          $.ajax({
+              url:"../anular_factura/",
+              data: {id_factura:$(this).data('id')},
+              type:"POST",
+              success:function (result) {
+                  data=result[0];
+                  if(data.code==200){
+                      mostrarFacturas();
+                      swal({
+                           title: "Exito!",
+                          text: data.mensaje,
+                          type: "success"
+                      });
+                  }else {
+                      swal({
+                          title: "Upss. ha ocurrido un error",
+                          text: data.mensaje,
+                          type: "success"
+                      });
+                  }
+              }
+          });
+      });
+
+}
+$(document).on('ready', function(){
+    $('#table').DataTable( {
+        select: true,
+        "ajax": "/moneycash/tableFactura/",
+        "columns": [
+            { "data": "numero" },
+            { "data": "cliente" },
+            { "data": "ruc" },
+            { "data": "moneda" },
+            { "data": "subtotal" },
+            { "data": "descuento" },
+            { "data": "iva" },
+            { "data": "total" },
+            {
+                data: null,
+                className: "center",
+                defaultContent: '<a class="btn_ver" data-id="">Ver</a> / <a class="btn_anular">Anular</a>'
+            }
+        ],
+        "dom": "Bfrtip",
+        "lengthMenu": [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "buttons": ['pageLength', 'excel', 'copy', 'pdfFlash']
+    } );
+    $("#table").on("click", ".btn_anular", anular);
+});
+</script>
+{% endblock script_extra %}

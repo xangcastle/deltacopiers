@@ -19,7 +19,6 @@ class TC(models.Model):
     venta = models.FloatField(null=True)
     compra = models.FloatField(null=True)
 
-
 def dolarizar(cordobas=1, fecha=datetime.now(), digitos=2):
     tc = TC.objects.get(fecha__year=fecha.year, fecha__month=fecha.month,
         fecha__day=fecha.day)
@@ -28,7 +27,6 @@ def dolarizar(cordobas=1, fecha=datetime.now(), digitos=2):
     else:
         tc = tc.oficial
     return round(cordobas / tc, digitos)
-
 
 def cordobizar(dolares=1, fecha=datetime.now(), digitos=2):
     tc = TC.objects.get(fecha__year=fecha.year, fecha__month=fecha.month,
@@ -53,10 +51,8 @@ class CuentaBanco(models.Model):
 class Sucursal(Entidad):
     pass
 
-
 class Bodega(Entidad):
     sucursal = models.ForeignKey(Sucursal)
-
 
 class datos_generales(models.Model):
     ident = models.CharField(max_length=14, null=True)
@@ -187,6 +183,18 @@ class Producto(Entidad):
     def existencias(self):
         return Existencia.objects.filter(producto=self)
 
+    def existencia_enbodega(self, bodega):
+        try:
+            return Existencia.objects.get(producto=self, bodega=bodega).cantidad
+        except:
+            return 0.0
+
+    def existencias_json(self):
+        data = []
+        for b in Bodega.objects.all().order_by('name'):
+            data.append({'bodega': b.name, 'cantidad': self.existencia_enbodega(b), 'bodega_id': b.id})
+        return data
+
     def url_imagen(self):
         if self.imagen:
             return self.imagen.url
@@ -213,10 +221,7 @@ class Producto(Entidad):
         obj['almacenar'] = self.almacenar
         obj['imagen'] = self.url_imagen()
         obj['details'] = self.details
-        obj['existencias'] = []
-        for e in self.existencias():
-            existencia = {'bodega': e.bodega.name, 'cantidad': e.cantidad, 'bodega_id': e.bodega.id}
-            obj['existencias'].append(existencia)
+        obj['existencias'] = self.existencias_json()
         return obj
 
     def existencia_total(self):
@@ -235,7 +240,7 @@ class Producto(Entidad):
 class Existencia(models.Model):
     bodega = models.ForeignKey(Bodega)
     producto = models.ForeignKey(Producto)
-    cantidad = models.FloatField()
+    cantidad = models.FloatField(default=0.0)
 
 
 TIPOS_FACTURA = (
@@ -279,6 +284,7 @@ class Factura(models.Model):
     impresa = models.BooleanField(default=False)
     cerrada = models.BooleanField(default=False)
     entregada = models.BooleanField(default=False)
+    anulada = models.BooleanField(default=False)
     dec_ir = models.BooleanField(default=False)
     dec_al = models.BooleanField(default=False)
     dec_iva = models.BooleanField(default=False)
@@ -311,6 +317,12 @@ class Factura(models.Model):
                 self.cliente.saldo_disponible())
         obj['cliente_data'] = cliente
         return obj
+
+    def to_datatable(self):
+        return {'numero': self.numero, 'cliente': self.cliente.name,
+            'ruc': self.cliente.ident, 'subtotal': self.subtotal,
+            'moneda': self.moneda, 'descuento': self.descuento, 'iva': self.iva,
+            'total': self.total}
 
     def tc(self):
         return cordobizar(1, self.date, digitos=4)
@@ -447,6 +459,9 @@ class Detalle(models.Model):
     existencia_total = models.FloatField(null=True)
     saldo_total = models.FloatField(null=True)
     costo_promedio = models.FloatField(null=True)
+
+    def __unicode__(self):
+        return self.producto.name
 
     def to_json(self):
         return model_to_dict(self)
@@ -675,7 +690,6 @@ def total_ventas(fecha, moneda):
         except Exception as e:
             return 0.0
 
-
 def ventas():
     hoy = datetime.now()
     data = []
@@ -683,7 +697,6 @@ def ventas():
         data.append({'mes': hoy.month, 'ventas': total_ventas(hoy, "cordobas")})
         hoy = hoy - timedelta(days=30)
     return sorted(data, key=lambda x: x['mes'])
-
 
 def iva_pendiente():
     iva = Factura.objects.filter(dec_iva=False, moneda="cordobas").aggregate(Sum('iva'))['iva__sum']
@@ -711,7 +724,6 @@ def ingresos_categoria():
                 Sum('total_producto'))['total_producto__sum']))
         })
     return data
-
 
 def egresos_categoria():
     cordobas = Factura.objects.filter(tipo='compra', dec_iva=False, moneda="cordobas")
@@ -761,7 +773,6 @@ def ventas_cliente():
         cordobizar(is_none(ventas_dolares.filter(cliente=c.cliente).aggregate(Sum('subtotal'))['subtotal__sum']))
         ))
     return data, images
-
 
 def catalogo_productos():
     ps = Producto.objects.filter(vender=True)

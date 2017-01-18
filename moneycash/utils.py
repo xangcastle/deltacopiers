@@ -8,6 +8,13 @@ from django.conf import settings
 from PIL import Image
 
 
+if not settings.DEBUG:
+    # on production we have no X server, that needed for wkhtmltopdf, so we will emulate it and so we need to use custom path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=os.path.join(settings.BASE_DIR, 'wkhtmltopdf_xfaked.sh').encode())
+else:
+    # on dev machine I use Windows so it is no need to emulate X sereve and redefine path
+    config = None
+
 def convert_to_bitmap(path):
     basewidth = 40
     img = Image.open(path)
@@ -29,10 +36,10 @@ def render_to_pdf(template_src, context_dict, css=None):
     else:
         pwd = os.path.dirname(__file__)
         css = pwd + '/static/moneycash/bootstrap/css/bootstrap.css'
-    pdfkit.from_string(html, 'out.pdf', css=css)
-    pdf = open("out.pdf")
-    response = HttpResponse(pdf.read(), content_type='application/pdf')
-    pdf.close()
+    pdfkit.from_string(html, 'out.pdf', css=css, configuration=config)
+    archivo = open("out.pdf")
+    response = HttpResponse(archivo.read(), content_type='application/pdf')
+    archivo.close()
     return response
 
 

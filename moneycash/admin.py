@@ -103,7 +103,9 @@ class factura_admin(admin.ModelAdmin):
             'fields': (('date', 'tipo'), ('user', 'moneda', 'sucursal', 'numero'),
                     ('cliente', 'tipopago', 'saldo'), ('aplica_ir', 'ir', 'numero_ir'),
                     ('aplica_al', 'al', 'numero_al'),
-                    ('excento_iva', 'iva'), ('subtotal', 'descuento', 'total')
+                    ('excento_iva', 'iva'), ('subtotal', 'descuento', 'total'),
+                    ('impresa', 'cerrada', 'entregada'),
+                    ('dec_ir', 'dec_al', 'dec_iva')
                     )
         }),
     )
@@ -164,7 +166,7 @@ class compra_admin(admin.ModelAdmin):
     fieldsets = (
         ('', {
             'fields': (('date', ), ('sucursal', 'numero'),
-                    ('cliente', 'tipopago', 'saldo'), 
+                    ('cliente', 'tipopago', 'saldo'),
                     ('excento_iva', 'iva'), ('subtotal', 'descuento', 'total')
                     )
         }),

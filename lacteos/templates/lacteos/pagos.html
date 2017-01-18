@@ -143,9 +143,11 @@
 					<div class="saltopagina"></dib>
 			{% endfor %}
 		</section>
+		<script src="/static/moneycash/js/grabzit.min.js"></script>
 		<script type="text/javascript">
 			$(document).on('ready', function(){
-
+				GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=").ConvertHTML($('body').html(),
+				{"format": "pdf", "download": 1}).Create();
 			});
 		</script>
 	</body>{% endblock body %}

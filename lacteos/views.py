@@ -8,7 +8,7 @@ def imprimir_recoleccion(request,id_recoleccion):
     rec.actualizar_precio()
     pagos = detalle.objects.filter(recoleccion=rec)
     ctx = {'pagos':pagos}
-    return render_to_pdf('lacteos/pagos.html', ctx, "/static/lacteos/css/bootstrap.min.css")
+    return render_to_response('lacteos/pagos.html',ctx,context_instance=RequestContext(request))
 
 def imprimir_retencion(request,id_recoleccion):
     rec = recoleccion.objects.get(id=id_recoleccion)

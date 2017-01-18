@@ -52,15 +52,14 @@ var imprimir = function () {
           type:"POST",
           data: {'id': $('#factura').val(), 'moneda': $('select[name="monedas"]').val(), 'tipopago': $('#tipopago').val()},
           success:function (result) {
-              $(".impreso").empty().html(result);
-              var resultado = $('.impreso').print();
-              location.reload();
-          }
-      });
+            GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=").ConvertHTML(result,
+            {"format": "pdf", "download": 1}).Create("factura.pdf");
+            }
+          });
+      }
     }
   }
 
-}
 
 var cambiar_metodo = function(){
   $('.invicible').css('display', 'None');

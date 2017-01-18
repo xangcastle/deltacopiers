@@ -3,6 +3,7 @@ from base.views import autocomplete_entidad, entidad_to_json
 from .models import *
 from django.http.response import HttpResponse
 import json
+from bson import json_util
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.contrib.auth import authenticate
@@ -55,9 +56,15 @@ class factura_venta(TemplateView):
         context['tc'] = cordobizar()
         return context
 
+class facturas_venta(TemplateView):
+    template_name = "moneycash/facturas.html"
+    def get_context_data(self, **kwargs):
+        context = super(facturas_venta, self).get_context_data(**kwargs)
+        return context
+
 
 class factura_compra(TemplateView):
-    template_name = "moneycash/factura.html"
+    template_name = "moneycash/factura_compra.html"
     def get_context_data(self, **kwargs):
         context = super(factura_compra, self).get_context_data(**kwargs)
         context['tipo_cliente'] = 'proveedor'
@@ -115,6 +122,47 @@ class facturas_no_impresas(TemplateView):
 class bodega(TemplateView):
     template_name = "moneycash/bodega.html"
 
+
+@csrf_exempt
+def tableFactura(request):
+    obj = Factura
+    try:
+        objs = obj.objects.filter(cerrada=False, tipo="venta", impresa=True)
+    except:
+        pass
+    table = {"data": []}
+    for o in objs:
+        table['data'].append(o.to_datatable())
+    data = json.dumps(table, default=json_util.default)
+    return HttpResponse(data, content_type='application/json')
+
+@csrf_exempt
+def anular_factura(request):
+    data = []
+    obj_json = {}
+    id_factura = request.POST.get('id_factura')
+    if not id_factura:
+        obj_json['code'] = 400
+        obj_json['mensaje'] = "Factura invalida"
+    else:
+        try:
+            factura = Factura.objects.get(id=id_factura)
+        except:
+            factura = None
+
+        if not factura:
+            obj_json['code'] = 400
+            obj_json['mensaje'] = "Factura no encontrada"
+        else:
+            factura.anulada = True
+            factura.save()
+            obj_json['code'] = 200
+            obj_json['mensaje'] = "Factura anulada!"
+    data.append(obj_json)
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
+
+
 @csrf_exempt
 def autocomplete_cliente(request):
     return autocomplete_entidad(Cliente(), request, [('tipo', request.GET.get('tipo_cliente', '')), ])
@@ -157,16 +205,35 @@ def extract_cliente(request):
 
 def grabar_cabecera(request):
     f = Factura()
+    if request.POST.get('tipo', None):
+        f.tipo = request.POST.get('tipo', None)
     try:
         f.user = request.user
     except:
         f.user = User.objects.get(id=int(request.POST.get('user_id', '')))
     f.date = datetime.now()
     f.moneda = request.POST.get('monedas', '')
-    f.numero = f.get_numero()
+    if request.POST.get('factura_numero', None):
+        f.numero = request.POST.get('factura_numero', '')
+    else:
+        f.numero = f.get_numero()
     f.cliente = extract_cliente(request)
-    f.aplica_ir = request.POST.get('aplica_ir', '')
-    f.aplica_al = request.POST.get('aplica_al', '')
+    if request.POST.get('aplica_ir', '') == "True":
+        f.aplica_ir = True
+        f.ir = request.POST.get('ir', '')
+        try:
+            f.numero_ir = request.POST.get('numero_ir', None)
+        except Exception as e:
+            pass
+    if request.POST.get('aplica_al', '') == "True":
+        f.aplica_al = True
+        f.al = request.POST.get('al', '')
+        try:
+            f.numero_al = request.POST.get('numero_al', None)
+        except Exception as e:
+            pass
+    if request.POST.get('factura_tipopago', None):
+        f.tipopago = request.POST.get('factura_tipopago', None)
     f.excento_iva = request.POST.get('excento_iva', '')
     f.subtotal = request.POST.get('factura_subtotal', '')
     f.descuento = request.POST.get('factura_discount', '')
@@ -198,9 +265,13 @@ def grabar_detalle(request, factura):
         dd.discount = float(request.POST.getlist('producto_discount', '')[i])
         dd.cost = p.cost
         dd.save()
-        if b:
-            e = p.existencias().filter(bodega=b)[0]
-            e.cantidad -= dd.cantidad
+        if b and p.almacenar:
+            e, created = Existencia.objects.get_or_create(producto=p, bodega=b)
+            if factura.tipo == "venta":
+                e.cantidad -= dd.cantidad
+            if factura.tipo == "compra":
+                e.cantidad += dd.cantidad
+                #p.cost = ()
             e.save()
         data.append(dd)
     return data
@@ -212,7 +283,7 @@ def grabar_factura(request):
     f = grabar_cabecera(request)
     grabar_detalle(request, f)
     data.append(model_to_dict(f))
-    data = json.dumps(data)
+    data = json.dumps(data, default=json_util.default)
     return HttpResponse(data, content_type='application/json')
 
 
@@ -452,6 +523,11 @@ def xls_ventas_cliente(request):
     data, images = ventas_cliente()
     return render_to_excel("Ventas por Cliente", data, images)
 
+def xls_ventas_categoria(request):
+    data = [('Categoria', 'Total'), ]
+    for c in ingresos_categoria():
+        data.append((c['name'], c['total']))
+    return render_to_excel("Ventas por Categoria", data, None)
 
 def xls_catalogo_productos(request):
     data, images = catalogo_productos()

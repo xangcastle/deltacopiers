@@ -1,0 +1,289 @@
+{% extends "moneycash/base.html" %}
+
+
+{% block titulo %}Factura de Compra{% endblock titulo %}
+{% block options %}
+<a href="#" class="btn btn-info btn-xs pull-right" id="btn_borrar">
+  <i class="fa fa-times"></i>
+</a>
+<a href="#" class="btn btn-info btn-xs pull-right" id="btn_grabar">
+  Grabar <i class="fa fa-save"></i>
+</a>
+<a href="#" class="btn btn-info btn-xs pull-right" id="imprimir_retencion">
+  Imprimir Retencion <i class="fa fa-print"></i>
+</a>
+<a href="#" class="btn btn-info btn-xs pull-right" id="imprimir_cheque">
+  Imprimir Cheque <i class="fa fa-print"></i>
+</a>
+{% endblock options %}
+{% block script_extra %}
+{{ block.super }}
+<script src="/static/moneycash/js/cliente.js"></script>
+<script src="/static/moneycash/js/factura_compra.js"></script>
+<script type="text/javascript">
+  $('.moneycash_compras').addClass('active');
+</script>
+{% endblock script_extra %}
+
+{% block form %}
+            <div id="mensajes">
+            </div>
+            <form method="POST" action=".">
+                {% csrf_token %}
+                <input type="hidden" name="tipo" value="compra">
+                <div class="row">
+                  <div class="col-md-3">
+                        {% include "moneycash/cliente.html" %}
+                  </div>
+                    <div class="col-md-6">
+
+                          <div class="panel panel-success">
+                            <div class="panel-heading">
+                              <h3 class="panel-title">
+                                {% ifequal tipo_producto "vender" %}Detalle de Productos Vendidos {% endifequal %}
+                                {% ifequal tipo_producto "comprar" %}Detalle de Productos Comprados {% endifequal %}
+                              </h3>
+                            </div>
+                            <input type="hidden" name="tipo_producto" value="{{ tipo_producto }}">
+                            <div class="panel-body">
+                            <div class="row">
+                                <div class=" container-fluid">
+                                  <div class="form-group">
+                                      <input type="input" class="form-control" id="buscador_productos" placeholder="BUSCAR PRODUCTO">
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="container-fluid">
+                                  <table id="productos" class="table table-bordered table-striped table-hover">
+                                      <thead>
+                                          <tr>
+                                              <th>Codigo</th>
+                                              <th colspan="3">Descripcion</th>
+                                              <th colspan="2">Bodega</th>
+                                              <th>Cantidad</th>
+                                              <th>Precio</th>
+                                              <th>Descuento</th>
+                                              <th>Total</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                      </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="panel panel-success datos_totales">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Totales</h3>
+                          </div>
+                          <div class="panel-body">
+
+                                <div class="row">
+                                  <div class="col-md-6 col-xs-6">
+                                    <label for="factura_fecha">Fecha Fact. </label>
+                                    <div class="input-group date" data-provide="datepicker">
+                                      <input type="text" class="form-control" id="factura_fecha" name="factura_fecha">
+                                      <div class="input-group-addon">
+                                          <span class="glyphicon glyphicon-th"></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                      <label for="factura_numero">Fact. Numero</label>
+                                      <input type="input" class="form-control moneda" id="factura_numero" name="factura_numero">
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <div class="row">
+                                  <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                      <label for="factura_subtotal">Subtotal</label>
+                                      <input type="input" class="form-control moneda" id="factura_subtotal" readonly name="factura_subtotal" value="0.0">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                      <label for="factura_discount">Descuento</label>
+                                      <input type="input" class="form-control moneda" id="factura_discount" readonly name="factura_discount" value="0.0">
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                      <label for="factura_iva">Iva</label>
+                                      <input type="input" class="form-control moneda" id="factura_iva" readonly name="factura_iva" value="0.0">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                      <label for="factura_total">Total</label>
+                                      <input type="input" class="form-control moneda" id="factura_total" readonly name="factura_total" value="0.0">
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <label for="aplica_ir">Aplica IR</label>
+                                <div class="input-group">
+                                  <span class="input-group-addon">
+                                    <input type="hidden" id="val_aplica_ir" name="aplica_ir" value="False">
+                                    <input type="checkbox" id="aplica_ir">
+                                  </span>
+                                  <span class="input-group-addon" id="ir">0.00</span>
+                                  <input type="hidden" name="ir" value="0.00">
+                                  <input type="text" class="form-control" name="numero_ir" readonly placeholder="Numero">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="imprimir_ir">Imprimir</button>
+                                  </span>
+                                </div>
+                                <br>
+                                <label for="aplica_al">Aplica Alcaldia</label>
+                                <div class="input-group">
+                                  <span class="input-group-addon">
+                                    <input type="hidden" id="val_aplica_al" name="aplica_al" value="False">
+                                    <input type="checkbox" id="aplica_al">
+                                  </span>
+                                  <span class="input-group-addon" id="al">0.00</span>
+                                  <input type="hidden" name="al" value="0.00">
+                                  <input type="hidden" id="val_aplica_al">
+                                  <input type="text" class="form-control" name="numero_al" readonly placeholder="Numero">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="imprimir_al">Imprimir</button>
+                                  </span>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="tipopago">Tipo de pago</label>
+                                    <select id="tipopago" class="form-control" name="factura_tipopago" id="tipopago">
+                                        <option value="contado">CONTADO</option>
+                                        <option value="credito">CREDITO</option>
+                                    </select>
+                                </div>
+
+                                <label for="factura_fecha_vence" class="credito">Fecha Vence </label>
+                                <div class="input-group date credito" data-provide="datepicker">
+                                  <input type="text" class="form-control" id="factura_fecha_vence" name="factura_fecha_vence">
+                                  <div class="input-group-addon">
+                                      <span class="glyphicon glyphicon-th"></span>
+                                  </div>
+                                </div>
+
+                                <div class="row contado">
+                                  <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Efectivo</span>
+                                        <input type="text" class="form-control" name="pago_efectivo" value="0.0">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Cheques</span>
+                                        <input type="text" class="form-control" name="pago_cheque" value="0.0">
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                  <div class="row contado">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Transf. &nbsp;</span>
+                                            <input type="text" class="form-control" name="pago_transferencia" value="0.0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="input-group">
+                                          <span class="input-group-addon">Tarjeta &nbsp;&nbsp;</span>
+                                          <input type="text" class="form-control" name="pago_tarjeta" value="0.0">
+                                      </div>
+                                    </div>
+                                  </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+</form>
+{% endblock form %}
+{% block modales %}
+{{block.super}}
+<div class="modal fade" id="detalleModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detalles del Producto</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <img class="image image-responsive" src="" alt="" height="140px"/>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="no_part">Numero de Parte</label>
+                      <input type="text" class="form-control" id="no_part" readonly name="no_part">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="price">Precio</label>
+                      <input type="text" class="form-control" id="price" name="price">
+                  </div>
+                  <div class="form-group">
+                      <label for="cost">Costo</label>
+                      <input type="text" class="form-control" id="cost" readonly name="cost">
+                  </div>
+                  <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" autocomplete="off" min="0">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="discount">Descuento</label>
+                        <input type="text" class="form-control" id="discount" name="discount" autocomplete="off">
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+                <input type="hidden" name="almacenar" id="almacenar">
+                <table class="table table-bordered table-responsive table-hover" id="existencias">
+                  <thead>
+                    <tr>
+                      <th>Bodega</th>
+                      <th>Existencias</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+              <div class="alert" id="mensaje"></div>
+              <input type="hidden" id="producto" name="producto">
+              <input type="hidden" id="bodega" name="bodega">
+              <input type="hidden" id="code" name="code">
+              <input type="hidden" id="name" name="name">
+              <button type="button" class="btn btn-success" id="modal_ok">Ok</button>
+              <button type="button" class="btn btn-danger" id="modal_delete">Eliminar</button>
+            </div>
+          </div>
+  </div>
+</div>
+{% endblock modales %}

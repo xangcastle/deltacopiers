@@ -284,7 +284,7 @@ class recoleccion(models.Model):
         return total
 
     def imprimir(self):
-        return '<a href="/lacteos/print/recibos/%s/" class="btn btn-primary btn-xs glyphicon glyphicon-print" target="_blank">  Imprimir Recibos</a>' % (self.id)
+        return '<a href="/lacteos/print/recibos/%s/" class="btn btn-primary btn-xs glyphicon glyphicon-print imprimir_recibos" target="_blank">  Imprimir Recibos</a>' % (self.id)
 
     imprimir.allow_tags = True
 

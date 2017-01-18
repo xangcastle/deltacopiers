@@ -3,8 +3,9 @@ from django.template import RequestContext
 from models import recoleccion, detalle, linea, periodo
 from moneycash.utils import render_to_pdf
 from django_pdfkit import PDFView
+from django.views.decorators.csrf import csrf_exempt
 
-
+@csrf_exempt
 def imprimir_recoleccion(request, id_recoleccion):
     rec = recoleccion.objects.get(id=id_recoleccion)
     rec.actualizar_precio()

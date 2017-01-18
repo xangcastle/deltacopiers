@@ -7,9 +7,16 @@
 <script>
 var imprimir = function(e){
   e.preventDefault();
-  alert("http://" + document.domain + $(this).attr('href'));
-  GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=").ConvertURL("http://" + document.domain + $(this).attr('href'),
-{"format": "pdf", "download": 1}).Create();
+  $.ajax({
+      url:$(this).attr('href'),
+      type:"POST",
+      data: {},
+      success:function (result) {
+        GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=")
+                .ConvertHTML(result,{"format": "pdf", "download": 1}).Create();
+      }
+  });
+
 }
 $(document).ready(function(){
   $('.imprimir_recibos').on('click', imprimir);

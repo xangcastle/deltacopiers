@@ -8,7 +8,7 @@
 var imprimir = function(e){
   e.preventDefault();
   alert("http://" + document.domain + ":8000" + $(this).attr('href'));
-  GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=").ConvertURL("http://" + document.domain + ":8000" + $(this).attr('href'),
+  GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=").ConvertURL("http://" + document.domain + $(this).attr('href'),
 {"format": "pdf", "download": 1}).Create();
 }
 $(document).ready(function(){

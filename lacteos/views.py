@@ -12,7 +12,7 @@ def imprimir_recoleccion(request, id_recoleccion):
     pagos = detalle.objects.filter(recoleccion=rec)
     ctx = {'pagos':pagos}
     # return render_to_pdf('lacteos/pagos.html', ctx, "/static/lacteos/css/bootstrap.min.css")
-    render_to_response('lacteos/pagos.html',ctx,context_instance=RequestContext(request))
+    return render_to_response('lacteos/pagos.html',ctx,context_instance=RequestContext(request))
 
 class imprimir_recoleccion1(PDFView):
     template_name = "lacteos/pagos.html"

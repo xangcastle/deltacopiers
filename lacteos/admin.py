@@ -64,6 +64,7 @@ class periodo_admin(admin.ModelAdmin):
 
 
 class recoleccion_admin(admin.ModelAdmin):
+    change_list_template = "lacteos/recolecion_admin.html"
     list_display = ('linea', 'periodo', 'cerrado', 'imprimir',
         'retenciones', 'detalle_linea')
     inlines = [detalle_tabular]

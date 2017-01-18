@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+
+
+{% block extrahead %}
+{{ block.super }}
+<script src="/static/moneycash/js/grabzit.min.js"></script>
+<script>
+var imprimir = function(e){
+  e.preventDefault();
+  alert("http://" + document.domain + ":8000" + $(this).attr('href'));
+  GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=").ConvertURL("http://" + document.domain + ":8000" + $(this).attr('href'),
+{"format": "pdf", "download": 1}).Create();
+}
+$(document).ready(function(){
+  $('.imprimir_recibos').on('click', imprimir);
+});
+</script>
+{% endblock %}

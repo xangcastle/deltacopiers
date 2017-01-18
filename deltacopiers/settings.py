@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'by29f%di4(5wn0k!3icqh#1yqiwu-ifqny(h!a&n!++)3-#vn0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*',]
 
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'inventario',
     'importaciones',
     'lacteos',
+    'wkhtmltopdf',
 ]
 
 MIDDLEWARE_CLASSES = [

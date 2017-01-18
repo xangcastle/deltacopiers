@@ -2,13 +2,19 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from models import recoleccion, detalle, linea, periodo
 from moneycash.utils import render_to_pdf
+from django_pdfkit import PDFView
 
-def imprimir_recoleccion(request,id_recoleccion):
+
+def imprimir_recoleccion1(request,id_recoleccion):
     rec = recoleccion.objects.get(id=id_recoleccion)
     rec.actualizar_precio()
     pagos = detalle.objects.filter(recoleccion=rec)
     ctx = {'pagos':pagos}
-    return render_to_response('lacteos/pagos.html',ctx,context_instance=RequestContext(request))
+    return render_to_pdf('lacteos/pagos.html', ctx, "/static/lacteos/css/bootstrap.min.css")
+
+class imprimir_recoleccion(PDFView):
+    template_name = "lacteos/pagos.html"
+    
 
 def imprimir_retencion(request,id_recoleccion):
     rec = recoleccion.objects.get(id=id_recoleccion)

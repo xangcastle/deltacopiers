@@ -12,6 +12,7 @@ import os
 from datetime import datetime
 from .utils import *
 from django.template.loader import render_to_string
+from django_pdfkit import PDFView
 
 
 def download_file(path):
@@ -73,7 +74,7 @@ class factura_compra(TemplateView):
         return context
 
 
-class devolucion(TemplateView):
+class devolucion(PDFView):
     template_name = "moneycash/devolucion.html"
     def get_context_data(self, **kwargs):
         context = super(devolucion, self).get_context_data(**kwargs)

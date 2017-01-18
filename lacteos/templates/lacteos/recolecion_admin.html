@@ -13,7 +13,8 @@ var imprimir = function(e){
       data: {},
       success:function (result) {
         GrabzIt("NDVjYzIyYmVjNGYzNDkzYWIxYWQ2ZmRjOWY5MzAzMTQ=")
-                .ConvertHTML(result,{"format": "pdf", "download": 1}).Create();
+                .ConvertHTML(result,{"format": "pdf", "download": 1, 'pagesize': 'A5',
+                'orientation': 'Landscape'}).Create();
       }
   });
 

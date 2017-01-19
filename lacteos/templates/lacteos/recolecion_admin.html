@@ -46,12 +46,12 @@ var crear_pdf = function(recibos){
         doc.text(130, 110, r.ferreteria, {}, 0, "center");
         doc.text(180, 110, r.abarrotes, {}, 0, "center");
 
-        doc.text(180, 123, r.neto_recibir, {}, 0, "center");
-
+        doc.setFontSize(16);
         doc.text(100, 40, r.periodo, {}, 0, "center");
         doc.setFontStyle('italic');
         doc.setFontSize(18);
         doc.text(100, 50, r.productor, {}, 0, "center");
+        doc.text(180, 123, r.neto_recibir, {}, 0, "center");
 
         if(i < recibos.length-1){
             doc.addPage();

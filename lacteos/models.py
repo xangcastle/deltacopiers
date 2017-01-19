@@ -4,7 +4,7 @@ from django.db.models import Sum
 
 def a_cordobas(numero):
     import locale
-    locale.setlocale(locale.LC_ALL, '')
+    locale.setlocale(locale.LC_ALL, 'es_NI.UTF-8')
     return locale.currency(numero, grouping=True)
 
 

@@ -2,6 +2,12 @@ from django.db import models
 from django.db.models import Sum
 
 
+def a_cordobas(numero):
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+    return locale.currency(numero, grouping=True)
+
+
 class cliente(models.Model):
     nombre = models.CharField(max_length=200, help_text="NOMBRE DEL CLIENTE")
     ident = models.CharField(max_length=14, verbose_name="Identificacion",
@@ -333,14 +339,14 @@ class recoleccion(models.Model):
 class detalle(models.Model):
     recoleccion = models.ForeignKey(recoleccion)
     productor = models.ForeignKey(productor)
-    dia_1 = models.FloatField(default=0)
-    dia_2 = models.FloatField(default=0)
-    dia_3 = models.FloatField(default=0)
-    dia_4 = models.FloatField(default=0)
-    dia_5 = models.FloatField(default=0)
-    dia_6 = models.FloatField(default=0)
-    dia_7 = models.FloatField(default=0)
-    dia_8 = models.FloatField(default=0)
+    dia_1 = models.IntegerField(default=0)
+    dia_2 = models.IntegerField(default=0)
+    dia_3 = models.IntegerField(default=0)
+    dia_4 = models.IntegerField(default=0)
+    dia_5 = models.IntegerField(default=0)
+    dia_6 = models.IntegerField(default=0)
+    dia_7 = models.IntegerField(default=0)
+    dia_8 = models.IntegerField(default=0)
     total = models.FloatField(default=0)
     precio = models.FloatField(null=True, default=0)
 
@@ -450,7 +456,7 @@ class detalle(models.Model):
             return 0
 
     def neto_recibir(self):
-        return round(self.subtotal() - self.total_deducciones(),2)
+        return a_cordobas(round(self.subtotal() - self.total_deducciones(),2))
 
     def save(self, *args, **kwars):
         self.total = self.total_recolectado()

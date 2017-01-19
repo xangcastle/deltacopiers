@@ -346,17 +346,26 @@ class detalle(models.Model):
 
     def to_json(self):
         obj = {}
+        obj['periodo'] = self.detalle_periodo()
         obj['productor'] = self.productor.nombre
-        obj['dia_1'] = self.dia_1
-        obj['dia_2'] = self.dia_2
-        obj['dia_3'] = self.dia_3
-        obj['dia_4'] = self.dia_4
-        obj['dia_5'] = self.dia_5
-        obj['dia_6'] = self.dia_6
-        obj['dia_7'] = self.dia_7
-        obj['dia_8'] = self.dia_8
-        obj['total'] = self.total_recolectado()
-        obj['precio'] = self.precio
+        obj['dia_1'] = str(self.dia_1)
+        obj['dia_2'] = str(self.dia_2)
+        obj['dia_3'] = str(self.dia_3)
+        obj['dia_4'] = str(self.dia_4)
+        obj['dia_5'] = str(self.dia_5)
+        obj['dia_6'] = str(self.dia_6)
+        obj['dia_7'] = str(self.dia_7)
+        obj['dia_8'] = str(self.dia_8)
+        obj['produccion'] = str(self.total_recolectado())
+        obj['precio'] =str(self.precio)
+        obj['subtotal'] =str(self.subtotal())
+        obj['retencion'] =str(self.total_retencion())
+        obj['total'] =str(self.total_pago())
+        obj['prestamos'] =str(self.total_prestamos())
+        obj['ferreteria'] =str(self.total_ferreteria())
+        obj['veterinaria'] =str(self.total_veterinaria())
+        obj['abarrotes'] =str(self.total_abarrotes())
+        obj['neto_recibir'] =str(self.neto_recibir())
         return obj
 
     def __unicode__(self):
@@ -370,6 +379,9 @@ class detalle(models.Model):
 
     def fecha_final(self):
         return self.periodo().fecha_final
+
+    def detalle_periodo(self):
+      return "SEMANA DEL: %s AL %s " % (self.fecha_inicial(), self.fecha_final())
 
     def total_recolectado(self):
         return self.dia_1 + self.dia_2 + self.dia_3 + self.dia_4 + self.dia_5 + self.dia_6 + self.dia_7

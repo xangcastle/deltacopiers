@@ -6,6 +6,9 @@ from django_pdfkit import PDFView
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from django.http.response import HttpResponse
+from django.core import serializers
+import json
+from bson import json_util
 
 @csrf_exempt
 def imprimir_recoleccion(request, id_recoleccion):
@@ -20,6 +23,17 @@ def imprimir_recoleccion(request, id_recoleccion):
 
 class imprimir_recoleccion1(PDFView):
     template_name = "lacteos/pagos.html"
+
+
+@csrf_exempt
+def datos_recibos(request):
+    queryset = detalle.objects.filter(recoleccion=recoleccion.objects.get(id=int(request.POST.get('recoleccion', ''))))
+    if queryset:
+        data = [x.to_json() for x in queryset]
+        data = json.dumps(data, default=json_util.default)
+    else:
+        data = None
+    return HttpResponse(data, content_type='application/json')
 
 
 def imprimir_retencion(request,id_recoleccion):

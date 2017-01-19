@@ -324,6 +324,32 @@ class Factura(models.Model):
             'moneda': self.moneda, 'descuento': self.descuento, 'iva': self.iva,
             'total': self.total}
 
+    def to_obj_pdfjs(self):
+        obj = {'numero': str(self.numero),
+            'cliente': self.cliente.name + " - " + self.cliente.ident,
+            'direccion': self.cliente.address,
+            'telefono': self.cliente.phone,
+            'contacto': "",
+            'area': "",
+            'dia': str(self.date.day),
+            'mes': str(self.date.month),
+            'anno': str(self.date.year),
+            'tc': str(cordobizar(1, self.date)),
+            'fecha_vence': "",
+            'subtotal': str(self.subtotal),
+            'subtotal_cordobas': str(self.subtotal_cordobas()),
+            'iva': str(self.iva),
+            'total': str(self.total)}
+        if self.tipopago == "contado":
+            obj['contado'] = "X"
+        else:
+            obj['contado'] = ""
+        if self.tipopago == "credito":
+            obj['credito'] = "X"
+        else:
+            obj['credito'] = ""
+        return obj
+
     def tc(self):
         return cordobizar(1, self.date, digitos=4)
 

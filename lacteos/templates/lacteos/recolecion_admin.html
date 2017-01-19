@@ -4,8 +4,10 @@
 {% block extrahead %}
 {{ block.super }}
 <script src="/static/moneycash/js/grabzit.min.js"></script>
+<script src="/static/moneycash/js/pdf.js"></script>
 <script>
-var imprimir = function(e){
+
+var imprimir0 = function(e){
   e.preventDefault();
   $.ajax({
       url:$(this).attr('href'),
@@ -19,8 +21,47 @@ var imprimir = function(e){
   });
 
 }
+
+var crear_pdf = function(recibos){
+
+	var doc = new jsPDF("l", "mm", [137, 216]);
+    $.each(recibos, function(i, r){
+        doc.setFontSize(14);
+        doc.text(100, 15, "COOPERATIVA AGROPECUARIA DE SERVICIOS", {}, 0, "center");
+        doc.setFontSize(12);
+        doc.text(100, 20, '"El Milagro" de Acoyapa (COOSERAMA) R.L.', {}, 0, "center");
+        doc.text(100, 25, 'SEMANA DEL: 11 de Enero de 2017 AL 17 de Enero de 2017', {}, 0, "center");
+        doc.setFontStyle('italic');
+        doc.text(100, 30, r.productor, {}, 0, "center");
+        doc.rect(50, 40, 10, 10);
+
+
+
+        if(i < recibos.length-1){
+            doc.addPage();
+        }
+    });
+	doc.save('Recibos.pdf');
+
+}
+
+var imprimir = function(e){
+  e.preventDefault();
+  $.ajax({
+      url:"/lacteos/datos_recibos/",
+      type:"POST",
+      data: {'recoleccion': $(this).data('id')},
+      success:function (recibos) {
+        console.log(recibos);
+        crear_pdf(recibos);
+      }
+  });
+
+}
+
 $(document).ready(function(){
   $('.imprimir_recibos').on('click', imprimir);
 });
+
 </script>
 {% endblock %}

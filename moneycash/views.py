@@ -480,8 +480,8 @@ def imprimir_factura(request):
         factura.pasar_a_cordobas()
     elif request.POST.get('moneda', '') == "dolares":
         factura.pasar_a_dolares()
-    html = render_to_string('moneycash/print/factura.html', {'f': factura})
-    return HttpResponse(html)
+    data = json.dumps(factura.to_obj_pdfjs(), default=json_util.default)
+    return HttpResponse(data, content_type="application/json")
 
 
 def crear_recibo(request):

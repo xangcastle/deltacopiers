@@ -284,7 +284,7 @@ class recoleccion(models.Model):
         return total
 
     def imprimir(self):
-        return '<a href="/lacteos/print/recibos/%s/" class="btn btn-primary btn-xs glyphicon glyphicon-print imprimir_recibos" target="_blank">  Imprimir Recibos</a>' % (self.id)
+        return '<a href="/lacteos/print/recibos/%s/" class="btn btn-primary btn-xs glyphicon glyphicon-print imprimir_recibos" target="_blank" data-id="%s">  Imprimir Recibos</a>' % (self.id, self.id)
 
     imprimir.allow_tags = True
 
@@ -343,6 +343,21 @@ class detalle(models.Model):
     dia_8 = models.FloatField(default=0)
     total = models.FloatField(default=0)
     precio = models.FloatField(null=True, default=0)
+
+    def to_json(self):
+        obj = {}
+        obj['productor'] = self.productor.nombre
+        obj['dia_1'] = self.dia_1
+        obj['dia_2'] = self.dia_2
+        obj['dia_3'] = self.dia_3
+        obj['dia_4'] = self.dia_4
+        obj['dia_5'] = self.dia_5
+        obj['dia_6'] = self.dia_6
+        obj['dia_7'] = self.dia_7
+        obj['dia_8'] = self.dia_8
+        obj['total'] = self.total_recolectado()
+        obj['precio'] = self.precio
+        return obj
 
     def __unicode__(self):
         return self.productor.nombre

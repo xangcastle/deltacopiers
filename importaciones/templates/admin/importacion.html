@@ -76,9 +76,13 @@
                 doc.text(60, 70, proforma.cargo, {}, 0, "right");
                 doc.text(60, 74, proforma.empresa, {}, 0, "right");
                 doc.text(60, 78, proforma.telefono, {}, 0, "right");
+                doc.text(190, 45, proforma.numero, {}, 0, "right");
                 doc.text(190, 50, proforma.fecha, {}, 0, "right");
+                doc.text(190, 55, proforma.fecha_vence, {}, 0, "right");
                 doc.text(110, 205, "Cesar Abel Ramirez Bravo", {}, 0, "center");
+
                 doc.setFontSize(12);
+
                 doc.text(194, 177, proforma.subtotal, {}, 0, "right");
                 doc.text(194, 186, proforma.iva, {}, 0, "right");
                 doc.text(194, 194, proforma.total, {}, 0, "right");

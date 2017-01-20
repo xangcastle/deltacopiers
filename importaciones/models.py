@@ -45,6 +45,8 @@ class Cliente(models.Model):
 class Importacion(models.Model):
     cliente = models.ForeignKey(Cliente, null=True)
     fecha = models.DateField(null=True)
+    fecha_vence = models.DateField(null=True)
+    numero = models.PositiveIntegerField(null=True)
     nombre = models.CharField(max_length=165, unique=True)
     blog = models.TextField(max_length=99999)
     proforma = models.FileField(null=True, blank=True)
@@ -91,17 +93,30 @@ class Importacion(models.Model):
     def to_json(self):
         obj =  {
           'nombre': self.nombre,
+          'numero': str(self.numero).zfill(6) ,
           'contacto': self.cliente.contacto,
           'empresa': self.cliente.empresa,
           'cargo': self.cliente.cargo,
           'telefono': self.cliente.telefono,
           'fecha': str(self.fecha),
+          'fecha_vence': str(self.fecha_vence),
           'subtotal': str(self.sub_total()),
           'iva': str(self.iva()),
           'total': str(self.total())
           }
         obj['detalle'] = [x.to_json() for x in self.items()]
         return obj
+
+    def get_numero(self):
+        try:
+            return Importacion.objects.all().order_by('-numero')[0].numero + 1
+        except:
+            return 1
+
+    def save(self, *args, **kwargs):
+        if not self.numero:
+            self.numero = self.get_numero()
+        super(Importacion, self).save()
 
     class Meta:
         verbose_name_plural = "importaciones"

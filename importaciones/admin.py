@@ -12,10 +12,11 @@ class item_admin(admin.TabularInline):
     fields = ('cantidad', 'descripcion', 'fob', 'cif', 'cip', 'precio', 'anexo')
     classes = ('grp-collapse grp-open',)
 admin.site.register(Cliente)
+
 class importacion_admin(admin.ModelAdmin):
     form = ImportacionForm
     date_hierarchy = 'fecha'
-    list_display = ('nombre', 'total_fob', 'utilidad', 'estado')
+    list_display = ('numero', 'nombre', 'total_fob', 'utilidad', 'estado')
     change_form_template = "admin/importacion.html"
     list_filter = ('estado', )
     inlines = [item_admin,]
@@ -23,7 +24,8 @@ class importacion_admin(admin.ModelAdmin):
     fieldsets = (
         ('Datos Generales', {
             'classes': ('grp-collapse grp-open',),
-            'fields': (('cliente', 'nombre', 'fecha', 'estado'), 'blog')
+            'fields': (('numero', 'nombre', 'cliente'),
+                      ('fecha', 'fecha_vence', 'estado'), 'blog')
         }),
         ('Documentacion y Costos', {
             'classes': ('grp-collapse grp-open',),
@@ -37,6 +39,7 @@ class importacion_admin(admin.ModelAdmin):
             'fields': ('factor', ('total_cip', 'total_venta', 'utilidad')),
         })
     )
+    readonly_fields = ('numero', )
 
 admin.site.register(Importacion, importacion_admin)
 

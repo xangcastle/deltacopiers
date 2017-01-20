@@ -37,10 +37,18 @@
                 })
             }
 
+
+            var porcentaje = function(num, per){
+                return (parseFloat(num) * parseFloat(per)) / 100;
+            }
+
             var calcular = function(){
                 var fob = $('.fob>input');
                 var cip = $('.cip>input');
                 var cif = $('.cif>input');
+                var dai = $('.dai>input');
+                var isc = $('.isc>input');
+                var iva = $('.iva>input');
                 var precio = $('.precio>input');
                 var flete = parseFloat($('input[name=flete]').val());
                 var aduana = parseFloat($('input[name=aduanas]').val());
@@ -51,11 +59,20 @@
                 var total_fob = totalizar('fob');
                 if (total_fob>0) {
                     var total_cif  = total_fob + flete + banco + divisa;
+                    var pr_cif = total_cif / total_fob;
                     var total_cip  = total_cif + aduana + otros;
+                    var pr_cip = total_cip / total_fob;
+                    var total_dai = 0.0;
+                    var total_isc = 0.0;
                     for (var i = 0; i < cip.length-1; i++) {
-                        $(cif[i]).val((( total_cif / total_fob ) * parseFloat($(fob[i]).val())).toFixed(2));
-                        $(cip[i]).val(((total_cip / total_fob ) * parseFloat($(fob[i]).val())).toFixed(2));
-                        $(precio[i]).val(((total_cip / total_fob ) * parseFloat($(fob[i]).val()) * factor).toFixed(2));
+                        var v_cif = (pr_cif * parseFloat($(fob[i]).val())).toFixed(2);
+                        var v_cip = (pr_cip * parseFloat($(fob[i]).val())).toFixed(2);
+                        var v_dai = porcentaje( v_cif, $(dai[i]).val());
+                        var v_isc = porcentaje( parseFloat(v_cif) + parseFloat(v_dai), $(isc[i]).val());
+                        $(cif[i]).val(v_cif);
+                        var costo = (parseFloat(v_cip) + parseFloat(v_dai) + parseFloat(v_isc)).toFixed(2);
+                        $(cip[i]).val(costo);
+                        $(precio[i]).val((costo * factor).toFixed(2));
                     }
                     var total_cip = totalizar('cip');
                     var total = totalizar('precio');
@@ -72,10 +89,10 @@
                 var doc = new jsPDF("p", "mm", "letter");
                 doc.addImage(image, 'PNG', 0, 0, 220, 280);
                 doc.setFontSize(9);
-                doc.text(60, 66, proforma.contacto, {}, 0, "right");
-                doc.text(60, 70, proforma.cargo, {}, 0, "right");
-                doc.text(60, 74, proforma.empresa, {}, 0, "right");
-                doc.text(60, 78, proforma.telefono, {}, 0, "right");
+                doc.text(30, 66, proforma.contacto, {}, 0);
+                doc.text(30, 70, proforma.cargo, {}, 0);
+                doc.text(30, 74, proforma.empresa, {}, 0);
+                doc.text(30, 78, proforma.telefono, {}, 0);
                 doc.text(190, 45, proforma.numero, {}, 0, "right");
                 doc.text(190, 50, proforma.fecha, {}, 0, "right");
                 doc.text(190, 55, proforma.fecha_vence, {}, 0, "right");
@@ -112,8 +129,11 @@
 
             $('#item_set-group').on('change', '.cantidad>input', calcular);
             $('#item_set-group').on('change', '.fob', calcular);
+            $('#item_set-group').on('change', '.dai', calcular);
+            $('#item_set-group').on('change', '.isc', calcular);
             $('input[select="pais"]').change(calcular_flete);
             $('input[name="peso"]').change(calcular_flete);
+            $('input[name="flete"]').change(calcular);
             $('input[name="aduanas"]').change(calcular);
             $('input[name="banco"]').change(calcular);
             $('input[name="divisa"]').change(calcular);

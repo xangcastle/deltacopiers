@@ -3,6 +3,10 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+def porcentaje(num, per):
+    return round((num * per) / 100, 2)
+
+
 class Pais(models.Model):
     nombre = models.CharField(max_length=65)
     zona = models.ForeignKey('Zona')
@@ -85,7 +89,10 @@ class Importacion(models.Model):
         return round(t, 2)
 
     def iva(self):
-        return round(self.sub_total() * 0.15, 2)
+        iva = 0.0
+        for i in self.items():
+            iva += (porcentaje(i.cip, i.iva) * i.cantidad)
+        return round(iva, 2)
 
     def total(self):
         return self.sub_total() + self.iva()
@@ -129,6 +136,11 @@ class Item(models.Model):
     fob = models.FloatField(null=True, default=0.0)
     cip = models.FloatField(null=True, default=0.0)
     cif = models.FloatField(null=True, default=0.0)
+    #tsi = models.FloatField(null=True, default=0.5, verbose_name="TSI")
+    #spe = models.FloatField(null=True, default=5.0, verbose_name="SPE")
+    dai = models.PositiveIntegerField(null=True, default=0, verbose_name="% DAI")
+    isc = models.PositiveIntegerField(null=True, default=0, verbose_name="% ISC")
+    iva = models.PositiveIntegerField(null=True, default=15, verbose_name="% IVA")
     precio = models.FloatField(null=True, default=0.0)
     anexo = models.FileField(null=True, blank=True)
 

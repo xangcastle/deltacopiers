@@ -18,6 +18,16 @@ class ImportacionForm(forms.ModelForm):
         'value': '0.0',
         'readonly': 'true',
         }))
+    total_dai = forms.FloatField(widget=forms.NumberInput(
+    attrs={
+        'value': '0.0',
+        'readonly': 'true',
+        }))
+    total_isc = forms.FloatField(widget=forms.NumberInput(
+    attrs={
+        'value': '0.0',
+        'readonly': 'true',
+        }))
     model = Importacion
 
 
@@ -32,7 +42,7 @@ class ItemForm(forms.ModelForm):
     attrs={
         'value': '0.0',
         'readonly': 'true',
-        }), label='costo cip')
+        }), label='costo bodega destino')
     precio = forms.FloatField(widget=forms.NumberInput(
     attrs={
         'value': '0.0',

@@ -9,7 +9,7 @@ class item_admin(admin.TabularInline):
     form  = ItemForm
     model = Item
     extra = 0
-    fields = ('cantidad', 'descripcion', 'fob', 'cif', 'cip', 'precio', 'anexo')
+    fields = ('cantidad', 'descripcion', 'fob', 'cif', 'dai', 'isc', 'cip', 'iva', 'precio', 'anexo')
     classes = ('grp-collapse grp-open',)
 admin.site.register(Cliente)
 
@@ -36,7 +36,7 @@ class importacion_admin(admin.ModelAdmin):
         }),
         ('Totales Agrabados', {
             'classes': ('grp-collapse grp-open',),
-            'fields': ('factor', ('total_cip', 'total_venta', 'utilidad')),
+            'fields': (('total_dai', 'total_isc', 'factor'), ('total_cip', 'total_venta', 'utilidad')),
         })
     )
     readonly_fields = ('numero', )

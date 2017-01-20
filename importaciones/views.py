@@ -31,3 +31,9 @@ def calcular_flete(request):
     data = json.dumps({'flete': flete, 'Ext._Responsabilidad': flete * 0.03,
     'Fuel_Surcharge': flete * 0.02, 'total': round(flete * 1.05, 2)})
     return HttpResponse(data, content_type="application/json")
+
+
+@csrf_exempt
+def datos_proforma(request):
+    data = json.dumps(Importacion.objects.get(nombre=request.POST.get('importacion', '')).to_json())
+    return HttpResponse(data, content_type="application/json")

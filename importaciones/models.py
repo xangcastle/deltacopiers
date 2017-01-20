@@ -31,10 +31,21 @@ class Tarifa(models.Model):
     class Meta:
         ordering = ['zona', 'precio']
 
+
+class Cliente(models.Model):
+    contacto = models.CharField(max_length=220)
+    cargo = models.CharField(max_length=220)
+    empresa = models.CharField(max_length=220)
+    email = models.EmailField(max_length=220)
+    telefono = models.CharField(max_length=220)
+
+    def __unicode__(self):
+      return "%s - %s" % (self.contacto, self.empresa)
+
 class Importacion(models.Model):
-    change_form_template = "/admin/importacion.html"
+    cliente = models.ForeignKey(Cliente, null=True)
     fecha = models.DateField(null=True)
-    nombre = models.CharField(max_length=165)
+    nombre = models.CharField(max_length=165, unique=True)
     blog = models.TextField(max_length=99999)
     proforma = models.FileField(null=True, blank=True)
     proforma_proveedor = models.FileField(null=True, blank=True, verbose_name="proforma del proveedor")
@@ -77,6 +88,21 @@ class Importacion(models.Model):
     def total(self):
         return self.sub_total() + self.iva()
 
+    def to_json(self):
+        obj =  {
+          'nombre': self.nombre,
+          'contacto': self.cliente.contacto,
+          'empresa': self.cliente.empresa,
+          'cargo': self.cliente.cargo,
+          'telefono': self.cliente.telefono,
+          'fecha': str(self.fecha),
+          'subtotal': str(self.sub_total()),
+          'iva': str(self.iva()),
+          'total': str(self.total())
+          }
+        obj['detalle'] = [x.to_json() for x in self.items()]
+        return obj
+
     class Meta:
         verbose_name_plural = "importaciones"
 
@@ -94,3 +120,11 @@ class Item(models.Model):
     @property
     def total(self):
         return self.cantidad * self.precio
+
+    def to_json(self):
+        return {
+          'cantidad': str(self.cantidad),
+          'descripcion': self.descripcion,
+          'precio': str(self.precio),
+          'total': str(self.total),
+        }

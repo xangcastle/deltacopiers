@@ -11,7 +11,7 @@ class item_admin(admin.TabularInline):
     extra = 0
     fields = ('cantidad', 'descripcion', 'fob', 'cif', 'cip', 'precio', 'anexo')
     classes = ('grp-collapse grp-open',)
-
+admin.site.register(Cliente)
 class importacion_admin(admin.ModelAdmin):
     form = ImportacionForm
     date_hierarchy = 'fecha'
@@ -23,7 +23,7 @@ class importacion_admin(admin.ModelAdmin):
     fieldsets = (
         ('Datos Generales', {
             'classes': ('grp-collapse grp-open',),
-            'fields': (('nombre', 'fecha', 'estado'), 'blog')
+            'fields': (('cliente', 'nombre', 'fecha', 'estado'), 'blog')
         }),
         ('Documentacion y Costos', {
             'classes': ('grp-collapse grp-open',),
@@ -37,12 +37,6 @@ class importacion_admin(admin.ModelAdmin):
             'fields': ('factor', ('total_cip', 'total_venta', 'utilidad')),
         })
     )
-
-    def generar_proforma(self, request, queryset):
-        context = RequestContext(request)
-        context['queryset'] = queryset
-        return render_to_response('admin/importaciones/proforma.html', context)
-    actions = [generar_proforma,]
 
 admin.site.register(Importacion, importacion_admin)
 

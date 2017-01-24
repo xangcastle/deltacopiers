@@ -456,7 +456,7 @@ class detalle(models.Model):
             return 0
 
     def neto_recibir(self):
-        return a_cordobas(round(self.subtotal() - self.total_deducciones(),2))
+        return round(self.subtotal() - self.total_deducciones(),2)
 
     def save(self, *args, **kwars):
         self.total = self.total_recolectado()

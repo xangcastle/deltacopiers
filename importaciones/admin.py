@@ -22,11 +22,13 @@ class importacion_admin(admin.ModelAdmin):
     inlines = [item_admin,]
 
     fieldsets = (
+
         ('Datos Generales', {
             'classes': ('grp-collapse grp-open',),
             'fields': (('numero', 'nombre', 'cliente'),
                       ('fecha', 'fecha_vence', 'estado'), 'blog')
         }),
+
         ('Documentacion y Costos', {
             'classes': ('grp-collapse grp-open',),
             'fields': (('guia', 'banco', 'proforma_proveedor'),
@@ -34,10 +36,18 @@ class importacion_admin(admin.ModelAdmin):
                         ('peso', 'aduanas', 'orden'),
                         ('flete', 'otros', 'plist')),
         }),
-        ('Totales Agrabados', {
+
+        ('Impuestos y Otros Gastos', {
             'classes': ('grp-collapse grp-open',),
-            'fields': (('total_dai', 'total_isc', 'factor'), ('total_cip', 'total_venta', 'utilidad')),
-        })
+            'fields': (('ssa', 'tsi', 'spe'),
+                       ('total_iva', 'total_dai', 'total_isc'),
+                       ('almacen', 'transporte')),
+        }),
+
+        ('Totales', {
+            'classes': ('grp-collapse grp-open',),
+            'fields': (('total_cip', 'total_venta', 'utilidad', 'factor'), )}
+        )
     )
     readonly_fields = ('numero', )
 

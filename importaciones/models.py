@@ -65,7 +65,15 @@ class Importacion(models.Model):
     aduanas = models.FloatField(null=True, default=0.0)
     divisa = models.FloatField(null=True, default=0.0)
     banco = models.FloatField(null=True, default=0.0)
+
+    tsi = models.FloatField(null=True, default=0.5, verbose_name="TSI")
+    spe = models.FloatField(null=True, default=5.0, verbose_name="SPE")
+    ssa = models.FloatField(null=True, default=0.0, verbose_name="SSA")
+    almacen = models.FloatField(null=True, default=0.0)
+    transporte = models.FloatField(null=True, default=0.0)
+
     otros = models.FloatField(null=True, default=0.0)
+
     factor = models.FloatField(null=True, default=2.0)
     utilidad = models.FloatField(null=True, default=0.0)
     guia = models.CharField(max_length=25, null=True, blank=True)
@@ -136,8 +144,6 @@ class Item(models.Model):
     fob = models.FloatField(null=True, default=0.0)
     cip = models.FloatField(null=True, default=0.0)
     cif = models.FloatField(null=True, default=0.0)
-    #tsi = models.FloatField(null=True, default=0.5, verbose_name="TSI")
-    #spe = models.FloatField(null=True, default=5.0, verbose_name="SPE")
     dai = models.PositiveIntegerField(null=True, default=0, verbose_name="% DAI")
     isc = models.PositiveIntegerField(null=True, default=0, verbose_name="% ISC")
     iva = models.PositiveIntegerField(null=True, default=15, verbose_name="% IVA")

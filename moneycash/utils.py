@@ -69,3 +69,14 @@ def render_to_excel(filename, data, images=None):
         response['Content-Disposition'] = 'attachment; filename='+filename+'.xls'
         book.save(response)
         return response
+
+
+def render_to_xml(template_src, context_dict):
+    template = get_template(template_src)
+    context = Context(context_dict)
+    xml = template.render(context)
+    archivo = open("out.xml", 'w')
+    archivo.write(xml)
+    response = HttpResponse(archivo.read(), content_type='application/xml')
+    archivo.close()
+    return response
